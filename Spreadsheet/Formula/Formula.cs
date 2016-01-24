@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+//Henry Kucab
 namespace Formulas
 {
     /// <summary>
