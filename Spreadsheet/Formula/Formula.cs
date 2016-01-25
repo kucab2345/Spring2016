@@ -20,7 +20,7 @@ namespace Formulas
     /// </summary>
     public class Formula
     {
-        string[] rawForumula = new string[0];
+        List<string> rawForumula = new List<string>();
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
@@ -41,12 +41,11 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        List<string> tokens = new List<string>();
         public Formula(String formula)
         {
             foreach (string b in GetTokens(formula))
             {
-                tokens.Add(b);
+                rawForumula.Add(b);
             }
         }
         /// <summary>
