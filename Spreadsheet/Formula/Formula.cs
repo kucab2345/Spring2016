@@ -52,7 +52,11 @@ namespace Formulas
             }
             if (formula.Length < 1)
             {
-                throw new Exception("Formula length too short!");
+                throw new FormulaFormatException("Formula length too short!");
+            }
+            for(int i = 0; i < formula.Length - 1; i++)
+            {
+                if(formula[i] == '+' && formula[i+1] =='+')
             }
             foreach (char i in formula)
             {
