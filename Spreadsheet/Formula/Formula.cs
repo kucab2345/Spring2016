@@ -20,7 +20,7 @@ namespace Formulas
     /// </summary>
     public class Formula
     {
-        List<string> rawForumula = new List<string>();
+        List<string> rawFormula = new List<string>();
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
@@ -46,7 +46,7 @@ namespace Formulas
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
 
-            if(char.IsLetterOrDigit(charformula[0]) != true || charformula[0] != '(')
+            if(char.IsLetterOrDigit(formula[0]) == false && formula[0] != '(')
             {
                 throw new FormulaFormatException("Starting character in formula invalid");
             }
@@ -75,7 +75,7 @@ namespace Formulas
             }
             foreach (string b in GetTokens(formula))
             {
-                rawForumula.Add(b);
+                rawFormula.Add(b);
             }
         }
         /// <summary>
@@ -92,11 +92,12 @@ namespace Formulas
             Stack<double> valueStack = new Stack<double>();
             Stack<string> operatorStack = new Stack<string>();
             double test;
-            foreach(string i in rawForumula)
+
+            foreach (string i in rawFormula)
             {
                 if (double.TryParse(i, out test) == true)//if t is double
                 {
-                    if (operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    if (operatorStack.Count() != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
                         if (operatorStack.Peek() == "*")
                         {
@@ -126,7 +127,7 @@ namespace Formulas
                 }//end i as double
                 else if(i == "+" || i == "-")
                 {
-                    if(operatorStack.Peek() == "+" || operatorStack.Peek() == "-")
+                    if (operatorStack.Count() != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
                     {
                         double var1, var2, resultant;
                         var1 = valueStack.Pop();
@@ -150,7 +151,7 @@ namespace Formulas
                 }
                 else if(i == ")")
                 {
-                    if(operatorStack.Peek() == "+" || operatorStack.Peek() == "-")
+                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
                     {
                         double var1, var2, resultant;
                         var1 = valueStack.Pop();
@@ -167,7 +168,7 @@ namespace Formulas
                         valueStack.Push(resultant);
                     }
                     operatorStack.Pop();
-                    if(operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
                         double var1, var2, resultant;
                         var1 = valueStack.Pop();
@@ -193,7 +194,7 @@ namespace Formulas
                 }//end t as )
                 else
                 {
-                    if (operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    if (operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
                         if (operatorStack.Peek() == "*")
                         {
@@ -221,7 +222,24 @@ namespace Formulas
                     }//end * and /
                 }
             }
-            
+            if(operatorStack.Count == 0)
+            {
+                return valueStack.Pop();
+            }
+            else
+            {
+                double var1, var2;
+                var1 = valueStack.Pop();
+                var2 = valueStack.Pop();
+                if (operatorStack.Peek() == "+")
+                {
+                    return var1 + var2;
+                }
+                else
+                {
+                    return var1 - var2;
+                }
+            }
             return 0;
         }
 
