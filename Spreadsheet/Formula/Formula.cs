@@ -20,6 +20,7 @@ namespace Formulas
     /// </summary>
     public class Formula
     {
+        string[] rawForumula = new string[0];
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
@@ -40,8 +41,13 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
+        List<string> tokens = new List<string>();
         public Formula(String formula)
         {
+            foreach (string b in GetTokens(formula))
+            {
+                tokens.Add(b);
+            }
         }
         /// <summary>
         /// Evaluates this Formula, using the Lookup delegate to determine the values of variables.  (The
@@ -54,6 +60,38 @@ namespace Formulas
         /// </summary>
         public double Evaluate(Lookup lookup)
         {
+            Stack<double> valueStack = new Stack<double>();
+            Stack<string> operatorStack = new Stack<string>();
+            double test;
+            double resultant = 0;
+            foreach(string i in rawForumula)
+            {
+                if(double.TryParse(i, out test) == true)//if t is double
+                {
+                    if(operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    {
+                        if(operatorStack.Peek() == "*")
+                        {
+                            double pop = valueStack.Pop();
+                            operatorStack.Pop();
+                            valueStack.Push(test * pop);
+                        }
+                        else if(operatorStack.Peek() == "/")
+                        {
+                            double pop = valueStack.Pop();
+                            operatorStack.Pop();
+                            valueStack.Push(test / pop);
+                        }
+                    }
+                    else
+                    {
+                        valueStack.Push(test);
+                    }
+
+                }
+
+            }
+            
             return 0;
         }
 
