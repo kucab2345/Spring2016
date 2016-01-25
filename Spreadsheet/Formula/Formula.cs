@@ -63,33 +63,134 @@ namespace Formulas
             Stack<double> valueStack = new Stack<double>();
             Stack<string> operatorStack = new Stack<string>();
             double test;
-            double resultant = 0;
             foreach(string i in rawForumula)
             {
-                if(double.TryParse(i, out test) == true)//if t is double
+                if (double.TryParse(i, out test) == true)//if t is double
                 {
-                    if(operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    if (operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
                     {
-                        if(operatorStack.Peek() == "*")
+                        if (operatorStack.Peek() == "*")
                         {
                             double pop = valueStack.Pop();
                             operatorStack.Pop();
                             valueStack.Push(test * pop);
                         }
-                        else if(operatorStack.Peek() == "/")
+                        else if (operatorStack.Peek() == "/")
                         {
                             double pop = valueStack.Pop();
                             operatorStack.Pop();
-                            valueStack.Push(test / pop);
+                            if(pop != 0)
+                            {
+                                valueStack.Push(test / pop);
+                            }
+                            else
+                            {
+                                throw new FormulaEvaluationException("Cannot divide by zero");
+                            }
+                            
                         }
                     }
                     else
                     {
                         valueStack.Push(test);
+                    }//end * and /
+                }//end i as double
+                else if(i == "+" || i == "-")
+                {
+                    if(operatorStack.Peek() == "+" || operatorStack.Peek() == "-")
+                    {
+                        double var1, var2, resultant;
+                        var1 = valueStack.Pop();
+                        var2 = valueStack.Pop();
+                        if(operatorStack.Peek() == "+")
+                        {
+                            resultant = var1 + var2;
+                        }
+                        else
+                        {
+                            resultant = var1 - var2;
+                        }
+                        operatorStack.Pop();
+                        valueStack.Push(resultant);
                     }
-
+                    operatorStack.Push(i);
+                }//end i as + or -
+                else if(i == "*" || i == "/" || i == "(")
+                {
+                    operatorStack.Push(i);
                 }
-
+                else if(i == ")")
+                {
+                    if(operatorStack.Peek() == "+" || operatorStack.Peek() == "-")
+                    {
+                        double var1, var2, resultant;
+                        var1 = valueStack.Pop();
+                        var2 = valueStack.Pop();
+                        if (operatorStack.Peek() == "+")
+                        {
+                            resultant = var1 + var2;
+                        }
+                        else
+                        {
+                            resultant = var1 - var2;
+                        }
+                        operatorStack.Pop();
+                        valueStack.Push(resultant);
+                    }
+                    operatorStack.Pop();
+                    if(operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    {
+                        double var1, var2, resultant;
+                        var1 = valueStack.Pop();
+                        var2 = valueStack.Pop();
+                        if (operatorStack.Peek() == "*")
+                        {
+                            resultant = var1 * var2;
+                        }
+                        else
+                        {
+                            if(var2 != 0)
+                            {
+                                resultant = var1 / var2;
+                            }
+                            else
+                            {
+                                throw new FormulaEvaluationException("Cannot divide by zero");
+                            }
+                        }
+                        operatorStack.Pop();
+                        valueStack.Push(resultant);
+                    }
+                }//end t as )
+                else
+                {
+                    if (operatorStack.Peek() == "*" || operatorStack.Peek() == "/")
+                    {
+                        if (operatorStack.Peek() == "*")
+                        {
+                            double pop = valueStack.Pop();
+                            operatorStack.Pop();
+                            valueStack.Push(lookup(i) * pop);
+                        }
+                        else if (operatorStack.Peek() == "/")
+                        {
+                            double pop = valueStack.Pop();
+                            operatorStack.Pop();
+                            if(pop != 0)
+                            {
+                                valueStack.Push(lookup(i) / pop);
+                            }
+                            else
+                            {
+                                throw new FormulaEvaluationException("Cannot divide by zero");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        valueStack.Push(lookup(i));
+                    }//end * and /
+                }
             }
             
             return 0;
