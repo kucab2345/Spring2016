@@ -43,6 +43,36 @@ namespace Formulas
         /// </summary>
         public Formula(String formula)
         {
+            int openParenthesis = 0, closeParenthesis = 0;
+            char[] charformula = formula.ToCharArray();
+
+            if(char.IsLetterOrDigit(charformula[0]) != true || charformula[0] != '(')
+            {
+                throw new FormulaFormatException("Starting character in formula invalid");
+            }
+            if (formula.Length < 1)
+            {
+                throw new Exception("Formula length too short!");
+            }
+            foreach (char i in formula)
+            {
+                if(i == '(')
+                {
+                    openParenthesis++;
+                }
+                if(i == ')')
+                {
+                    closeParenthesis++;
+                }
+                if(i == '-')
+                {
+                    throw new FormulaFormatException("Cannot have negative numbers");
+                }
+            }
+            if(openParenthesis != closeParenthesis)
+            {
+                throw new FormulaFormatException("Number of '(' and ')' not equal");
+            }
             foreach (string b in GetTokens(formula))
             {
                 rawForumula.Add(b);
