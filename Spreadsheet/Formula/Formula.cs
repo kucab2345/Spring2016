@@ -46,21 +46,16 @@ namespace Formulas
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
 
-            if (formula.Length < 1)//ensures formula not empty
-            {
-                throw new Exception("Formula length too short!");
-            }
-            if (char.IsLetterOrDigit(formula[0]) == false && formula[0] != '(')//checks first character validity
+            if(char.IsLetterOrDigit(formula[0]) == false && formula[0] != '(')
             {
                 throw new FormulaFormatException("Starting character in formula invalid");
             }
-            if (char.IsLetterOrDigit(formula[formula.Length-1]) == false && formula[formula.Length - 1] != ')')//checks last character validity
+            if (formula.Length < 1)
             {
-                throw new FormulaFormatException("Ending character in formula invalid");
+                throw new Exception("Formula length too short!");
             }
             foreach (char i in formula)
             {
-                double test;
                 if(i == '(')
                 {
                     openParenthesis++;
@@ -69,8 +64,7 @@ namespace Formulas
                 {
                     closeParenthesis++;
                 }
-                double.TryParse(i.ToString(), out test);
-                if(test < 0)
+                if(i == '-')
                 {
                     throw new FormulaFormatException("Cannot have negative numbers");
                 }
@@ -123,6 +117,7 @@ namespace Formulas
                             {
                                 throw new FormulaEvaluationException("Cannot divide by zero");
                             }
+                            
                         }
                     }
                     else
@@ -205,14 +200,7 @@ namespace Formulas
                         {
                             double pop = valueStack.Pop();
                             operatorStack.Pop();
-                            try
-                            {
-                                valueStack.Push(lookup(i) * pop);
-                            }
-                            catch(UndefinedVariableException)
-                            {
-                                throw new FormulaEvaluationException(i + " : Missing Definition");
-                            }
+                            valueStack.Push(lookup(i) * pop);
                         }
                         else if (operatorStack.Peek() == "/")
                         {
@@ -220,15 +208,7 @@ namespace Formulas
                             operatorStack.Pop();
                             if(pop != 0)
                             {
-                                try
-                                {
-                                    valueStack.Push(lookup(i) / pop);
-                                }
-                                catch (UndefinedVariableException)
-                                {
-                                    throw new FormulaEvaluationException(i + " : Missing Definition");
-                                }
-
+                                valueStack.Push(lookup(i) / pop);
                             }
                             else
                             {
@@ -238,15 +218,7 @@ namespace Formulas
                     }
                     else
                     {
-                        try
-                        {
-                            valueStack.Push(lookup(i));
-                        }
-                        catch (UndefinedVariableException)
-                        {
-                            throw new FormulaEvaluationException(i + " : Missing Definition");
-                        }
-
+                        valueStack.Push(lookup(i));
                     }//end * and /
                 }
             }
