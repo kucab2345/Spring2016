@@ -1,7 +1,7 @@
 ﻿// Skeleton written by Joe Zachary for CS 3500, January 2015
 // Revised by Joe Zachary, January 2016
 // JLZ Repaired pair of mistakes, January 23, 2016
-// Additional code written by Henry Kucab 1/26/16 Test Commit
+// Additional code written by Henry Kucab 1/26/16 PS2 Commit
 using System;
 using System.Collections.Generic;
 using System.Linq;
