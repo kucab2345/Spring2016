@@ -199,7 +199,6 @@ namespace Formulas
                 }//end t as )
                 else
                 {
-                    
                     if (operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
                         if (operatorStack.Peek() == "*")
