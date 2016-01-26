@@ -82,6 +82,28 @@ namespace Formulas
             {
                 rawFormula.Add(b);
             }
+            for (int i = 0; i < rawFormula.Count() - 1; i++)
+            {
+                double test;
+                bool isoperand = false;
+                bool isnumber = false;
+                if (rawFormula[i] == "+" || rawFormula[i] == "-" || rawFormula[i] == "*" || rawFormula[i] == "/")
+                {
+                    isoperand = true;
+                    if ((rawFormula[i + 1] == "+" || rawFormula[i + 1] == "-" || rawFormula[i + 1] == "*" || rawFormula[i + 1] == "/") && isoperand == true)
+                    {
+                        throw new FormulaFormatException("Consecutive operands illegal");
+                    }
+                }
+                if (double.TryParse(rawFormula[i], out test) == true)
+                {
+                    isnumber = true;
+                    if (double.TryParse(rawFormula[i + 1], out test) == true && isnumber == true)
+                    {
+                        throw new FormulaFormatException("Missing operands");
+                    }
+                }
+            }
         }
         /// <summary>
         /// Evaluates this Formula, using the Lookup delegate to determine the values of variables.  (The
@@ -116,7 +138,7 @@ namespace Formulas
                             operatorStack.Pop();
                             if(pop != 0)
                             {
-                                valueStack.Push(test / pop);
+                                valueStack.Push(pop / test);
                             }
                             else
                             {
@@ -221,7 +243,7 @@ namespace Formulas
                             {
                                 try
                                 {
-                                    valueStack.Push(lookup(i) / pop);
+                                    valueStack.Push(pop / lookup(i));
                                 }
                                 catch(UndefinedVariableException)
                                 {
