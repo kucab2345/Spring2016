@@ -83,7 +83,7 @@ namespace FormulaTestCases
         public void Evaluate3()
         {
             Formula f = new Formula("x + y");
-            //f.Evaluate(v => { throw new UndefinedVariableException(v); });
+            f.Evaluate(v => { throw new UndefinedVariableException(v); });
         }
 
         /// <summary>

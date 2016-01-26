@@ -224,11 +224,10 @@ namespace Formulas
                                 {
                                     valueStack.Push(lookup(i) / pop);
                                 }
-                                catch (UndefinedVariableException)
+                                catch(UndefinedVariableException)
                                 {
                                     throw new FormulaEvaluationException(i + " : Missing Definition");
                                 }
-
                             }
                             else
                             {
@@ -242,11 +241,10 @@ namespace Formulas
                         {
                             valueStack.Push(lookup(i));
                         }
-                        catch (UndefinedVariableException)
+                        catch(UndefinedVariableException)
                         {
                             throw new FormulaEvaluationException(i + " : Missing Definition");
                         }
-
                     }//end * and /
                 }
             }
