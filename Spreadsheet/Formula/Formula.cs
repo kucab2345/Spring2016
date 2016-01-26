@@ -136,7 +136,7 @@ namespace Formulas
                         {
                             double pop = valueStack.Pop();
                             operatorStack.Pop();
-                            if(pop != 0)
+                            if(test != 0)
                             {
                                 valueStack.Push(pop / test);
                             }
@@ -239,7 +239,7 @@ namespace Formulas
                         {
                             double pop = valueStack.Pop();
                             operatorStack.Pop();
-                            if(pop != 0)
+                            if(lookup(i) != 0)
                             {
                                 try
                                 {
