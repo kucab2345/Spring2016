@@ -1,13 +1,12 @@
 ﻿// Skeleton written by Joe Zachary for CS 3500, January 2015
 // Revised by Joe Zachary, January 2016
 // JLZ Repaired pair of mistakes, January 23, 2016
-// Additional code written by Henry Kucab 1/24/16
+// Additional code written by Henry Kucab 1/26/16
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-
 
 namespace Formulas
 {
