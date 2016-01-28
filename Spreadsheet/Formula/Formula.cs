@@ -23,7 +23,7 @@ namespace Formulas
         /// rawFormula : A list that contains the raw tokens from the formula as strings. Is an instance variable in the
         /// Formula class, accessible for all class methods.
         /// </summary>
-        List<string> rawFormula = new List<string>();
+        private List<string> rawFormula = new List<string>();
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
