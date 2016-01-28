@@ -291,7 +291,6 @@ namespace Formulas
                     return var1 - var2;
                 }
             }
-            return 0;
         }
 
         /// <summary>
