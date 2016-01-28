@@ -126,7 +126,7 @@ namespace Formulas
 
             foreach (string i in rawFormula)
             {
-                if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operand and pop a valus, apply operand to value and i, and push result to valuestack
+                if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operator and pop a values, apply operand to value and i, and push result to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
@@ -155,7 +155,7 @@ namespace Formulas
                         valueStack.Push(test);
                     }//end * and /
                 }//end i as double
-                else if(i == "+" || i == "-")//if i is a addition or subtraction operand, pop operand and pop top 2 values, apply operand to values, and push value to valuestack
+                else if(i == "+" || i == "-")//if i is a addition or subtraction operator, pop operator and pop top 2 values, apply operator to values, and push value to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
                     {
