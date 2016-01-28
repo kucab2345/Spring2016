@@ -19,6 +19,10 @@ namespace Formulas
     /// </summary>
     public class Formula
     {
+        /// <summary>
+        /// rawFormula : A list that contains the raw tokens from the formula as strings. Is an instance variable in the
+        /// Formula class, accessible for all class methods.
+        /// </summary>
         List<string> rawFormula = new List<string>();
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
@@ -57,7 +61,7 @@ namespace Formulas
             {
                 throw new FormulaFormatException("Ending character in formula invalid");
             }
-            foreach (char i in formula)
+            foreach (char i in formula)//Counts number of parenthesis and checks for negative numbers
             {
                 double test;
                 if(i == '(')
@@ -74,15 +78,15 @@ namespace Formulas
                     throw new FormulaFormatException("Cannot have negative numbers");
                 }
             }
-            if(openParenthesis != closeParenthesis)
+            if(openParenthesis != closeParenthesis)//Validates number of parenthesis tokens
             {
                 throw new FormulaFormatException("Number of '(' and ')' not equal");
             }
-            foreach (string b in GetTokens(formula))
+            foreach (string b in GetTokens(formula))//Adds tokens into raw formula after the prior checks
             {
                 rawFormula.Add(b);
             }
-            for (int i = 0; i < rawFormula.Count() - 1; i++)
+            for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operands or numbers.
             {
                 double test;
                 bool isoperand = false;
@@ -122,7 +126,7 @@ namespace Formulas
 
             foreach (string i in rawFormula)
             {
-                if (double.TryParse(i, out test) == true)//if t is double
+                if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operand and pop a valus, apply operand to value and i, and push result to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
@@ -146,12 +150,12 @@ namespace Formulas
                             }
                         }
                     }
-                    else
+                    else//Otherwise, push the value
                     {
                         valueStack.Push(test);
                     }//end * and /
                 }//end i as double
-                else if(i == "+" || i == "-")
+                else if(i == "+" || i == "-")//if i is a addition or subtraction operand, pop operand and pop top 2 values, apply operand to values, and push value to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
                     {
@@ -169,15 +173,15 @@ namespace Formulas
                         operatorStack.Pop();
                         valueStack.Push(resultant);
                     }
-                    operatorStack.Push(i);
+                    operatorStack.Push(i);//Regardless, push i on the operator stack
                 }//end i as + or -
-                else if(i == "*" || i == "/" || i == "(")
+                else if(i == "*" || i == "/" || i == "(")//if i is a multiply, divide, or ( symbol, simply push t on operator stack
                 {
                     operatorStack.Push(i);
                 }
-                else if(i == ")")
+                else if(i == ")")//if i is a ) symbol
                 {
-                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
+                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))//if it is +-, proceed as in the +- case above
                     {
                         double var1, var2, resultant;
                         var1 = valueStack.Pop();
@@ -193,8 +197,8 @@ namespace Formulas
                         operatorStack.Pop();
                         valueStack.Push(resultant);
                     }
-                    operatorStack.Pop();
-                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
+                    operatorStack.Pop();//Regardless, push i on the operator stack
+                    if(operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))//If i is * or /, proceeed as described in prior * / case
                     {
                         double var1, var2, resultant;
                         var1 = valueStack.Pop();
@@ -215,10 +219,10 @@ namespace Formulas
                             }
                         }
                         operatorStack.Pop();
-                        valueStack.Push(resultant);
+                        valueStack.Push(resultant);//push result onto value stack
                     }
                 }//end t as )
-                else
+                else//if t is a variable, proceed as in +- case with looked up value
                 {
                     if (operatorStack.Count != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
@@ -269,11 +273,11 @@ namespace Formulas
                     }//end * and /
                 }
             }
-            if(operatorStack.Count == 0)
+            if(operatorStack.Count == 0)//after the last token is processed, final valuestack value is result
             {
                 return valueStack.Pop();
             }
-            else
+            else//otherwise, apply final operand to remaining two values
             {
                 double var1, var2;
                 var1 = valueStack.Pop();
