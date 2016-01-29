@@ -1,7 +1,7 @@
 ﻿// Skeleton written by Joe Zachary for CS 3500, January 2015
 // Revised by Joe Zachary, January 2016
 // JLZ Repaired pair of mistakes, January 23, 2016
-// Additional code written by Henry Kucab 1/28/16 PS2 Commit.
+// Additional code written by Henry Kucab 1/28/16 PS2 Commit
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Formulas
         /// rawFormula : A list that contains the raw tokens from the formula as strings. Is an instance variable in the
         /// Formula class, accessible for all class methods.
         /// </summary>
-        List<string> rawFormula = new List<string>();
+        private List<string> rawFormula = new List<string>();
         /// <summary>
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
@@ -72,6 +72,10 @@ namespace Formulas
                 {
                     closeParenthesis++;
                 }
+                if(closeParenthesis > openParenthesis)
+                {
+                    throw new FormulaFormatException("Number of closing parenthesis exceeds number of opening parenthesis thus far (Perhaps you have )...( ? )");
+                }
                 double.TryParse(i.ToString(), out test);
                 if(test < 0)
                 {
@@ -86,7 +90,7 @@ namespace Formulas
             {
                 rawFormula.Add(b);
             }
-            for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operands or numbers.
+            for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operators or numbers.
             {
                 double test;
                 bool isoperand = false;
@@ -107,6 +111,14 @@ namespace Formulas
                         throw new FormulaFormatException("Missing operands");
                     }
                 }
+                if (rawFormula[i] == ")" && double.TryParse(rawFormula[i + 1], out test) == true)
+                {
+                    throw new FormulaFormatException("Cannot have number immediately after ) character.");
+                }
+                if (double.TryParse(rawFormula[i],out test)==true && rawFormula[i+1] == "(")
+                {
+                    throw new FormulaFormatException("Cannot have number directly infront of ( character.");
+                }
             }
         }
         /// <summary>
@@ -126,7 +138,7 @@ namespace Formulas
 
             foreach (string i in rawFormula)
             {
-                if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operand and pop a valus, apply operand to value and i, and push result to valuestack
+                if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operator and pop a values, apply operand to value and i, and push result to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "*" || operatorStack.Peek() == "/"))
                     {
@@ -155,7 +167,7 @@ namespace Formulas
                         valueStack.Push(test);
                     }//end * and /
                 }//end i as double
-                else if(i == "+" || i == "-")//if i is a addition or subtraction operand, pop operand and pop top 2 values, apply operand to values, and push value to valuestack
+                else if(i == "+" || i == "-")//if i is a addition or subtraction operator, pop operator and pop top 2 values, apply operator to values, and push value to valuestack
                 {
                     if (operatorStack.Count() != 0 && (operatorStack.Peek() == "+" || operatorStack.Peek() == "-"))
                     {
@@ -291,7 +303,6 @@ namespace Formulas
                     return var1 - var2;
                 }
             }
-            return 0;
         }
 
         /// <summary>
