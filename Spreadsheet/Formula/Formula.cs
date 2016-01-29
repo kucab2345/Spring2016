@@ -107,6 +107,10 @@ namespace Formulas
                         throw new FormulaFormatException("Missing operands");
                     }
                 }
+                if (rawFormula[i] == ")" && double.TryParse(rawFormula[i + 1], out test) == true)
+                {
+                    throw new FormulaFormatException("Cannot have number immediately after ) character.");
+                }
             }
         }
         /// <summary>

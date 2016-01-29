@@ -106,6 +106,13 @@ namespace FormulaTestCases
             Formula f = new Formula("(x + y) * (z / x) * 1.0");
             Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
         }
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void Evaluate6()
+        {
+            Formula f = new Formula("(x + y) * (z / x) 3 * 1.0");
+            //Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
+        }
 
         /// <summary>
         /// A Lookup method that maps x to 4.0, y to 6.0, and z to 8.0.
