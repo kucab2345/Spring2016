@@ -111,6 +111,10 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Cannot have number immediately after ) character.");
                 }
+                if (double.TryParse(rawFormula[i],out test)==true && rawFormula[i+1] == "(")
+                {
+                    throw new FormulaFormatException("Cannot have number directly infront of ( character.");
+                }
             }
         }
         /// <summary>
