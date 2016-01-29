@@ -72,6 +72,10 @@ namespace Formulas
                 {
                     closeParenthesis++;
                 }
+                if(closeParenthesis > openParenthesis)
+                {
+                    throw new FormulaFormatException("Number of closing parenthesis exceeds number of opening parenthesis thus far (Perhaps you have )...( ? )");
+                }
                 double.TryParse(i.ToString(), out test);
                 if(test < 0)
                 {

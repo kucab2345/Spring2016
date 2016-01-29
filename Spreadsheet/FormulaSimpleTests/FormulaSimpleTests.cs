@@ -106,14 +106,42 @@ namespace FormulaTestCases
             Formula f = new Formula("(x + y) * (z / x) * 1.0");
             Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
         }
+        /// <summary>
+        /// This test has a missing operator between the second set of parenthesis and 3. Should return as a FormulaFormatException.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
         public void Evaluate6()
         {
             Formula f = new Formula("(x + y) * (z / x) 3 * 1.0");
-            //Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
         }
-
+        /// <summary>
+        /// Here we pass a 3 in front of the second set of parenthesis which would require an operator in between. Expects a FormulaFormatException.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void Evaluate7()
+        {
+            Formula f = new Formula("(x + y) * 3 (z / x) * 1.0");
+        }
+        /// <summary>
+        /// Here we pass a nested set of parenthesis which should be illegal and throw a FormulaFormatException.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void Evaluate8()
+        {
+            Formula f = new Formula("(1+2))");
+        }
+        /// <summary>
+        /// Formula here has inconsistent number of opening and closing parenthesis. Throws FormulaFormatException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void Evaluate9()
+        {
+            Formula f = new Formula("1+(1+(1+2)");
+        }
         /// <summary>
         /// A Lookup method that maps x to 4.0, y to 6.0, and z to 8.0.
         /// All other variables result in an UndefinedVariableException.
