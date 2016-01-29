@@ -90,7 +90,7 @@ namespace Formulas
             {
                 rawFormula.Add(b);
             }
-            for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operands or numbers.
+            for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operators or numbers.
             {
                 double test;
                 bool isoperand = false;
