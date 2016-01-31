@@ -49,41 +49,37 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
-        List<List<string>> dgMatrix;
+        Dictionary<string,string> dgMatrix;
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
         /// </summary>
         public DependencyGraph()
         {
-            dgMatrix = new List<List<string>>();
+            dgMatrix = new Dictionary<string, string>();
         }
         /// <summary>
         /// The number of dependencies in the DependencyGraph.
         /// </summary>
         public int Size
         {
-            get
-            {
-                int sum = 0;
-                for(int i = 0; i < dgMatrix.Count; i++)
-                {
-                    for(int j = 0; i < dgMatrix[i].Count; j++)
-                    {
-                        sum = sum + 1;
-                    }
-                }
-                return sum;
-            } 
+            get { return dgMatrix.Count; }
         }
-
         /// <summary>
         /// Reports whether dependents(s) is non-empty.  Requires s != null.
         /// </summary>
         public bool HasDependents(string s)
         {
+            string test;
             if(s == null)
             {
                 throw new ArgumentNullException("s cannot be null");
+            }
+            if (dgMatrix.TryGetValue(s, out test) == true)
+            {
+                if (test != null)
+                {
+                    return false;
+                }
             }
             return false;
         }
@@ -97,6 +93,10 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
+            if(dgMatrix.ContainsValue(s))
+            {
+                return true;
+            }
             return false;
         }
 
@@ -109,6 +109,7 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
+
             return null;
         }
 
@@ -142,7 +143,7 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            
+            dgMatrix
         }
 
         /// <summary>
