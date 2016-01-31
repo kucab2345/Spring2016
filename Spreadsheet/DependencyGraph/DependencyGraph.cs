@@ -49,7 +49,7 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
-        List<List<string>> dgMatrix = new List<List<string>>();
+        List<List<string>> dgMatrix;
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
         /// </summary>
@@ -62,7 +62,18 @@ namespace Dependencies
         /// </summary>
         public int Size
         {
-            get { return 0; }
+            get
+            {
+                int sum = 0;
+                for(int i = 0; i < dgMatrix.Count; i++)
+                {
+                    for(int j = 0; i < dgMatrix[i].Count; j++)
+                    {
+                        sum = sum + 1;
+                    }
+                }
+                return sum;
+            } 
         }
 
         /// <summary>
@@ -70,6 +81,10 @@ namespace Dependencies
         /// </summary>
         public bool HasDependents(string s)
         {
+            if(s == null)
+            {
+                throw new ArgumentNullException("s cannot be null");
+            }
             return false;
         }
 
@@ -78,6 +93,10 @@ namespace Dependencies
         /// </summary>
         public bool HasDependees(string s)
         {
+            if(s == null)
+            {
+                throw new ArgumentNullException("s cannot be null");
+            }
             return false;
         }
 
@@ -86,6 +105,10 @@ namespace Dependencies
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
+            if (s == null)
+            {
+                throw new ArgumentNullException("s cannot be null");
+            }
             return null;
         }
 
@@ -94,6 +117,10 @@ namespace Dependencies
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
+            if (s == null)
+            {
+                throw new ArgumentNullException("s cannot be null");
+            }
             return null;
         }
 
@@ -104,9 +131,18 @@ namespace Dependencies
         /// </summary>
         public void AddDependency(string s, string t)
         {
-            dgMatrix.Add(new List<string>());
-
-            dgMatrix[dgMatrix.Count].Add(s);
+            if (s == null || t == null)
+            {
+                if (s == null)
+                {
+                    throw new ArgumentNullException("s cannot be null");
+                }
+                if(t == null)
+                {
+                    throw new ArgumentNullException("t cannot be null");
+                }
+            }
+            
         }
 
         /// <summary>
@@ -116,6 +152,17 @@ namespace Dependencies
         /// </summary>
         public void RemoveDependency(string s, string t)
         {
+            if (s == null || t == null)
+            {
+                if (s == null)
+                {
+                    throw new ArgumentNullException("s cannot be null");
+                }
+                if (t == null)
+                {
+                    throw new ArgumentNullException("t cannot be null");
+                }
+            }
         }
 
         /// <summary>
@@ -125,6 +172,17 @@ namespace Dependencies
         /// </summary>
         public void ReplaceDependents(string s, IEnumerable<string> newDependents)
         {
+            if (s == null || newDependents == null)
+            {
+                if (s == null)
+                {
+                    throw new ArgumentNullException("s cannot be null");
+                }
+                if (newDependents == null)
+                {
+                    throw new ArgumentNullException("newDependents cannot be null");
+                }
+            }
         }
 
         /// <summary>
@@ -134,6 +192,17 @@ namespace Dependencies
         /// </summary>
         public void ReplaceDependees(string t, IEnumerable<string> newDependees)
         {
+            if (t == null || newDependees == null)
+            {
+                if (t == null)
+                {
+                    throw new ArgumentNullException("t cannot be null");
+                }
+                if (newDependees == null)
+                {
+                    throw new ArgumentNullException("newDependees cannot be null");
+                }
+            }
         }
     }
 }
