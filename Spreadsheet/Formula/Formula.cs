@@ -120,6 +120,14 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Cannot have number directly infront of ( character.");
                 }
+                if (charformula[i] == '(' && (charformula[i+1] == '+' || charformula[i + 1] == '-' || charformula[i + 1] == '*' || charformula[i + 1] == '/'))
+                {
+                    throw new FormulaFormatException("Cannot have operator immediately after ( character");
+                }
+                if (charformula[i] == ')' && (charformula[i - 1] == '+' || charformula[i - 1] == '-' || charformula[i - 1] == '*' || charformula[i - 1] == '/'))
+                {
+                    throw new FormulaFormatException("Cannot have operator immediately before ) character");
+                }
             }
         }
         /// <summary>
