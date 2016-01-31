@@ -106,8 +106,7 @@ namespace Formulas
                 }
                 if (double.TryParse(rawFormula[i], out test) == true)
                 {
-                    isnumber = true;
-                    if (double.TryParse(rawFormula[i + 1], out test) == true && isnumber == true)
+                    if (double.TryParse(rawFormula[i + 1], out test) == true || char.IsLetter(rawFormula[i+1][0]) == true)
                     {
                         throw new FormulaFormatException("Missing operands");
                     }
@@ -189,7 +188,7 @@ namespace Formulas
                         }
                         else
                         {
-                            resultant = var1 - var2;
+                            resultant = var2 - var1;
                         }
                         operatorStack.Pop();
                         valueStack.Push(resultant);
@@ -213,7 +212,7 @@ namespace Formulas
                         }
                         else
                         {
-                            resultant = var1 - var2;
+                            resultant = var2 - var1;
                         }
                         operatorStack.Pop();
                         valueStack.Push(resultant);
@@ -230,9 +229,9 @@ namespace Formulas
                         }
                         else
                         {
-                            if(var2 != 0)
+                            if(var1 != 0)
                             {
-                                resultant = var1 / var2;
+                                resultant = var2 / var1;
                             }
                             else
                             {
