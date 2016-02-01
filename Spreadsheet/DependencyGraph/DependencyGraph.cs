@@ -67,7 +67,7 @@ namespace Dependencies
                 int sum = 0;
                 foreach(KeyValuePair<string, List<string>> i in dgMatrix)
                 {
-                    foreach(string j in i)
+                    foreach(string j in i.Value)
                     {
                         sum++;
                     }
@@ -142,7 +142,13 @@ namespace Dependencies
             }
             if(HasDependees(s))
             {
-                yield return s.
+                foreach(KeyValuePair<string,List<string>> i in dgMatrix)
+                {
+                    if(i.Value.Contains(s) == true)
+                    {
+                        yield return i.Key;
+                    }
+                }
             }
         }
         /// <summary>
@@ -163,11 +169,7 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            if(HasDependents(s) == true)
-            {
-                
-            }
-            dgMatrix.Add(s, t);
+            
         }
         /// <summary>
         /// Removes the dependency (s,t) from this DependencyGraph.
