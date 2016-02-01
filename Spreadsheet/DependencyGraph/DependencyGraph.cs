@@ -49,13 +49,14 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
+        List<List<string>> dgMatrix = new List<List<string>>();
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
         /// </summary>
         public DependencyGraph()
         {
+            dgMatrix = new List<List<string>>();
         }
-
         /// <summary>
         /// The number of dependencies in the DependencyGraph.
         /// </summary>
@@ -103,6 +104,9 @@ namespace Dependencies
         /// </summary>
         public void AddDependency(string s, string t)
         {
+            dgMatrix.Add(new List<string>());
+
+            dgMatrix[dgMatrix.Count].Add(s);
         }
 
         /// <summary>
