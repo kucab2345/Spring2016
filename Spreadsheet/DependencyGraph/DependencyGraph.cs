@@ -49,27 +49,38 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
-        Dictionary<string,string> dgMatrix;
+        Dictionary<string,List<string>> dgMatrix;
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
         /// </summary>
         public DependencyGraph()
         {
-            dgMatrix = new Dictionary<string, string>();
+            dgMatrix = new Dictionary<string, List<string>>();
         }
         /// <summary>
         /// The number of dependencies in the DependencyGraph.
         /// </summary>
         public int Size
         {
-            get { return dgMatrix.Count; }
+            get
+            {
+                int sum = 0;
+                foreach(KeyValuePair<string, List<string>> i in dgMatrix)
+                {
+                    foreach(string j in i)
+                    {
+                        sum++;
+                    }
+                }
+                return sum;
+            }
         }
         /// <summary>
         /// Reports whether dependents(s) is non-empty.  Requires s != null.
         /// </summary>
         public bool HasDependents(string s)
         {
-            string test;
+            List<string> test;
             if(s == null)
             {
                 throw new ArgumentNullException("s cannot be null");
@@ -93,13 +104,15 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(dgMatrix.ContainsValue(s))
+            foreach(KeyValuePair<string, List<string>> i in dgMatrix)
             {
-                return true;
+                if(i.Value.Contains(s))
+                {
+                    return true;
+                }
             }
             return false;
         }
-
         /// <summary>
         /// Enumerates dependents(s).  Requires s != null.
         /// </summary>
@@ -109,14 +122,11 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            foreach(KeyValuePair<string,string> i in dgMatrix)
+            if(HasDependents(s))
             {
-                if(HasDependents(s) == true)
+                foreach (string i in dgMatrix[s])
                 {
-                    if (i.Key == s)
-                    {
-                        yield return i.Value;
-                    }
+                    yield return i;
                 }
             }
         }
@@ -130,15 +140,9 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            foreach(KeyValuePair<string,string> i in dgMatrix)
+            if(HasDependees(s))
             {
-                if(HasDependees(s) == true)
-                {
-                    if(i.Value == s)
-                    {
-                        yield return i.Key;
-                    }
-                }
+                yield return s.
             }
         }
         /// <summary>
