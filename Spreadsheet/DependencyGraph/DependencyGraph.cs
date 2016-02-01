@@ -109,8 +109,16 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-
-            return null;
+            foreach(KeyValuePair<string,string> i in dgMatrix)
+            {
+                if(HasDependents(s) == true)
+                {
+                    if (i.Key == s)
+                    {
+                        yield return i.Value;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -122,9 +130,17 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            return null;
+            foreach(KeyValuePair<string,string> i in dgMatrix)
+            {
+                if(HasDependees(s) == true)
+                {
+                    if(i.Value == s)
+                    {
+                        yield return i.Key;
+                    }
+                }
+            }
         }
-
         /// <summary>
         /// Adds the dependency (s,t) to this DependencyGraph.
         /// This has no effect if (s,t) already belongs to this DependencyGraph.
@@ -143,9 +159,12 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            dgMatrix
+            if(HasDependents(s) == true)
+            {
+                
+            }
+            dgMatrix.Add(s, t);
         }
-
         /// <summary>
         /// Removes the dependency (s,t) from this DependencyGraph.
         /// Does nothing if (s,t) doesn't belong to this DependencyGraph.
