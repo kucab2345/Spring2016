@@ -169,7 +169,18 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            
+            if(dgMatrix.ContainsKey(s) == true)
+            {
+                if(!dgMatrix[s].Contains(t))
+                {
+                    dgMatrix[s].Add(t);
+                }
+            }
+            else
+            {
+                dgMatrix.Add(s,new List<string>());
+                dgMatrix[s].Add(t);
+            }
         }
         /// <summary>
         /// Removes the dependency (s,t) from this DependencyGraph.
