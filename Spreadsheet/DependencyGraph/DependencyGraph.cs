@@ -77,16 +77,15 @@ namespace Dependencies
         /// </summary>
         public bool HasDependents(string s)
         {
-            HashSet<string> test;
             if(s == null)
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if (dgMatrix.TryGetValue(s, out test) == true)
+            if(dgMatrix.ContainsKey(s))
             {
-                if (test != null)
+                if (dgMatrix[s].Count > 0)
                 {
-                    return false;
+                    return true;
                 }
             }
             return false;
@@ -119,9 +118,9 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(HasDependents(s))
+            if(HasDependents(s) == true)
             {
-                foreach (string i in dgMatrix[s])
+                foreach(string i in dgMatrix[s])
                 {
                     yield return i;
                 }
