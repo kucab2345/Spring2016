@@ -168,10 +168,7 @@ namespace Dependencies
             }
             if(dgMatrix.ContainsKey(s) == true)
             {
-                if(!dgMatrix[s].Contains(t))
-                {
-                    dgMatrix[s].Add(t);
-                }
+                dgMatrix[s].Add(t);
             }
             else
             {
