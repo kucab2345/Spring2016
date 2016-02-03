@@ -52,7 +52,7 @@ namespace DependencyGraphTester
         {
             DependencyGraph d = new DependencyGraph();
             string[] bigTest = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
-            string[] parents = new string[10];
+            string[] children = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
             for (int i = 0; i < bigTest.Length; i++)
             {
                for(int j = 0; j < bigTest.Length; j++)
@@ -60,9 +60,14 @@ namespace DependencyGraphTester
                     d.AddDependency(bigTest[i],bigTest[j]);
                } 
             }
-            foreach(string parent in bigTest)
+            for(int i = 0; i < bigTest.Length; i++)
             {
-                
+                int child = 0;
+                foreach (string j in d.GetDependents(bigTest[i]))
+                {
+                    Debug.Assert(j == children[child]);
+                    child++;
+                }
             }
         }
     }
