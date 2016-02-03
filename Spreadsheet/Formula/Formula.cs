@@ -95,7 +95,6 @@ namespace Formulas
             {
                 double test;
                 bool isoperand = false;
-                bool isnumber = false;
                 if (rawFormula[i] == "+" || rawFormula[i] == "-" || rawFormula[i] == "*" || rawFormula[i] == "/")
                 {
                     isoperand = true;
@@ -106,7 +105,7 @@ namespace Formulas
                 }
                 if (double.TryParse(rawFormula[i], out test) == true)
                 {
-                    if (double.TryParse(rawFormula[i + 1], out test) == true || char.IsLetter(rawFormula[i+1][0]) == true)
+                    if (double.TryParse(rawFormula[i + 1], out test) == true || char.IsLetter(rawFormula[i + 1][0]) == true)
                     {
                         throw new FormulaFormatException("Missing operands");
                     }

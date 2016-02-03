@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dependencies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
@@ -8,11 +9,17 @@ namespace DependencyGraphTester
     [TestClass]
     public class DependencyGraphTesting
     {
+        /// <summary>
+        /// Basic constructor test
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod1()
         {
             DependencyGraph d = new DependencyGraph();
         }
+        /// <summary>
+        /// More constructor testing
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod1a()
         {
@@ -22,12 +29,18 @@ namespace DependencyGraphTester
                 Debug.WriteLine(y);
             }
         }
+        /// <summary>
+        /// Checking size report of constructor
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod2()
         {
             DependencyGraph d = new DependencyGraph();
             Debug.Assert(d.Size == 0);
         }
+        /// <summary>
+        /// Tests add, remove functions and asserts with size after each addition/removal
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod3()
         {
@@ -39,6 +52,9 @@ namespace DependencyGraphTester
             d.RemoveDependency(a, b);
             Debug.Assert(d.Size == 0);
         }
+        /// <summary>
+        /// null exception expectation
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod4()
@@ -46,6 +62,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.AddDependency(null, null);
         }
+        /// <summary>
+        /// Adds in up to 10000 random dependencies 
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod5()
         {
@@ -58,6 +77,9 @@ namespace DependencyGraphTester
                 d.AddDependency(bigTest[r], bigTest[rand.Next(bigTest.Length)]); 
             }
         }
+        /// <summary>
+        /// Adds in dependencies in a pattern and checks them via assert and GetDependees
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod5a()
         {
@@ -77,6 +99,9 @@ namespace DependencyGraphTester
                 }
             }
         }
+        /// <summary>
+        /// Adds in dependencies in the pattern a,a   b,b   c,c etc and then asserts them as being correct. Asserts them w/ GetDependents
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod6()
         {
@@ -99,7 +124,9 @@ namespace DependencyGraphTester
                     child++;
                 }
             }
-        }
+        }/// <summary>
+        /// Throwing null arguments to AddDependency function
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod7()
@@ -107,6 +134,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.AddDependency("s", null);
         }
+        /// <summary>
+        /// Throwing null arguments to AddDependency function
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod8()
@@ -114,6 +144,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.AddDependency(null, "t");
         }
+        /// <summary>
+        /// Throwing null arguments to AddDependency function
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod9()
@@ -121,6 +154,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.AddDependency(null, null);
         }
+        /// <summary>
+        /// Adds in a bunch of dependencies and then throws null as the argument to GetDependents.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod10()
@@ -143,6 +179,9 @@ namespace DependencyGraphTester
                 }
             }
         }
+        /// <summary>
+        /// Basic Replace dependents test
+        /// </summary>
         [TestMethod]
         public void GraphTestMethod11()
         {
@@ -152,6 +191,9 @@ namespace DependencyGraphTester
             d.AddDependency(a, b);
             d.ReplaceDependents(a, new string[]{"c"});
         }
+        /// <summary>
+        /// Throwing null as ienumerable argument to ReplaceDependents
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod12()
@@ -162,6 +204,11 @@ namespace DependencyGraphTester
             d.AddDependency(a, b);
             d.ReplaceDependents(a, new string[] { null });
         }
+        /// <summary>
+        /// Comprehensive test of replacedependents. Creates dependency a,b then replaces dependency with a,c and tests additive function 
+        /// of ReplaceDependents with argument b,e. Counts up Dependents under b and asserts them to what the sum should be. Finally,
+        /// throws a double null argument to ReplaceDependents to invoke Exception
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod13()
@@ -173,19 +220,19 @@ namespace DependencyGraphTester
             d.AddDependency(a, b);
             d.ReplaceDependents(a, new string[] { "c" });
             d.ReplaceDependents(b, new string[] { "e" });
+            d.AddDependency(b, "f");
             foreach(string bdependents in d.GetDependents(b))
-            {
-                dependentcount++;
-            }
-            foreach (string bdependents in d.GetDependents(b))
             {
                 dependentcount++;
             }
             Debug.Assert(2 == dependentcount);
             d.ReplaceDependents(null,null);
         }
+        /// <summary>
+        /// Comprehensive test or ReplaceDependees. Creates dependency a,b and the does a replace b,d. Removes b from a, adds d,b dependency. 
+        /// Then, replaces b,d which should remove b from under d, and place it under c. Total of 3 keys, a,c,d with b under c. 1 dependency total.
+        /// </summary>
         [TestMethod]
-        //[ExpectedException(typeof(ArgumentNullException))]
         public void GraphTestMethod13a()
         {
             DependencyGraph d = new DependencyGraph();
@@ -193,13 +240,36 @@ namespace DependencyGraphTester
             string b = "b";
             int dependeecount = 0;
             d.AddDependency(a, b);
-            d.ReplaceDependees(a, new string[] { "d" });
+            d.ReplaceDependees(b, new string[] { "d" });
             d.ReplaceDependees(b, new string[] { "c" });
-            foreach(string dependee in d.GetDependees(b))
+            foreach(string dependee in d.GetDependees("b"))
             {
                 dependeecount++;
             }
             Debug.Assert(dependeecount == 1);
+        }/// <summary>
+        /// Test to ensure that hasdependees and hasdependents returns a copy, not a reference.
+        /// Credit to Ryan Steele, he helped me write this test.
+        /// </summary>
+        [TestMethod]
+        public void GraphDataMethodTest()
+        {
+            try
+            {
+                DependencyGraph d = new DependencyGraph();
+                d.AddDependency("1", "a");
+                d.AddDependency("2", "b");
+                ICollection<string> test = (ICollection<string>)d.GetDependents("a");
+                test.Add("d");
+
+                Debug.Assert((new HashSet<string> { "a", "2", "b" }.SetEquals(test)) == true);
+                Debug.Assert((new HashSet<string> { "a", "2" }.SetEquals(d.GetDependents("1")) == true));
+            }
+            catch(Exception fail)
+            {
+                if (!(fail is NotSupportedException || fail is InvalidCastException))
+                    Assert.Fail();
+            }
         }
     }
 }

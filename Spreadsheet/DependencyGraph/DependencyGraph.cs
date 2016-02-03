@@ -49,6 +49,9 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
+        /// <summary>
+        /// Dictionary that maps strings to HashSets of strings, called dgMatrix (dependency graph matrix). 
+        /// </summary>
         Dictionary<string,HashSet<string>> dgMatrix;
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
@@ -65,7 +68,7 @@ namespace Dependencies
             get
             {
                 int sum = 0;
-                foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)
+                foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)//Calculates number of dependencies by adding counts of each Hashset in the dictionary.
                 {
                     sum += i.Value.Count;
                 }
@@ -81,9 +84,9 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(dgMatrix.ContainsKey(s))
+            if(dgMatrix.ContainsKey(s))//Check that key s is in dictionary
             {
-                if (dgMatrix[s].Count > 0)
+                if (dgMatrix[s].Count > 0)//and that the Hashset is not empty
                 {
                     return true;
                 }
@@ -100,9 +103,9 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)
+            foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)//iterate through each KVP
             {
-                if(i.Value.Contains(s) && i.Key != null)
+                if(i.Value.Contains(s)== true)//if they value is found in a hashset, return true
                 {
                     return true;
                 }
@@ -118,9 +121,9 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(HasDependents(s) == true)
+            if(HasDependents(s) == true)//Ensure the key maps to a hashset
             {
-                foreach(string i in dgMatrix[s])
+                foreach(string i in dgMatrix[s])//navigate to and return each element in the key's hashset
                 {
                     yield return i;
                 }
@@ -136,11 +139,11 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(HasDependees(s) == true)
+            if(HasDependees(s) == true)//Check that there is such a key mapped to s
             {
-                foreach(KeyValuePair<string,HashSet<string>> i in dgMatrix)
+                foreach(KeyValuePair<string,HashSet<string>> i in dgMatrix)//iterate through KVPs
                 {
-                    if(i.Value.Contains(s) == true)
+                    if(i.Value.Contains(s) == true)//if a hashset contains s, return the key containing it
                     {
                         yield return i.Key;
                     }
@@ -165,13 +168,16 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            if(dgMatrix.ContainsKey(s) == true)
+            if (dgMatrix.ContainsKey(s) == true)//if the key already exists, just add on the new element to the hashset
             {
-                dgMatrix[s].Add(t);
+                if (!dgMatrix[s].Contains(t))//is the hashset doesn't already contain the dependent, add it
+                {
+                    dgMatrix[s].Add(t);
+                }
             }
-            else
+            else//otherwise, create a new key s and a hashset under it. Add element t to hashset
             {
-                dgMatrix.Add(s,new HashSet<string>());
+                dgMatrix.Add(s, new HashSet<string>());
                 dgMatrix[s].Add(t);
             }
         }
@@ -193,11 +199,11 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            if(dgMatrix.ContainsKey(s) == true)
+            if(dgMatrix.ContainsKey(s) == true)//Ensure key is in the dictionary
             {
-                if(dgMatrix[s].Contains(t) == true)
+                if(dgMatrix[s].Contains(t) == true)//Ensure key maps to t
                 {
-                    dgMatrix[s].Remove(t);
+                    dgMatrix[s].Remove(t);//Remove t from hashset at s
                 }
             }
         }
@@ -220,14 +226,14 @@ namespace Dependencies
                     throw new ArgumentNullException("newDependents cannot be null");
                 }
             }
-            if (dgMatrix.ContainsKey(s) == true)
+            if (dgMatrix.ContainsKey(s) == true)//check key is in dictionary
             {
-                if(HasDependents(s) == true)
+                if(HasDependents(s) == true)//if dependents are found under s
                 {
-                    dgMatrix.Clear();
+                    dgMatrix.Clear();//Clear the hashset
                 }
             }
-            foreach(string t in newDependents)
+            foreach(string t in newDependents)//Create new dependencies in form of s -> t
             {
                 AddDependency(s, t);
             }
@@ -250,13 +256,13 @@ namespace Dependencies
                     throw new ArgumentNullException("newDependees cannot be null");
                 }
             }
-            foreach(string i in GetDependees(t))
+            foreach(string r in GetDependees(t))//Clear all dependencies of under r of t
             {
-                RemoveDependency(i,t);
+                RemoveDependency(r,t);
             }
-            foreach(string j in newDependees)
+            foreach(string s in newDependees)//Recreate new dependency of t under s (basically, move t from under r to under s; reassigning the dependent to a new dependee)
             {
-                AddDependency(j, t);
+                AddDependency(s, t);
             }
         }
     }
