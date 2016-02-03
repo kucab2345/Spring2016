@@ -49,13 +49,13 @@ namespace Dependencies
     /// </summary>
     public class DependencyGraph
     {
-        Dictionary<string,List<string>> dgMatrix;
+        Dictionary<string,HashSet<string>> dgMatrix;
         /// <summary>
         /// Creates a DependencyGraph containing no dependencies.
         /// </summary>
         public DependencyGraph()
         {
-            dgMatrix = new Dictionary<string, List<string>>();
+            dgMatrix = new Dictionary<string, HashSet<String>>();
         }
         /// <summary>
         /// The number of dependencies in the DependencyGraph.
@@ -65,7 +65,7 @@ namespace Dependencies
             get
             {
                 int sum = 0;
-                foreach(KeyValuePair<string, List<string>> i in dgMatrix)
+                foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)
                 {
                     sum += i.Value.Count;
                 }
@@ -77,7 +77,7 @@ namespace Dependencies
         /// </summary>
         public bool HasDependents(string s)
         {
-            List<string> test;
+            HashSet<string> test;
             if(s == null)
             {
                 throw new ArgumentNullException("s cannot be null");
@@ -101,7 +101,7 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            foreach(KeyValuePair<string, List<string>> i in dgMatrix)
+            foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)
             {
                 if(i.Value.Contains(s))
                 {
@@ -139,7 +139,7 @@ namespace Dependencies
             }
             if(HasDependees(s))
             {
-                foreach(KeyValuePair<string,List<string>> i in dgMatrix)
+                foreach(KeyValuePair<string,HashSet<string>> i in dgMatrix)
                 {
                     if(i.Value.Contains(s) == true)
                     {
@@ -175,7 +175,7 @@ namespace Dependencies
             }
             else
             {
-                dgMatrix.Add(s,new List<string>());
+                dgMatrix.Add(s,new HashSet<string>());
                 dgMatrix[s].Add(t);
             }
         }
