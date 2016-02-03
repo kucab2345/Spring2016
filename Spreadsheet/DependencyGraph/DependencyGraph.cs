@@ -67,10 +67,7 @@ namespace Dependencies
                 int sum = 0;
                 foreach(KeyValuePair<string, List<string>> i in dgMatrix)
                 {
-                    foreach(string j in i.Value)
-                    {
-                        sum++;
-                    }
+                    sum += i.Value.Count;
                 }
                 return sum;
             }
@@ -200,6 +197,13 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
+            if(dgMatrix.ContainsKey(s) == true)
+            {
+                if(dgMatrix[s].Contains(t) == true)
+                {
+                    dgMatrix[s].Remove(t);
+                }
+            }
         }
 
         /// <summary>
@@ -220,8 +224,18 @@ namespace Dependencies
                     throw new ArgumentNullException("newDependents cannot be null");
                 }
             }
+            if (dgMatrix.ContainsKey(s) == true)
+            {
+                if(HasDependents(s) == true)
+                {
+                    dgMatrix.Clear();
+                }
+            }
+            foreach(string t in newDependents)
+            {
+                AddDependency(s, t);
+            }
         }
-
         /// <summary>
         /// Removes all existing dependencies of the form (r,t).  Then, for each 
         /// s in newDependees, adds the dependency (s,t).
@@ -239,6 +253,14 @@ namespace Dependencies
                 {
                     throw new ArgumentNullException("newDependees cannot be null");
                 }
+            }
+            foreach(string i in GetDependees(t))
+            {
+                RemoveDependency(i,t);
+            }
+            foreach(string j in newDependees)
+            {
+                AddDependency(j, t);
             }
         }
     }
