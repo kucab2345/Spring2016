@@ -173,7 +173,6 @@ namespace DependencyGraphTester
             }
             for (int i = 0; i < bigTest.Length; i++)
             {
-                int child = 0;
                 foreach (string j in d.GetDependents(null))
                 {
                 }
@@ -247,7 +246,49 @@ namespace DependencyGraphTester
                 dependeecount++;
             }
             Debug.Assert(dependeecount == 1);
-        }/// <summary>
+        }
+        /// <summary>
+        /// Following Tests are just testing null arguments.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphNullTestMethod14()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.HasDependees(null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphNullTestMethod15()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.HasDependents(null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphNullTestMethod16()
+        {
+            DependencyGraph d = new DependencyGraph();
+            foreach(string a in d.GetDependees(null))
+            {
+                
+            }
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphNullTestMethod17()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.RemoveDependency(null, null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphNullTestMethod18()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.ReplaceDependees(null, null);
+        }
+        /// <summary>
         /// Test to ensure that hasdependees and hasdependents returns a copy, not a reference.
         /// Credit to Ryan Steele, he helped me write this test.
         /// </summary>
@@ -257,15 +298,15 @@ namespace DependencyGraphTester
             try
             {
                 DependencyGraph d = new DependencyGraph();
-                d.AddDependency("1", "a");
-                d.AddDependency("2", "b");
+                d.AddDependency("a", "b");
+                d.AddDependency("a", "c");
                 ICollection<string> test = (ICollection<string>)d.GetDependents("a");
                 test.Add("d");
 
-                Debug.Assert((new HashSet<string> { "a", "2", "b" }.SetEquals(test)) == true);
-                Debug.Assert((new HashSet<string> { "a", "2" }.SetEquals(d.GetDependents("1")) == true));
+                Debug.Assert((new HashSet<string> { "b", "c", "d" }.SetEquals(test)) == true);
+                Debug.Assert((new HashSet<string> { "b", "c" }.SetEquals(d.GetDependents("a")) == true));
             }
-            catch(Exception fail)
+            catch (Exception fail)
             {
                 if (!(fail is NotSupportedException || fail is InvalidCastException))
                     Assert.Fail();
