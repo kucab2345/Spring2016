@@ -14,6 +14,15 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
         }
         [TestMethod]
+        public void GraphTestMethod1a()
+        {
+            DependencyGraph d = new DependencyGraph();
+            foreach (string y in d.GetDependents("a"))
+            {
+                Debug.WriteLine(y);
+            }
+        }
+        [TestMethod]
         public void GraphTestMethod2()
         {
             DependencyGraph d = new DependencyGraph();
@@ -48,6 +57,25 @@ namespace DependencyGraphTester
             }
         }
         [TestMethod]
+        public void GraphTestMethod5a()
+        {
+            Random rand = new Random();
+            DependencyGraph d = new DependencyGraph();
+            string[] bigTest = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+            for (int i = 0; i < bigTest.Length; i++)
+            {
+                int r = rand.Next(bigTest.Length);
+                d.AddDependency(bigTest[i], bigTest[rand.Next(bigTest.Length)]);
+            }
+            for(int i = 0; i < bigTest.Length; i++)
+            {
+                foreach(string dependee in d.GetDependees(bigTest[i]))
+                {
+                    Debug.Assert(dependee == bigTest[i]);
+                }
+            }
+        }
+        [TestMethod]
         public void GraphTestMethod6()
         {
             DependencyGraph d = new DependencyGraph();
@@ -64,6 +92,51 @@ namespace DependencyGraphTester
             {
                 int child = 0;
                 foreach (string j in d.GetDependents(bigTest[i]))
+                {
+                    Debug.Assert(j == children[child]);
+                    child++;
+                }
+            }
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod7()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.AddDependency("s", null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod8()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.AddDependency(null, "t");
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod9()
+        {
+            DependencyGraph d = new DependencyGraph();
+            d.AddDependency(null, null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod10()
+        {
+            DependencyGraph d = new DependencyGraph();
+            string[] bigTest = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+            string[] children = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+            for (int i = 0; i < bigTest.Length; i++)
+            {
+                for (int j = 0; j < bigTest.Length; j++)
+                {
+                    d.AddDependency(bigTest[i], bigTest[j]);
+                }
+            }
+            for (int i = 0; i < bigTest.Length; i++)
+            {
+                int child = 0;
+                foreach (string j in d.GetDependents(null))
                 {
                     Debug.Assert(j == children[child]);
                     child++;
