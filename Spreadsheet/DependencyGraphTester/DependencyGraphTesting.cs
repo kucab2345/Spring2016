@@ -36,6 +36,8 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.AddDependency(a,b);
             Debug.Assert(d.Size == 1);
+            d.RemoveDependency(a, b);
+            Debug.Assert(d.Size == 0);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -64,8 +66,8 @@ namespace DependencyGraphTester
             string[] bigTest = new string[10] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
             for (int i = 0; i < bigTest.Length; i++)
             {
-                int r = rand.Next(bigTest.Length);
-                d.AddDependency(bigTest[i], bigTest[rand.Next(bigTest.Length)]);
+                int r = rand.Next(0,10);
+                d.AddDependency(bigTest[i], bigTest[i]);
             }
             for(int i = 0; i < bigTest.Length; i++)
             {

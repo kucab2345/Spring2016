@@ -102,7 +102,7 @@ namespace Dependencies
             }
             foreach(KeyValuePair<string, HashSet<string>> i in dgMatrix)
             {
-                if(i.Value.Contains(s))
+                if(i.Value.Contains(s) && i.Key != null)
                 {
                     return true;
                 }
@@ -136,7 +136,7 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(HasDependees(s))
+            if(HasDependees(s) == true)
             {
                 foreach(KeyValuePair<string,HashSet<string>> i in dgMatrix)
                 {
