@@ -248,7 +248,7 @@ namespace DependencyGraphTester
             Debug.Assert(dependeecount == 1);
         }
         /// <summary>
-        /// Following Tests are just testing null arguments.
+        /// Following Tests are just testing null argument to HasDependees.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -257,6 +257,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.HasDependees(null);
         }
+        /// <summary>
+        /// Following Tests are just testing null arguments to HasDependents.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphNullTestMethod15()
@@ -264,6 +267,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.HasDependents(null);
         }
+        /// <summary>
+        /// Following Tests are just testing null arguments to GetDependees.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphNullTestMethod16()
@@ -274,6 +280,9 @@ namespace DependencyGraphTester
                 
             }
         }
+        /// <summary>
+        /// Following Tests are just testing null arguments to RemoveDependency.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphNullTestMethod17()
@@ -281,6 +290,9 @@ namespace DependencyGraphTester
             DependencyGraph d = new DependencyGraph();
             d.RemoveDependency(null, null);
         }
+        /// <summary>
+        /// Following Tests are just testing null arguments to ReplaceDependees
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GraphNullTestMethod18()
