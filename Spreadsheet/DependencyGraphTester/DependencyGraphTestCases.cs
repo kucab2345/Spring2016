@@ -4,7 +4,7 @@ using Dependencies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 
-namespace DependencyGraphTester
+namespace DependencyGraphTestCases
 {
     /// <summary>
     /// Series of tests for the DependencyGraph class. Tests range from basic constructor tests
@@ -12,7 +12,7 @@ namespace DependencyGraphTester
     /// a series of tests that test null arguments and expect exceptions to be thrown.
     /// </summary>
     [TestClass]
-    public class DependencyGraphTesting
+    public class DependencyGraphTestCases
     {
         /// <summary>
         /// Basic constructor test
