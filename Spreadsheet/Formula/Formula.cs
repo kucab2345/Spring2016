@@ -126,6 +126,10 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Cannot have operator immediately before ) character");
                 }
+                if((char.IsLetter(rawFormula[i][0]) && char.IsLetterOrDigit(rawFormula[i+1][0])) || (char.IsLetter(rawFormula[i][0]) && double.TryParse(rawFormula[i+1],out test)))
+                {
+                    throw new FormulaFormatException("Missing operator");
+                }
             }
         }
         /// <summary>

@@ -83,13 +83,12 @@ namespace Formulas
         {
             Formula f = new Formula("2 5");
         }
-        /* Come back to this!!!
         [TestMethod()]
         [ExpectedException(typeof(FormulaFormatException))]
         public void Test12()
         {
             Formula f = new Formula("x5 y");
-        }*/
+        }
         [TestMethod()]
         [ExpectedException(typeof(FormulaFormatException))]
         public void Test13()

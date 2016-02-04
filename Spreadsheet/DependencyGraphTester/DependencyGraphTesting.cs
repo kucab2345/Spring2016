@@ -6,6 +6,11 @@ using System.Diagnostics;
 
 namespace DependencyGraphTester
 {
+    /// <summary>
+    /// Series of tests for the DependencyGraph class. Tests range from basic constructor tests
+    /// to comprehensive collection tests that test multiple functions at once. There are also
+    /// a series of tests that test null arguments and expect exceptions to be thrown.
+    /// </summary>
     [TestClass]
     public class DependencyGraphTesting
     {
