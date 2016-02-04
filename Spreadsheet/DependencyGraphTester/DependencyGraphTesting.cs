@@ -140,10 +140,49 @@ namespace DependencyGraphTester
                 int child = 0;
                 foreach (string j in d.GetDependents(null))
                 {
-                    Debug.Assert(j == children[child]);
-                    child++;
                 }
             }
+        }
+        [TestMethod]
+        public void GraphTestMethod11()
+        {
+            DependencyGraph d = new DependencyGraph();
+            string a = "a";
+            string b = "b";
+            d.AddDependency(a, b);
+            d.ReplaceDependents(a, new string[]{"c"});
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod12()
+        {
+            DependencyGraph d = new DependencyGraph();
+            string a = "a";
+            string b = "b";
+            d.AddDependency(a, b);
+            d.ReplaceDependents(a, new string[] { null });
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod13()
+        {
+            int dependentcount = 0;
+            DependencyGraph d = new DependencyGraph();
+            string a = "a";
+            string b = "b";
+            d.AddDependency(a, b);
+            d.ReplaceDependents(a, new string[] { "c" });
+            d.ReplaceDependents(b, new string[] { "e" });
+            foreach(string bdependents in d.GetDependents(b))
+            {
+                dependentcount++;
+            }
+            foreach (string bdependents in d.GetDependents(b))
+            {
+                dependentcount++;
+            }
+            Debug.Assert(2 == dependentcount);
+            d.ReplaceDependents(null,null);
         }
     }
 }
