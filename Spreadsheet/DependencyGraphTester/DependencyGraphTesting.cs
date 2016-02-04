@@ -184,5 +184,22 @@ namespace DependencyGraphTester
             Debug.Assert(2 == dependentcount);
             d.ReplaceDependents(null,null);
         }
+        [TestMethod]
+        //[ExpectedException(typeof(ArgumentNullException))]
+        public void GraphTestMethod13a()
+        {
+            DependencyGraph d = new DependencyGraph();
+            string a = "a";
+            string b = "b";
+            int dependeecount = 0;
+            d.AddDependency(a, b);
+            d.ReplaceDependees(a, new string[] { "d" });
+            d.ReplaceDependees(b, new string[] { "c" });
+            foreach(string dependee in d.GetDependees(b))
+            {
+                dependeecount++;
+            }
+            Debug.Assert(dependeecount == 1);
+        }
     }
 }
