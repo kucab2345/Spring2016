@@ -170,10 +170,7 @@ namespace Dependencies
             }
             if (dgMatrix.ContainsKey(s) == true)//if the key already exists, just add on the new element to the hashset
             {
-                if (!dgMatrix[s].Contains(t))//is the hashset doesn't already contain the dependent, add it
-                {
-                    dgMatrix[s].Add(t);
-                }
+                dgMatrix[s].Add(t);
             }
             else//otherwise, create a new key s and a hashset under it. Add element t to hashset
             {
@@ -199,12 +196,10 @@ namespace Dependencies
                     throw new ArgumentNullException("t cannot be null");
                 }
             }
-            if(dgMatrix.ContainsKey(s) == true)//Ensure key is in the dictionary
+            //if HasDependents == true then inner if
+            if(HasDependents(s))
             {
-                if(dgMatrix[s].Contains(t) == true)//Ensure key maps to t
-                {
-                    dgMatrix[s].Remove(t);//Remove t from hashset at s
-                }
+                dgMatrix[s].Remove(t);
             }
         }
 
@@ -226,12 +221,10 @@ namespace Dependencies
                     throw new ArgumentNullException("newDependents cannot be null");
                 }
             }
-            if (dgMatrix.ContainsKey(s) == true)//check key is in dictionary
+            if (HasDependents(s) == true)//check key is in dictionary
             {
-                if(HasDependents(s) == true)//if dependents are found under s
-                {
-                    dgMatrix.Clear();//Clear the hashset
-                }
+                //FAILED TO INCLUDE INDEX S WHEN CLEARING
+                dgMatrix[s].Clear();//Clear the hashset
             }
             foreach(string t in newDependents)//Create new dependencies in form of s -> t
             {
