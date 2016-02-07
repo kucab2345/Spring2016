@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyGraph", "Dependen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS2GradingTests", "PS2GradingTests\PS2GradingTests.csproj", "{5F69302B-DF29-42D2-BFE2-4A168FF4F588}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyGraphTestCases", "DependencyGraphTester\DependencyGraphTestCases.csproj", "{186322AA-2A06-42AF-B33D-CDD80886BFFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS3GradingTests", "PS3GradingTests\PS3GradingTests.csproj", "{0BB0FEFF-986E-496F-9939-8A52E52E083F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{5F69302B-DF29-42D2-BFE2-4A168FF4F588}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F69302B-DF29-42D2-BFE2-4A168FF4F588}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F69302B-DF29-42D2-BFE2-4A168FF4F588}.Release|Any CPU.Build.0 = Release|Any CPU
-		{186322AA-2A06-42AF-B33D-CDD80886BFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{186322AA-2A06-42AF-B33D-CDD80886BFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{186322AA-2A06-42AF-B33D-CDD80886BFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{186322AA-2A06-42AF-B33D-CDD80886BFFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB0FEFF-986E-496F-9939-8A52E52E083F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB0FEFF-986E-496F-9939-8A52E52E083F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB0FEFF-986E-496F-9939-8A52E52E083F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB0FEFF-986E-496F-9939-8A52E52E083F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
