@@ -161,5 +161,22 @@ namespace FormulaTestCases
                 default: throw new UndefinedVariableException(v);
             }
         }
+        /// <summary>
+        /// Normalizer4 takes all variables and ensures they are upper case. If input is 
+        /// not a variable, it simply returns back the input unchanged
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public string Normalizer4(String v)
+        {
+            if (char.IsLower(v[0]) == true)
+            {
+                return char.ToString(char.ToUpper(v[0]));
+            }
+            else
+            {
+                return v;
+            } 
+        }
     }
 }

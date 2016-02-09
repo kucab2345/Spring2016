@@ -44,11 +44,21 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula)
+        public Formula(String formula): this(formula, normalizer => " ", validator => true){
+        }
+        /// <summary>
+        /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
+        /// form, and then runs that through a validator to check it's formatting validity. 
+        /// </summary>
+        /// <param name="formula"></param>
+        /// <param name="normalizer"></param>
+        /// <param name="validator"></param>
+        public Formula(String formula, Normalizer normalizer, Validator validator)
         {
             rawFormula = new List<string>();
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
+            
 
             if (formula.Length < 1)//ensures formula not empty
             {
@@ -58,37 +68,44 @@ namespace Formulas
             {
                 throw new FormulaFormatException("Starting character in formula invalid");
             }
-            if (char.IsLetterOrDigit(formula[formula.Length-1]) == false && formula[formula.Length - 1] != ')')//checks last character validity
+            if (char.IsLetterOrDigit(formula[formula.Length - 1]) == false && formula[formula.Length - 1] != ')')//checks last character validity
             {
                 throw new FormulaFormatException("Ending character in formula invalid");
             }
             foreach (char i in formula)//Counts number of parenthesis and checks for negative numbers
             {
                 double test;
-                if(i == '(')
+                if (i == '(')
                 {
                     openParenthesis++;
                 }
-                if(i == ')')
+                if (i == ')')
                 {
                     closeParenthesis++;
                 }
-                if(closeParenthesis > openParenthesis)
+                if (closeParenthesis > openParenthesis)
                 {
                     throw new FormulaFormatException("Number of closing parenthesis exceeds number of opening parenthesis thus far (Perhaps you have )...( ? )");
                 }
                 double.TryParse(i.ToString(), out test);
-                if(test < 0)
+                if (test < 0)
                 {
                     throw new FormulaFormatException("Cannot have negative numbers");
                 }
             }
-            if(openParenthesis != closeParenthesis)//Validates number of parenthesis tokens
+            if (openParenthesis != closeParenthesis)//Validates number of parenthesis tokens
             {
                 throw new FormulaFormatException("Number of '(' and ')' not equal");
             }
             foreach (string b in GetTokens(formula))//Adds tokens into raw formula after the prior checks
             {
+                /*
+                string temp_string = "";
+                List<string> temp = new List<string>();
+                temp_string = normalizer(b);
+                temp.Add(temp_string);
+                rawFormula.Add(temp[0]);
+                */
                 rawFormula.Add(b);
             }
             for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operators or numbers.
@@ -114,11 +131,11 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Cannot have number immediately after ) character.");
                 }
-                if (double.TryParse(rawFormula[i],out test)==true && rawFormula[i+1] == "(")
+                if (double.TryParse(rawFormula[i], out test) == true && rawFormula[i + 1] == "(")
                 {
                     throw new FormulaFormatException("Cannot have number directly infront of ( character.");
                 }
-                if (charformula[i] == '(' && (charformula[i+1] == '+' || charformula[i + 1] == '-' || charformula[i + 1] == '*' || charformula[i + 1] == '/'))
+                if (charformula[i] == '(' && (charformula[i + 1] == '+' || charformula[i + 1] == '-' || charformula[i + 1] == '*' || charformula[i + 1] == '/'))
                 {
                     throw new FormulaFormatException("Cannot have operator immediately after ( character");
                 }
@@ -126,22 +143,11 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Cannot have operator immediately before ) character");
                 }
-                if((char.IsLetter(rawFormula[i][0]) && char.IsLetterOrDigit(rawFormula[i+1][0])) || (char.IsLetter(rawFormula[i][0]) && double.TryParse(rawFormula[i+1],out test)))
+                if ((char.IsLetter(rawFormula[i][0]) && char.IsLetterOrDigit(rawFormula[i + 1][0])) || (char.IsLetter(rawFormula[i][0]) && double.TryParse(rawFormula[i + 1], out test)))
                 {
                     throw new FormulaFormatException("Missing operator");
                 }
             }
-        }
-        /// <summary>
-        /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
-        /// form, and then runs that through a validator to check it's formatting validity. 
-        /// </summary>
-        /// <param name="formula"></param>
-        /// <param name="normalizer"></param>
-        /// <param name="validator"></param>
-        public Formula(String formula, Normalizer normalizer, Validator validator)
-        {
-            rawFormula = new List<string>();
         }
         /// <summary>
         /// Evaluates this Formula, using the Lookup delegate to determine the values of variables.  (The
