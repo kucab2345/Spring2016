@@ -44,7 +44,7 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula): this(formula, normalizer => " ", validator => true){
+        public Formula(String formula): this(formula, normalizer => "", validator => true){
         }
         /// <summary>
         /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
@@ -58,8 +58,17 @@ namespace Formulas
             rawFormula = new List<string>();
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
-            
 
+            foreach (string b in GetTokens(formula))//Adds tokens into raw formula after the prior checks
+            {
+                string temp = "";
+                temp = normalizer(b);
+                if (validator(temp) == false)
+                {
+                    throw new FormulaFormatException("Input invalid");
+                }
+                rawFormula.Add(b);
+            }
             if (formula.Length < 1)//ensures formula not empty
             {
                 throw new Exception("Formula length too short!");
@@ -96,17 +105,6 @@ namespace Formulas
             if (openParenthesis != closeParenthesis)//Validates number of parenthesis tokens
             {
                 throw new FormulaFormatException("Number of '(' and ')' not equal");
-            }
-            foreach (string b in GetTokens(formula))//Adds tokens into raw formula after the prior checks
-            {
-                /*
-                string temp_string = "";
-                List<string> temp = new List<string>();
-                temp_string = normalizer(b);
-                temp.Add(temp_string);
-                rawFormula.Add(temp[0]);
-                */
-                rawFormula.Add(b);
             }
             for (int i = 0; i < rawFormula.Count() - 1; i++)//Checks for back-to-back operators or numbers.
             {

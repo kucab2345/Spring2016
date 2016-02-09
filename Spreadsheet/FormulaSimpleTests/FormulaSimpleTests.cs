@@ -134,7 +134,7 @@ namespace FormulaTestCases
         [ExpectedException(typeof(FormulaFormatException))]
         public void Evaluate8()
         {
-            Formula f = new Formula("(1+2))");
+            Formula f = new Formula("(1+2))",Normalizer4, validator => true);
         }
         /// <summary>
         /// Formula here has inconsistent number of opening and closing parenthesis. Throws FormulaFormatException
@@ -169,7 +169,7 @@ namespace FormulaTestCases
         /// <returns></returns>
         public string Normalizer4(String v)
         {
-            if (char.IsLower(v[0]) == true)
+            if(char.IsLower(v[0]) == true)
             {
                 return char.ToString(char.ToUpper(v[0]));
             }
