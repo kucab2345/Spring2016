@@ -71,7 +71,7 @@ namespace FormulaTestCases
         [TestMethod]
         public void Evaluate2()
         {
-            Formula f = new Formula("x5");
+            Formula f = new Formula("x5", Normalizer4, validator => true);
             Assert.AreEqual(f.Evaluate(v => 22.5), 22.5, 1e-6);
         }
 
@@ -85,7 +85,7 @@ namespace FormulaTestCases
         [ExpectedException(typeof(FormulaEvaluationException))]
         public void Evaluate3()
         {
-            Formula f = new Formula("x + y");
+            Formula f = new Formula("x + y", Normalizer4, validator => true);
             f.Evaluate(v => { throw new UndefinedVariableException(v); });
         }
 
@@ -96,7 +96,7 @@ namespace FormulaTestCases
         [TestMethod]
         public void Evaluate4()
         {
-            Formula f = new Formula("x + y");
+            Formula f = new Formula("x + y", Normalizer4, validator => true);
             Assert.AreEqual(f.Evaluate(Lookup4), 10.0, 1e-6);
         }
 
@@ -110,13 +110,24 @@ namespace FormulaTestCases
             Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
         }
         /// <summary>
+        /// Forcing a normalizer on the variables, forcing them to be uppercase. Tested against
+        /// a lowercase lookup key, expects a Missing Definition error
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaEvaluationException))]
+        public void Evaluate5a()
+        {
+            Formula f = new Formula("(x + y) * (z / x) * 1.0", Normalizer4, validator => true);
+            Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
+        }
+        /// <summary>
         /// This test has a missing operator between the second set of parenthesis and 3. Should return as a FormulaFormatException.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
         public void Evaluate6()
         {
-            Formula f = new Formula("(x + y) * (z / x) 3 * 1.0");
+            Formula f = new Formula("(x + y) * (z / x) 3 * 1.0", Normalizer4, validator => true);
         }
         /// <summary>
         /// Here we pass a 3 in front of the second set of parenthesis which would require an operator in between. Expects a FormulaFormatException.
@@ -125,7 +136,7 @@ namespace FormulaTestCases
         [ExpectedException(typeof(FormulaFormatException))]
         public void Evaluate7()
         {
-            Formula f = new Formula("(x + y) * 3 (z / x) * 1.0");
+            Formula f = new Formula("(x + y) * 3 (z / x) * 1.0", Normalizer4, validator => true);
         }
         /// <summary>
         /// Here we pass a nested set of parenthesis which should be illegal and throw a FormulaFormatException.
@@ -169,14 +180,7 @@ namespace FormulaTestCases
         /// <returns></returns>
         public string Normalizer4(String v)
         {
-            if(char.IsLower(v[0]) == true)
-            {
-                return char.ToString(char.ToUpper(v[0]));
-            }
-            else
-            {
-                return v;
-            } 
+            return v.ToUpper();
         }
     }
 }
