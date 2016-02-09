@@ -61,6 +61,14 @@ namespace Dependencies
             dgMatrix = new Dictionary<string, HashSet<String>>();
         }
         /// <summary>
+        /// Copy constructor for dependency graph. Takes in d1 dictionary, returns d2 dictionary copy of d1
+        /// </summary>
+        /// <param name="d1"></param>
+        public DependencyGraph(DependencyGraph d1)
+        {
+            Dictionary<string, HashSet<string>> d2 = new Dictionary<string, HashSet<String>>(d1.dgMatrix);
+        }
+        /// <summary>
         /// The number of dependencies in the DependencyGraph.
         /// </summary>
         public int Size
