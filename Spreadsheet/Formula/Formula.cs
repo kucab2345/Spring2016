@@ -133,6 +133,17 @@ namespace Formulas
             }
         }
         /// <summary>
+        /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
+        /// form, and then runs that through a validator to check it's formatting validity. 
+        /// </summary>
+        /// <param name="formula"></param>
+        /// <param name="normalizer"></param>
+        /// <param name="validator"></param>
+        public Formula(String formula, Normalizer normalizer, Validator validator)
+        {
+            rawFormula = new List<string>();
+        }
+        /// <summary>
         /// Evaluates this Formula, using the Lookup delegate to determine the values of variables.  (The
         /// delegate takes a variable name as a parameter and returns its value (if it has one) or throws
         /// an UndefinedVariableException (otherwise).  Uses the standard precedence rules when doing the evaluation.
@@ -355,7 +366,8 @@ namespace Formulas
     /// don't is up to the implementation of the method.
     /// </summary>
     public delegate double Lookup(string s);
-
+    public delegate string Normalizer(string s);
+    public delegate bool Validator(string s);
     /// <summary>
     /// Used to report that a Lookup delegate is unable to determine the value
     /// of a variable.
