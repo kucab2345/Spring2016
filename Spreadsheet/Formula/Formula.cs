@@ -18,14 +18,13 @@ namespace Formulas
     /// the four binary operator symbols +, -, *, and /.  (The unary operators + and -
     /// are not allowed.)
     /// </summary>
-    public class Formula
+    public struct Formula
     {
         /// <summary>
         /// rawFormula : A list that contains the raw tokens from the formula as strings. Is an instance variable in the
         /// Formula class, accessible for all class methods.
         /// </summary>
-        private List<string> rawFormula = new List<string>();
-        /// <summary>
+        private List<string> rawFormula;
         /// Creates a Formula from a string that consists of a standard infix expression composed
         /// from non-negative floating-point numbers (using C#-like syntax for double/int literals), 
         /// variable symbols (a letter followed by zero or more letters and/or digits), left and right
@@ -47,6 +46,7 @@ namespace Formulas
         /// </summary>
         public Formula(String formula)
         {
+            rawFormula = new List<string>();
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
 
