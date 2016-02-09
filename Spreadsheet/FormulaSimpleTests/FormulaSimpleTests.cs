@@ -96,7 +96,7 @@ namespace FormulaTestCases
         [TestMethod]
         public void Evaluate4()
         {
-            Formula f = new Formula("x + y", Normalizer4, validator => true);
+            Formula f = new Formula("x + y");
             Assert.AreEqual(f.Evaluate(Lookup4), 10.0, 1e-6);
         }
 
@@ -155,6 +155,15 @@ namespace FormulaTestCases
         public void Evaluate9()
         {
             Formula f = new Formula("1+(1+(1+2)");
+        }
+        /// <summary>
+        /// Testing the ToString method on the formula class
+        /// </summary>
+        [TestMethod]
+        public void Evaluate9a()
+        {
+            Formula f = new Formula("1+3+4", Normalizer4, validator => true);
+            f.ToString();
         }
         /// <summary>
         /// A Lookup method that maps x to 4.0, y to 6.0, and z to 8.0.

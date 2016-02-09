@@ -44,7 +44,7 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula): this(formula, normalizer => "", validator => true){
+        public Formula(String formula): this(formula, normalizer => " ", validator => true){
         }
         /// <summary>
         /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
@@ -149,6 +149,23 @@ namespace Formulas
                     throw new FormulaFormatException("Missing operator");
                 }
             }
+        }
+        /// <summary>
+        /// Runs through RawFormula after it has been normalized, adds any character that is a letter
+        /// to the variableSet and returns it as an ISet HashSet
+        /// </summary>
+        /// <returns></returns>
+        public ISet<string> GetVariables()
+        {
+            ISet<string> variableSet = new HashSet<string>();
+            foreach(string i in rawFormula)
+            { 
+                if(char.IsLetter(i[0]) == true)
+                {
+                    variableSet.Add(i);
+                }
+            }
+            return variableSet;
         }
         /// <summary>
         /// Evaluates this Formula, using the Lookup delegate to determine the values of variables.  (The
@@ -363,6 +380,19 @@ namespace Formulas
                 }
             }
         }
+        /// <summary>
+        /// Returns a concatenated string of all the individual tokens from the rawFormula.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            string daString = "";
+            for(int i = 0; i < rawFormula.Count(); i++)
+            {
+                daString = daString + " " + rawFormula[i];
+            }
+            return daString;
+        }
     }
 
     /// <summary>
@@ -417,4 +447,5 @@ namespace Formulas
         {
         }
     }
+
 }
