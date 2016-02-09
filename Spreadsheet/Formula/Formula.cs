@@ -65,12 +65,9 @@ namespace Formulas
                 temp = normalizer(b);
                 if (validator(temp) == false)
                 {
-                    throw new FormulaFormatException("Validator failed");
+                    throw new FormulaFormatException("Input invalid");
                 }
-                else
-                {
-                    rawFormula.Add(temp);
-                }
+                rawFormula.Add(b);
             }
             if (formula.Length < 1)//ensures formula not empty
             {
