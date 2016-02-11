@@ -44,7 +44,7 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula): this(formula, normalizer => "", validator => true){
+        public Formula(String formula) : this(formula, s => s, validator => true){
         }
         /// <summary>
         /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
@@ -67,7 +67,7 @@ namespace Formulas
                 {
                     throw new FormulaFormatException("Validation Failed");
                 }
-                rawFormula.Add(b);
+                rawFormula.Add(temp);
             }
             if (formula.Length < 1)//ensures formula not empty
             {
@@ -146,6 +146,10 @@ namespace Formulas
                     throw new FormulaFormatException("Missing operator");
                 }
             }
+        }
+        public string normalizerNothing(String v)
+        {
+            return v.ToUpper();
         }
         /// <summary>
         /// Runs through RawFormula after it has been normalized, adds any character that is a letter

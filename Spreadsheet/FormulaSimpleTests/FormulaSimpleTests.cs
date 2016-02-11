@@ -192,14 +192,7 @@ namespace FormulaTestCases
         /// <returns></returns>
         public string Normalizer4(String v)
         {
-            if(char.IsLower(v[0]) == true)
-            {
-                return char.ToString(char.ToUpper(v[0]));
-            }
-            else
-            {
-                return v;
-            } 
+            return v.ToUpper();
         }
     }
 }
