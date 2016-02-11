@@ -1,5 +1,7 @@
 ﻿// Skeleton implementation written by Joe Zachary for CS 3500, January 2015.
 // Revised for CS 3500 by Joe Zachary, January 29, 2016
+// Method and Class implementations by Henry Kucab
+// Last Updated 2/11/2016
 
 using System;
 using System.Collections.Generic;
@@ -50,7 +52,11 @@ namespace Dependencies
     public class DependencyGraph
     {
         /// <summary>
-        /// Dictionary that maps strings to HashSets of strings, called dependentGraph (dependency graph matrix). 
+        /// 2 Dictionarys, dependentGraph and dependeeGraph. Each maps strings to hashsets, with the 
+        /// hashsets holding the dependents and dependees respectively, under the opposite as a string. 
+        /// DependentGraph maps string dependees to Hashsets of their string dependents.
+        /// DependeeGraph maps string dependents to Hashsets of their string dependees.
+        /// These together form the representation of the DependencyGraph Class
         /// </summary>
         Dictionary<string,HashSet<string>> dependentGraph;
         Dictionary<string, HashSet<string>> dependeeGraph;
@@ -63,7 +69,7 @@ namespace Dependencies
             dependeeGraph = new Dictionary<string, HashSet<String>>();
         }
         /// <summary>
-        /// Copy constructor for dependency graph. Takes in d1 dictionary, returns d2 dictionary copy of d1
+        /// Copy constructor for dependency graph. Takes in d1 dictionary, returns d2 as an exact copy of d1. 
         /// </summary>
         /// <param name="d1"></param>
         public DependencyGraph(DependencyGraph d1)
