@@ -111,6 +111,15 @@ namespace FormulaTestCases
             Assert.AreEqual(f.Evaluate(Lookup4), 20.0, 1e-6);
         }
         /// <summary>
+        /// Tests Parameterless Constructor 
+        /// </summary>
+        [TestMethod]
+        public void Evaluate5a()
+        {
+            Formula f = new Formula();
+            Assert.AreEqual(f.Evaluate(Lookup4),0);
+        }
+        /// <summary>
         /// This test has a missing operator between the second set of parenthesis and 3. Should return as a FormulaFormatException.
         /// </summary>
         [TestMethod]

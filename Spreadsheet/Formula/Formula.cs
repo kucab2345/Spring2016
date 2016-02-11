@@ -154,8 +154,9 @@ namespace Formulas
         /// <returns></returns>
         public ISet<string> GetVariables()
         {
-            if(rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
+            if(rawFormula == null)//Add zero into rawFormula if no parameter was provided
             {
+                rawFormula = new List<string>();
                 rawFormula.Add("0");
             }
             ISet<string> variableSet = new HashSet<string>();
@@ -182,8 +183,9 @@ namespace Formulas
             Stack<double> valueStack = new Stack<double>();
             Stack<string> operatorStack = new Stack<string>();
             double test;
-            if (rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
+            if (rawFormula == null)//Add zero into rawFormula if no parameter was provided
             {
+                rawFormula = new List<string>();
                 rawFormula.Add("0");
             }
             foreach (string i in rawFormula)
@@ -363,10 +365,6 @@ namespace Formulas
         /// </summary>
         private static IEnumerable<string> GetTokens(String formula)
         {
-            if (formula.Length == 0)//Add zero into rawFormula if no parameter was provided
-            {
-                formula = "0";
-            }
             // Patterns for individual tokens
             String lpPattern = @"\(";
             String rpPattern = @"\)";
@@ -395,8 +393,9 @@ namespace Formulas
         public override string ToString()
         {
             string daString = "";
-            if (rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
+            if (rawFormula == null)//Add zero into rawFormula if no parameter was provided
             {
+                rawFormula = new List<string>();
                 rawFormula.Add("0");
             }
             for (int i = 0; i < rawFormula.Count(); i++)
