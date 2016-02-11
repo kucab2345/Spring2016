@@ -406,7 +406,7 @@ namespace Formulas
                 }
                 else//Append a space and then next token
                 {
-                    daString = daString + " " + rawFormula[i];
+                    daString = daString + rawFormula[i];
                 }
             }
             return daString;

@@ -176,7 +176,7 @@ namespace FormulaTestCases
             string test = "";
             Formula f = new Formula("1+3+4", Normalizer4, validator => true);
             test = f.ToString();
-            Debug.Assert("1 + 3 + 4" == test);
+            Debug.Assert("1+3+4" == test);
         }
         /// <summary>
         /// Check zero argument constructor and the ToString function. 
