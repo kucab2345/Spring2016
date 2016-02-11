@@ -44,7 +44,7 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula) : this(formula, s => s, validator => true){
+        public Formula(String formula) : this(formula, a => a, validator => true){
         }
         /// <summary>
         /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
@@ -147,10 +147,6 @@ namespace Formulas
                 }
             }
         }
-        public string normalizerNothing(String v)
-        {
-            return v.ToUpper();
-        }
         /// <summary>
         /// Runs through RawFormula after it has been normalized, adds any character that is a letter
         /// to the variableSet and returns it as an ISet HashSet
@@ -158,6 +154,10 @@ namespace Formulas
         /// <returns></returns>
         public ISet<string> GetVariables()
         {
+            if(rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
+            {
+                rawFormula.Add("0");
+            }
             ISet<string> variableSet = new HashSet<string>();
             foreach(string i in rawFormula)
             { 
@@ -182,7 +182,10 @@ namespace Formulas
             Stack<double> valueStack = new Stack<double>();
             Stack<string> operatorStack = new Stack<string>();
             double test;
-
+            if (rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
+            {
+                rawFormula.Add("0");
+            }
             foreach (string i in rawFormula)
             {
                 if (double.TryParse(i, out test) == true)//If i is a DOUBLE, pop top operator and pop a values, apply operand to value and i, and push result to valuestack
@@ -360,6 +363,10 @@ namespace Formulas
         /// </summary>
         private static IEnumerable<string> GetTokens(String formula)
         {
+            if (formula.Length == 0)//Add zero into rawFormula if no parameter was provided
+            {
+                formula = "0";
+            }
             // Patterns for individual tokens
             String lpPattern = @"\(";
             String rpPattern = @"\)";
@@ -388,13 +395,17 @@ namespace Formulas
         public override string ToString()
         {
             string daString = "";
-            for(int i = 0; i < rawFormula.Count(); i++)
+            if (rawFormula.Count == 0)//Add zero into rawFormula if no parameter was provided
             {
-                if(daString.Length == 0)
+                rawFormula.Add("0");
+            }
+            for (int i = 0; i < rawFormula.Count(); i++)
+            {
+                if(daString.Length == 0)//append token w/o space on first
                 {
                     daString = rawFormula[i];
                 }
-                else
+                else//Append a space and then next token
                 {
                     daString = daString + " " + rawFormula[i];
                 }
