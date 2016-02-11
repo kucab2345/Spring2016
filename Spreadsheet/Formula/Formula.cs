@@ -44,7 +44,7 @@ namespace Formulas
         /// If the formula is syntacticaly invalid, throws a FormulaFormatException with an 
         /// explanatory Message.
         /// </summary>
-        public Formula(String formula): this(formula, normalizer => " ", validator => true){
+        public Formula(String formula): this(formula, normalizer => "", validator => true){
         }
         /// <summary>
         /// Formula constructor that takes in a string formula, passes it to a normalizer to get it in canoical
@@ -65,7 +65,7 @@ namespace Formulas
                 temp = normalizer(b);
                 if (validator(temp) == false)
                 {
-                    throw new FormulaFormatException("Input invalid");
+                    throw new FormulaFormatException("Validation Failed");
                 }
                 rawFormula.Add(b);
             }
@@ -386,7 +386,14 @@ namespace Formulas
             string daString = "";
             for(int i = 0; i < rawFormula.Count(); i++)
             {
-                daString = daString + " " + rawFormula[i];
+                if(daString.Length == 0)
+                {
+                    daString = rawFormula[i];
+                }
+                else
+                {
+                    daString = daString + " " + rawFormula[i];
+                }
             }
             return daString;
         }

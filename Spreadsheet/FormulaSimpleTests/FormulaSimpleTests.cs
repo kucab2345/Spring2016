@@ -6,6 +6,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Formulas;
+using System.Diagnostics;
 
 namespace FormulaTestCases
 {
@@ -137,6 +138,17 @@ namespace FormulaTestCases
             Formula f = new Formula("(1+2))",Normalizer4, validator => true);
         }
         /// <summary>
+        /// Tests Normalizer4 on the input, which should return a Missing Definition Error, since
+        /// it should compare capital letter variables to lower case equivalents
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FormulaEvaluationException))]
+        public void Evaluate8a()
+        {
+            Formula f = new Formula("x + y", Normalizer4, validator => true);
+            Assert.AreEqual(f.Evaluate(Lookup4), 10.0, 1e-6);
+        }
+        /// <summary>
         /// Formula here has inconsistent number of opening and closing parenthesis. Throws FormulaFormatException
         /// </summary>
         [TestMethod]
@@ -151,8 +163,10 @@ namespace FormulaTestCases
         [TestMethod]
         public void Evaluate9a()
         {
+            string test = "";
             Formula f = new Formula("1+3+4", Normalizer4, validator => true);
-            f.ToString();
+            test = f.ToString();
+            Debug.Assert("1 + 3 + 4" == test);
         }
         /// <summary>
         /// A Lookup method that maps x to 4.0, y to 6.0, and z to 8.0.
