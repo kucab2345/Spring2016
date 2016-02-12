@@ -104,6 +104,7 @@ namespace DependencyGraphTestCases
                 }
             }
         }
+
         /// <summary>
         /// Adds in dependencies in the pattern a,a   b,b   c,c etc and then asserts them as being correct. Asserts them w/ GetDependents
         /// </summary>
@@ -253,6 +254,27 @@ namespace DependencyGraphTestCases
             Debug.Assert(dependeecount == 1);
         }
         /// <summary>
+        /// Same as GraphTestMethod13 but with a copy constructor at the end, and an assertion 
+        /// checking the copy's validity
+        /// </summary>
+        public void GraphTestMethod13b()
+        {
+            DependencyGraph d = new DependencyGraph();
+            string a = "a";
+            string b = "b";
+            int dependeecount = 0;
+            d.AddDependency(a, b);
+            d.ReplaceDependees(b, new string[] { "d" });
+            d.ReplaceDependees(b, new string[] { "c" });
+            foreach (string dependee in d.GetDependees("b"))
+            {
+                dependeecount++;
+            }
+            Debug.Assert(dependeecount == 1);
+            DependencyGraph copy = new DependencyGraph(d);
+            Debug.Assert(copy == d);
+        }
+        /// <summary>
         /// Following Tests are just testing null argument to HasDependees.
         /// </summary>
         [TestMethod]
@@ -327,6 +349,91 @@ namespace DependencyGraphTestCases
             {
                 if (!(fail is NotSupportedException || fail is InvalidCastException))
                     Assert.Fail();
+            }
+        }
+        /// <summary>
+        ///Using lots of data with replacement AND COPY CONSTRUCTOR TEST
+        ///</summary>
+        [TestMethod()]
+        public void StressTest8()
+        {
+            // Dependency graph
+            DependencyGraph t = new DependencyGraph();
+
+            // A bunch of strings to use
+            const int SIZE = 400;
+            string[] letters = new string[SIZE];
+            for (int i = 0; i < SIZE; i++)
+            {
+                letters[i] = ("" + (char)('a' + i));
+            }
+
+            // The correct answers
+            HashSet<string>[] dents = new HashSet<string>[SIZE];
+            HashSet<string>[] dees = new HashSet<string>[SIZE];
+            for (int i = 0; i < SIZE; i++)
+            {
+                dents[i] = new HashSet<string>();
+                dees[i] = new HashSet<string>();
+            }
+
+            // Add a bunch of dependencies
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = i + 1; j < SIZE; j++)
+                {
+                    t.AddDependency(letters[i], letters[j]);
+                    dents[i].Add(letters[j]);
+                    dees[j].Add(letters[i]);
+                }
+            }
+
+            // Remove a bunch of dependencies
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = i + 2; j < SIZE; j += 3)
+                {
+                    t.RemoveDependency(letters[i], letters[j]);
+                    dents[i].Remove(letters[j]);
+                    dees[j].Remove(letters[i]);
+                }
+            }
+
+            // Replace a bunch of dependents
+            for (int i = 0; i < SIZE; i += 2)
+            {
+                HashSet<string> newDents = new HashSet<String>();
+                for (int j = 0; j < SIZE; j += 5)
+                {
+                    newDents.Add(letters[j]);
+                }
+                t.ReplaceDependents(letters[i], newDents);
+
+                foreach (string s in dents[i])
+                {
+                    dees[s[0] - 'a'].Remove(letters[i]);
+                }
+
+                foreach (string s in newDents)
+                {
+                    dees[s[0] - 'a'].Add(letters[i]);
+                }
+
+                dents[i] = newDents;
+            }
+            
+            // Make sure everything is right
+            for (int i = 0; i < SIZE; i++)
+            {
+                Assert.IsTrue(dents[i].SetEquals(new HashSet<string>(t.GetDependents(letters[i]))));
+                Assert.IsTrue(dees[i].SetEquals(new HashSet<string>(t.GetDependees(letters[i]))));
+            }
+            //Check that the copy is correct too.
+            DependencyGraph copy = new DependencyGraph(t);
+            for (int i = 0; i < SIZE; i++)
+            {
+                Assert.IsTrue(dents[i].SetEquals(new HashSet<string>(copy.GetDependents(letters[i]))));
+                Assert.IsTrue(dees[i].SetEquals(new HashSet<string>(copy.GetDependees(letters[i]))));
             }
         }
     }
