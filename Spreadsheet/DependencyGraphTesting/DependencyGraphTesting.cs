@@ -104,7 +104,6 @@ namespace DependencyGraphTestCases
                 }
             }
         }
-
         /// <summary>
         /// Adds in dependencies in the pattern a,a   b,b   c,c etc and then asserts them as being correct. Asserts them w/ GetDependents
         /// </summary>

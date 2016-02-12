@@ -159,10 +159,10 @@ namespace Formulas
                 rawFormula = new List<string>();
                 rawFormula.Add("0");
             }
-            ISet<string> variableSet = new HashSet<string>();
+            ISet<string> variableSet = new HashSet<string>();//Create new HashSet as the ISet
             foreach(string i in rawFormula)
             { 
-                if(char.IsLetter(i[0]) == true)
+                if(char.IsLetter(i[0]) == true)//If the string is a letter, consider it a variable
                 {
                     variableSet.Add(i);
                 }
@@ -421,7 +421,22 @@ namespace Formulas
     /// don't is up to the implementation of the method.
     /// </summary>
     public delegate double Lookup(string s);
+    /// <summary>
+    /// The Normalizer method is one that can take tokens and change them based on their passed arguments.
+    /// For example, in the test cases, Normalizer4 can take a in a formula and covert all lower-case variables into
+    /// their upper case equivalents. It modifies the formula tokens into the defined form. 1 argument constructor 
+    /// simply applies the identity formula (aka, does nothing to the token)
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
     public delegate string Normalizer(string s);
+    /// <summary>
+    /// The Validator method allows the user to impose more restrictions on the formula format. It is applied before
+    /// the default restrictions are executed and AFTER the normalizer applies it's changes. Returns true or false per each
+    /// token's case. Default 1 argument constructor forces it to TRUE
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
     public delegate bool Validator(string s);
     /// <summary>
     /// Used to report that a Lookup delegate is unable to determine the value

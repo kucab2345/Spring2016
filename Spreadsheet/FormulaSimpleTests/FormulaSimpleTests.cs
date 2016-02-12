@@ -6,6 +6,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Formulas;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace FormulaTestCases
@@ -176,6 +177,40 @@ namespace FormulaTestCases
             Formula f = new Formula("1+3+4", Normalizer4, validator => true);
             test = f.ToString();
             Debug.Assert("1 + 3 + 4" == test);
+        }
+        /// <summary>
+        /// Check zero argument constructor and the ToString function. 
+        /// Should create formula to be 0, also checks the zero argument case
+        /// in ToString
+        /// </summary>
+        [TestMethod]
+        public void Evaluate10()
+        {
+            Formula f = new Formula();
+            Debug.Assert("0" == f.ToString());
+            List<string> vars = new List<string>();
+            ISet<string> variables = f.GetVariables();
+            foreach (string b in variables)
+            {
+                vars.Add(b);
+            }
+            Debug.Assert(vars.Count == 0);
+        }
+        /// <summary>
+        /// Tests GetVariables. Makes simple formula and returns the 2 variables, x and y
+        /// and asserts that they are correct against literals
+        /// </summary>
+        [TestMethod]
+        public void Evaluate10a()
+        {
+            List<string> vars = new List<string>();
+            Formula f = new Formula("x + y");
+            ISet<string> variables = f.GetVariables();
+            foreach(string b in variables)
+            {
+                vars.Add(b);
+            }
+            Debug.Assert(vars[0] == "x" && vars[1] == "y");
         }
         /// <summary>
         /// A Lookup method that maps x to 4.0, y to 6.0, and z to 8.0.
