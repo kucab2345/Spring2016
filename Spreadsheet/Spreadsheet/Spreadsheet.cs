@@ -18,12 +18,6 @@ namespace SS
             name = cell_name;
             contents = cell_contents;
             value = cell_value;
-
-            double test;
-            if(!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0 )) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
-            {
-                throw new ArgumentException("Name of cell is invalid: First character is not letter or second character is zero");//DOUBLE CHECK THE ERROR TYPE
-            }
         }
     }
     /// <summary>
@@ -88,6 +82,15 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
+            if(Cell<T>.name == null)
+            {
+                throw new InvalidNameException();
+            }
+            double test;
+            if (!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0)) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
+            {
+                throw new InvalidNameException();
+            }
             throw new NotImplementedException();
         }
         /// <summary>
@@ -95,6 +98,13 @@ namespace SS
         /// </summary>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
+            foreach(Cell cell in Spreadsheet)
+            {
+                if(cell.contents != null)
+                {
+                    yield return cell.name;
+                }
+            }
             throw new NotImplementedException();
         }
         /// <summary>
