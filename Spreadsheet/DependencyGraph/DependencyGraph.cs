@@ -4,6 +4,7 @@
 // Last Updated 2/11/2016
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Dependencies
@@ -74,8 +75,16 @@ namespace Dependencies
         /// <param name="d1"></param>
         public DependencyGraph(DependencyGraph d1)
         {
-            dependentGraph = new Dictionary<string, HashSet<String>>(d1.dependentGraph);
-            dependeeGraph = new Dictionary<string, HashSet<String>>(d1.dependeeGraph);
+            dependentGraph = new Dictionary<string, HashSet<String>>();
+            dependeeGraph = new Dictionary<string, HashSet<string>>();
+            foreach(KeyValuePair<string,HashSet<string>> current in d1.dependentGraph)
+            {
+                dependentGraph.Add(current.Key, current.Value);
+            }
+            foreach (KeyValuePair<string, HashSet<string>> current in d1.dependeeGraph)
+            {
+                dependeeGraph.Add(current.Key, current.Value);
+            }
         }
         /// <summary>
         /// The number of dependencies in the DependencyGraph.
