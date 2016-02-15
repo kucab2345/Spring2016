@@ -79,11 +79,10 @@ namespace Dependencies
             dependeeGraph = new Dictionary<string, HashSet<string>>();
             foreach(KeyValuePair<string,HashSet<string>> current in d1.dependentGraph)
             {
-                dependentGraph.Add(current.Key, current.Value);
-            }
-            foreach (KeyValuePair<string, HashSet<string>> current in d1.dependeeGraph)
-            {
-                dependeeGraph.Add(current.Key, current.Value);
+                foreach(string value in d1.dependentGraph[current.Key])
+                {
+                    AddDependency(current.Key, value);
+                }
             }
         }
         /// <summary>
