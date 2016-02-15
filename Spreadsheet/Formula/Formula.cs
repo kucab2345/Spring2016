@@ -55,19 +55,23 @@ namespace Formulas
         /// <param name="validator"></param>
         public Formula(String formula, Normalizer normalizer, Validator validator)
         {
+            int count = 0;
             rawFormula = new List<string>();
             int openParenthesis = 0, closeParenthesis = 0;
             char[] charformula = formula.ToCharArray();
 
             foreach (string b in GetTokens(formula))//Adds tokens into raw formula after the prior checks
             {
-                string temp = "";
-                temp = normalizer(b);
-                if (validator(temp) == false)
+                rawFormula.Add(b);
+                if(char.IsLetter(rawFormula[count][0]) == true)
                 {
-                    throw new FormulaFormatException("Validation Failed");
+                    rawFormula[count] = normalizer(rawFormula[count]);
+                    if (validator(rawFormula[count]) == false)
+                    {
+                        throw new FormulaFormatException("Validation Failed");
+                    }
                 }
-                rawFormula.Add(temp);
+                count++;
             }
             if (formula.Length < 1)//ensures formula not empty
             {
