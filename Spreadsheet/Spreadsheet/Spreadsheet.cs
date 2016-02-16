@@ -8,16 +8,18 @@ using Dependencies;
 
 namespace SS
 {
-    class Cell<T>
+    /// <summary>
+    /// Cell class ADD COMMENTS
+    /// </summary>
+    public class Cell
     {
         string name { get; set; }
-        T contents { get; set; }
-        T value { get; set; }
-        public Cell(string cell_name, T cell_contents, T cell_value)//Cell constructor that takes in a string name and generic contents and value
+        object contents { get; set; }
+        object value { get; set; }
+        public Cell(string cell_name, object cell_contents)//Cell constructor that takes in a string name and generic contents and value
         {
             name = cell_name;
             contents = cell_contents;
-            value = cell_value;
         }
     }
     /// <summary>
@@ -66,6 +68,7 @@ namespace SS
     /// </summary>
     class Spreadsheet : AbstractSpreadsheet
     {
+        Dictionary<string, Cell> cellTable = new Dictionary<string, Cell>();
         /// <summary>
         /// Creates a new spreadsheet object, empty.
         /// </summary>
@@ -82,7 +85,7 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
-            if(Cell<T>.name == null)
+            if(name == null)
             {
                 throw new InvalidNameException();
             }
@@ -91,6 +94,10 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
+            if(cellTable.ContainsKey(name))
+            {
+                return cellTable[name].contents;
+            }
             throw new NotImplementedException();
         }
         /// <summary>
@@ -98,9 +105,9 @@ namespace SS
         /// </summary>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
-            foreach(Cell cell in Spreadsheet)
+            foreach (KeyValuePair<string, Cell> cell in cellTable)
             {
-                if(cell.contents != null)
+                if (cell.contents != null)
                 {
                     yield return cell.name;
                 }
