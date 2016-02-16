@@ -94,9 +94,9 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            if(cellTable.ContainsKey(name))
+            if(cellTable.ContainsKey(name))//if the table contains a cell named as name
             {
-                return cellTable[name].contents;
+                return cellTable[name].contents;//return that cell's contents
             }
             else
             {
@@ -108,19 +108,22 @@ namespace SS
         /// </summary>
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
         {
-            foreach (KeyValuePair<string, Cell> cell in cellTable)
+            foreach (KeyValuePair<string, Cell> cell in cellTable)//go through all cells
             {
-                if (cell.Value.contents != null)
+                if (cell.Value.contents != null)//if a cell's value is not null, yield return it's name
                 {
                     yield return cell.Value.name;
                 }
             }
         }
         /// <summary>
-        /// If name is null or invalid, throws an InvalidNameException.
+        /// Otherwise, if name is null or invalid, throws an InvalidNameException.
         /// 
-        /// Otherwise, the contents of the named cell becomes number.  The method returns a
-        /// set consisting of name plus the names of all other cells whose value depends, 
+        /// Otherwise, if changing the contents of the named cell to be the formula would cause a 
+        /// circular dependency, throws a CircularException.
+        /// 
+        /// Otherwise, the contents of the named cell becomes formula.  The method returns a
+        /// Set consisting of name plus the names of all other cells whose value depends,
         /// directly or indirectly, on the named cell.
         /// 
         /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
@@ -132,16 +135,11 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            HashSet<object> dependents = new HashSet<object>();
-            foreach(KeyValuePair<string, Cell> current in cellTable)
+            
+            if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
-                string comparer = "";
-
-                if( == name || current.Value.Name)
+                cellTable[name].contents = formula; //set the named cell's contents to the formula
             }
-
-
-            throw new NotImplementedException();
         }
         /// <summary>
         /// If text is null, throws an ArgumentNullException.
@@ -157,6 +155,18 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, string text)
         {
+            if(name == null)
+            {
+                throw new InvalidNameException();
+            }
+            if(text == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if(cellTable.ContainsKey(name))
+            {
+                cellTable[name].contents = text;
+            }
             throw new NotImplementedException();
         }
         /// <summary>
@@ -176,7 +186,14 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, double number)
         {
-            throw new NotImplementedException();
+            if (name == null)
+            {
+                throw new InvalidNameException();
+            }
+            if (cellTable.ContainsKey(name))
+            {
+                cellTable[name].contents = number;
+            }
         }
         /// <summary>
         /// If name is null, throws an ArgumentNullException.

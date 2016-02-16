@@ -50,7 +50,6 @@ namespace PS4GradingTests
         {
             Formula f = new Formula("x+y", s => "$", s => true);
         }
-
         [TestMethod]
         [ExpectedException(typeof(FormulaFormatException))]
         public void ThreeArg3()
