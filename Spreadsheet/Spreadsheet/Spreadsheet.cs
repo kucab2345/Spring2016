@@ -13,9 +13,9 @@ namespace SS
     /// </summary>
     public class Cell
     {
-        string name { get; set; }
-        object contents { get; set; }
-        object value { get; set; }
+        public string name { get; set; }
+        public object contents { get; set; }
+        public object value { get; set; }
         public Cell(string cell_name, object cell_contents)//Cell constructor that takes in a string name and generic contents and value
         {
             name = cell_name;
@@ -98,7 +98,10 @@ namespace SS
             {
                 return cellTable[name].contents;
             }
-            throw new NotImplementedException();
+            else
+            {
+                throw new InvalidNameException();
+            }
         }
         /// <summary>
         /// Enumerates the names of all the non-empty cells in the spreadsheet.
@@ -107,12 +110,11 @@ namespace SS
         {
             foreach (KeyValuePair<string, Cell> cell in cellTable)
             {
-                if (cell.contents != null)
+                if (cell.Value.contents != null)
                 {
-                    yield return cell.name;
+                    yield return cell.Value.name;
                 }
             }
-            throw new NotImplementedException();
         }
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
@@ -126,6 +128,19 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
+            if(name == null)
+            {
+                throw new InvalidNameException();
+            }
+            HashSet<object> dependents = new HashSet<object>();
+            foreach(KeyValuePair<string, Cell> current in cellTable)
+            {
+                string comparer = "";
+
+                if( == name || current.Value.Name)
+            }
+
+
             throw new NotImplementedException();
         }
         /// <summary>
