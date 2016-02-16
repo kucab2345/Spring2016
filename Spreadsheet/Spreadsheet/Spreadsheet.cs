@@ -69,13 +69,13 @@ namespace SS
     class Spreadsheet : AbstractSpreadsheet
     {
         Dictionary<string, Cell> cellTable = new Dictionary<string, Cell>();
+        DependencyGraph dgGraph = new DependencyGraph();
         /// <summary>
         /// Creates a new spreadsheet object, empty.
         /// </summary>
         public Spreadsheet()
         {
             Spreadsheet spreedsheet = new Spreadsheet();
-            DependencyGraph dgGraph = new DependencyGraph();
         }
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
@@ -85,15 +85,7 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
-            if(name == null)
-            {
-                throw new InvalidNameException();
-            }
-            double test;
-            if (!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0)) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
-            {
-                throw new InvalidNameException();
-            }
+            isValid(name);
             if(cellTable.ContainsKey(name))//if the table contains a cell named as name
             {
                 return cellTable[name].contents;//return that cell's contents
@@ -131,15 +123,30 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
-            if(name == null)
-            {
-                throw new InvalidNameException();
-            }
+            HashSet<string> dependents = new HashSet<string>();
+
+            isValid(name);
             
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
             }
+            else
+            {
+                cellTable.Add(name, new Cell(name, formula));//otherwise create a new cell, construct it w the name and formula passed to the method
+            }
+            foreach(string dependee in formula.GetVariables())//get the variables
+            {
+                if(isValid(dependee) == true)//check that the variable returned is in fact a cell name
+                {
+                    dgGraph.AddDependency(dependee, name);//add it to the dependencyGraph
+                }
+            }
+            foreach(string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            {
+                dependents.Add(i);//add them to the Hashset
+            }
+            return dependents;//Return the hashset
         }
         /// <summary>
         /// If text is null, throws an ArgumentNullException.
@@ -155,11 +162,9 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, string text)
         {
-            if(name == null)
-            {
-                throw new InvalidNameException();
-            }
-            if(text == null)
+            HashSet<string> resultant = new HashSet<string>();
+            isValid(name);
+            if (text == null)
             {
                 throw new ArgumentNullException();
             }
@@ -167,7 +172,15 @@ namespace SS
             {
                 cellTable[name].contents = text;
             }
-            throw new NotImplementedException();
+            else
+            {
+                cellTable.Add(name, new Cell(name, text));
+            }
+            foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            {
+                resultant.Add(i);//add them to the Hashset
+            }
+            return resultant;
         }
         /// <summary>
         /// If formula parameter is null, throws an ArgumentNullException.
@@ -186,14 +199,21 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, double number)
         {
-            if (name == null)
-            {
-                throw new InvalidNameException();
-            }
+            HashSet<string> resultant = new HashSet<string>();
+            isValid(name);
             if (cellTable.ContainsKey(name))
             {
                 cellTable[name].contents = number;
             }
+            else
+            {
+                cellTable.Add(name, new Cell(name, number));
+            }
+            foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            {
+                resultant.Add(i);//add them to the Hashset
+            }
+            return resultant;
         }
         /// <summary>
         /// If name is null, throws an ArgumentNullException.
@@ -214,7 +234,29 @@ namespace SS
         /// </summary>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            throw new NotImplementedException();
+            isValid(name);
+            foreach(string child in dgGraph.GetDependents(name))
+            {
+                yield return child;
+            }
+        }
+        /// <summary>
+        /// Checks validity of a cell's name. Returns true if cell name is acceptable and false if it isn't.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool isValid(string name)
+        {
+            double test;
+            if (!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0)) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
+            {
+                throw new InvalidNameException();
+            }
+            if (name == null)
+            {
+                throw new InvalidNameException();
+            }
+            return true;
         }
     }
 }
