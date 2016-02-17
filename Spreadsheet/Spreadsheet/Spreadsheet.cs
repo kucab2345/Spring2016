@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,23 @@ namespace SS
     /// </summary>
     public class Cell
     {
+        /// <summary>
+        /// Name of the cell. Must adhere to specifications, and is always forced to lowercase in every method
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// Contents of the current cell, must adhere to specifications
+        /// </summary>
         public object contents { get; set; }
+        /// <summary>
+        /// Value of the current cell, must adhere to specifications
+        /// </summary>
         public object value { get; set; }
+        /// <summary>
+        /// Constructs a cell with a lower-cased name and contents 
+        /// </summary>
+        /// <param name="cell_name"></param>
+        /// <param name="cell_contents"></param>
         public Cell(string cell_name, object cell_contents)//Cell constructor that takes in a string name and generic contents and value
         {
             name = cell_name;
@@ -85,6 +100,7 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
+            name = name.ToLower();
             isValid(name);
             if (cellTable.ContainsKey(name))//if the table contains a cell named as name
             {
@@ -124,6 +140,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
             HashSet<string> dependents = new HashSet<string>();
+            name = name.ToLower();
 
             isValid(name);
 
@@ -163,6 +180,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, string text)
         {
             HashSet<string> resultant = new HashSet<string>();
+            name = name.ToLower();
             isValid(name);
             if (text == null)
             {
@@ -200,6 +218,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, double number)
         {
             HashSet<string> resultant = new HashSet<string>();
+            name = name.ToLower();
             isValid(name);
             if (cellTable.ContainsKey(name))
             {
@@ -234,6 +253,7 @@ namespace SS
         /// </summary>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
+            name = name.ToLower();
             isValid(name);
             foreach (string child in dgGraph.GetDependents(name))
             {
@@ -247,31 +267,61 @@ namespace SS
         /// <returns></returns>
         private bool isValid(string name)
         {
+            name = name.ToLower();
+            Regex re = new Regex(@"^[a-z]+[1-9][0-9]*$");
+
+            if (re.IsMatch(name))
+            {
+                return true;
+            }
+            else
+                return false;
+            
+            /*
             double test;
             if (!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0)) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
             {
                 throw new InvalidNameException();
+            }
+            for(int i = 2; i < name.Length; i++)
+            {
+                if(name[i] < 0 || name[i] > 9)
+                {
+                    throw new InvalidNameException();
+                }
             }
             if (name == null)
             {
                 throw new InvalidNameException();
             }
             return true;
+            */
         }
-        private HashSet<string> GetIndirectDependencies(string name, HashSet<string> input)
+        private HashSet<string> GetIndirectDependencies(string name)
         {
-            HashSet<string> resultant = new HashSet<string>();
-            HashSet<string> searchees = input;
+            List<string> current = new List<string>();
+            HashSet<string> results = new HashSet<string>();
+            
+            current.Add(name);
+            results.Add(name);
 
-            searchees.Add(name);
-            foreach (string i in searchees)
+            while(current.Count > 0)//while the current list of dependees to check is not empty
             {
-
+                foreach(string dependent in dgGraph.GetDependents(current[0]))//check the dependents of each one
+                {
+                    if(dependent == name)//if a dependent of the current dependee = the current cell, CircularException
+                    {
+                        throw new CircularException();
+                    }
+                    if(dgGraph.HasDependents(dependent))//If the dependent has dependents, those are indirect dependencies to be checked.
+                    {
+                        current.Add(dependent);// Add that dependent as a new dependee for another round
+                    }
+                    results.Add(dependent);//Add the current dependent to the set for return
+                }
+                current.RemoveAt(0);//Remove the current dependent after analyzed through
             }
-        }
-        private IEnumerable<string> GetIndirectDependenciesRecursive(string name)
-        {
-            foreach (string j in )
+            return results;
         }
     }
 }
