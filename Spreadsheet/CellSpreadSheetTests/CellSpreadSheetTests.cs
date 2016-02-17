@@ -192,16 +192,16 @@ namespace CellSpreadSheetTests
             AbstractSpreadsheet sheet = new Spreadsheet();
             sheet.SetCellContents("a1", "This is the string");
             sheet.SetCellContents("b3", "This is the string1");
-            sheet.SetCellContents("v2", "This is the string2");
-            sheet.SetCellContents("n19", "This is the string3");
+            sheet.SetCellContents("V2", "This is the string2");
+            sheet.SetCellContents("N19", "This is the string3");
 
             List<string> actualnames = new List<string>();
             List<string> returnednames = new List<string>();
 
             actualnames.Add("a1");
             actualnames.Add("b3");
-            actualnames.Add("v2");
-            actualnames.Add("n19");
+            actualnames.Add("V2");
+            actualnames.Add("N19");
 
             foreach (string i in sheet.GetNamesOfAllNonemptyCells())
             {

@@ -139,6 +139,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
             HashSet<string> dependents = new HashSet<string>();
+            string originalname = name;
             name = name.ToLower();
 
             isValid(name);
@@ -149,7 +150,7 @@ namespace SS
             }
             else
             {
-                cellTable.Add(name, new Cell(name, formula));//otherwise create a new cell, construct it w the name and formula passed to the method
+                cellTable.Add(name, new Cell(originalname, formula));//otherwise create a new cell, construct it w the name and formula passed to the method
             }
             foreach (string dependee in formula.GetVariables())//get the variables
             {
@@ -181,6 +182,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, string text)
         {
             HashSet<string> resultant = new HashSet<string>();
+            string originalname = name;
             name = name.ToLower();
             isValid(name);
             if (text == null)
@@ -193,7 +195,7 @@ namespace SS
             }
             else
             {
-                cellTable.Add(name, new Cell(name, text));
+                cellTable.Add(name, new Cell(originalname, text));
             }
             foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
             {
@@ -219,6 +221,7 @@ namespace SS
         public override ISet<string> SetCellContents(string name, double number)
         {
             HashSet<string> resultant = new HashSet<string>();
+            string originalname = name;
             name = name.ToLower();
             isValid(name);
             if (cellTable.ContainsKey(name))
@@ -227,7 +230,7 @@ namespace SS
             }
             else
             {
-                cellTable.Add(name, new Cell(name, number));
+                cellTable.Add(name, new Cell(originalname, number));
             }
             foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
             {
