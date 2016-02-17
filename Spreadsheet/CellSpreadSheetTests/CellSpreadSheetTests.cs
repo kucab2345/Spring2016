@@ -77,5 +77,139 @@ namespace CellSpreadSheetTests
             object result = sheet.GetCellContents("A1");
             Assert.AreEqual(test, result);
         }
+        /// <summary>
+        /// Invalid name in argument. Should throw InvalidNameException in reponse
+        /// </summary>
+        [ExpectedException(typeof(InvalidNameException))]
+        [TestMethod]
+        public void SS6()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("A1", 100);
+
+            object test = 100.00;
+            object result = sheet.GetCellContents("B01");
+            Assert.AreEqual(test, result);
+        }
+        /// <summary>
+        /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
+        /// </summary>
+        [ExpectedException(typeof(InvalidNameException))]
+        [TestMethod]
+        public void SS7()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("11", 100);
+        }
+        /// <summary>
+        /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
+        /// </summary>
+        [ExpectedException(typeof(InvalidNameException))]
+        [TestMethod]
+        public void SS8()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("a0", 100);
+        }
+        /// <summary>
+        /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
+        /// </summary>
+        [ExpectedException(typeof(InvalidNameException))]
+        [TestMethod]
+        public void SS9()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("a1a", 100);
+        }
+        /// <summary>
+        /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
+        /// </summary>
+        [ExpectedException(typeof(InvalidNameException))]
+        [TestMethod]
+        public void SS10()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("0a5", 100);
+        }
+        /// <summary>
+        /// Makes an empty spreadsheet and adds cell with contents of a string.
+        /// Asserts it to check that it is correct
+        /// </summary>
+        [TestMethod]
+        public void SS11()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("a1", "This is the string");
+
+            object test = "This is the string";
+            object result = sheet.GetCellContents("a1");
+            Assert.AreEqual(test, result);
+        }
+        /// <summary>
+        /// Makes an empty spreadsheet and adds cell with contents of a string.
+        /// Asserts it to check that it is correct.
+        /// Makes a cell with a formula, and asserts that it is correct. 
+        /// Then returns a list of nonemptycells and checks that the names match. 
+        /// </summary>
+        [TestMethod]
+        public void SS12()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            Formula f = new Formula("2 + 3");
+            sheet.SetCellContents("F32", f);
+            sheet.SetCellContents("a1", "This is the string");
+
+            object test = "This is the string";
+            object formula = f.ToString();
+            object result = sheet.GetCellContents("a1");
+            Assert.AreEqual(test, result);
+            result = sheet.GetCellContents("f32");
+            Assert.AreEqual(formula, result);
+
+            List<string> cells = new List<string>();
+            List<string> results = new List<string>();
+            cells.Add("f32");
+            cells.Add("a1");
+
+            foreach(string i in sheet.GetNamesOfAllNonemptyCells())
+            {
+                results.Add(i);
+            }
+
+            for(int i = 0; i < cells.Count; i++)
+            {
+                Assert.AreEqual(results[i],cells[i]);
+            }
+        }
+        /// <summary>
+        /// Makes an empty spreadsheet and adds cells with contents.
+        /// Returns names of all cells that are not empty and compares them to actual names.
+        /// </summary>
+        [TestMethod]
+        public void SS13()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            sheet.SetCellContents("a1", "This is the string");
+            sheet.SetCellContents("b3", "This is the string1");
+            sheet.SetCellContents("v2", "This is the string2");
+            sheet.SetCellContents("n19", "This is the string3");
+
+            List<string> actualnames = new List<string>();
+            List<string> returnednames = new List<string>();
+
+            actualnames.Add("a1");
+            actualnames.Add("b3");
+            actualnames.Add("v2");
+            actualnames.Add("n19");
+
+            foreach (string i in sheet.GetNamesOfAllNonemptyCells())
+            {
+                returnednames.Add(i);
+            }
+            for(int i = 0; i < actualnames.Count; i++)
+            {
+                Assert.AreEqual(actualnames[i], returnednames[i]);
+            }
+        }
     }
 }

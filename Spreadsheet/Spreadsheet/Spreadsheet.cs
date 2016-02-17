@@ -276,27 +276,9 @@ namespace SS
                 return true;
             }
             else
-                return false;
-            
-            /*
-            double test;
-            if (!char.IsLetter(name[0]) || (double.TryParse(char.ToString(name[1]), out test) && (test != 0)) && !char.IsLetter(name[1]))//If the first char of the cell name != a letter OR 2nd char == 0, throw an error. 
             {
                 throw new InvalidNameException();
             }
-            for(int i = 2; i < name.Length; i++)
-            {
-                if(name[i] < 0 || name[i] > 9)
-                {
-                    throw new InvalidNameException();
-                }
-            }
-            if (name == null)
-            {
-                throw new InvalidNameException();
-            }
-            return true;
-            */
         }
         private HashSet<string> GetDirectandIndirectDependencies(string name)
         {
