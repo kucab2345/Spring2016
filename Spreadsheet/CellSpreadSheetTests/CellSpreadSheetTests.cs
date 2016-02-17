@@ -160,7 +160,8 @@ namespace CellSpreadSheetTests
             sheet.SetCellContents("a1", "This is the string");
 
             object test = "This is the string";
-            object formula = f.ToString();
+            string fstring = f.ToString();
+            object formula = fstring;
             object result = sheet.GetCellContents("a1");
             Assert.AreEqual(test, result);
             result = sheet.GetCellContents("f32");
@@ -210,6 +211,25 @@ namespace CellSpreadSheetTests
             {
                 Assert.AreEqual(actualnames[i], returnednames[i]);
             }
+        }
+        /// <summary>
+        /// Makes an empty spreadsheet and adds cells with contents.
+        /// The cells contents should lead to a CircularException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void SS14()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            Formula f0 = new Formula("b1 + 3");
+            Formula f1 = new Formula("c1 * 5");
+            Formula f2 = new Formula("b1 * a1");
+
+            sheet.SetCellContents("a1", f0);
+            sheet.SetCellContents("b1", f1);
+            sheet.SetCellContents("c1", f2);
+
+
         }
     }
 }
