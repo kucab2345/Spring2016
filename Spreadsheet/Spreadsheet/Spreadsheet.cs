@@ -81,7 +81,7 @@ namespace SS
     /// A1 depends on B1, which depends on C1, which depends on A1.  That's a circular
     /// dependency.
     /// </summary>
-    class Spreadsheet : AbstractSpreadsheet
+    public class Spreadsheet : AbstractSpreadsheet
     {
         Dictionary<string, Cell> cellTable = new Dictionary<string, Cell>();
         DependencyGraph dgGraph = new DependencyGraph();
@@ -90,7 +90,6 @@ namespace SS
         /// </summary>
         public Spreadsheet()
         {
-            Spreadsheet spreedsheet = new Spreadsheet();
         }
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
@@ -144,8 +143,6 @@ namespace SS
 
             isValid(name);
 
-            dependents = GetDirectandIndirectDependencies(name);
-
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
@@ -161,6 +158,7 @@ namespace SS
                     dgGraph.AddDependency(dependee, name);//add it to the dependencyGraph
                 }
             }
+            dependents = GetDirectandIndirectDependencies(name);
             /*
             foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
             {
