@@ -144,6 +144,8 @@ namespace SS
 
             isValid(name);
 
+            dependents = GetDirectandIndirectDependencies(name);
+
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
@@ -159,10 +161,11 @@ namespace SS
                     dgGraph.AddDependency(dependee, name);//add it to the dependencyGraph
                 }
             }
+            /*
             foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
             {
                 dependents.Add(i);//add them to the Hashset
-            }
+            }*/
             return dependents;//Return the hashset
         }
         /// <summary>
@@ -297,7 +300,7 @@ namespace SS
             return true;
             */
         }
-        private HashSet<string> GetIndirectDependencies(string name)
+        private HashSet<string> GetDirectandIndirectDependencies(string name)
         {
             List<string> current = new List<string>();
             HashSet<string> results = new HashSet<string>();
