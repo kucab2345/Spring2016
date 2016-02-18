@@ -230,10 +230,10 @@ namespace CellSpreadSheetTests
         }
         /// <summary>
         /// Makes an empty spreadsheet and adds cells with contents.
-        /// The cells contents should lead to a CircularException
+        /// The cells contents of the named cell are empty, which should 
+        /// yield an empty string.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(InvalidNameException))]
         public void SS15()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
@@ -246,7 +246,9 @@ namespace CellSpreadSheetTests
             Formula f2 = new Formula("4+5");
             sheet.SetCellContents("b1", f2);
 
-            sheet.GetCellContents("f2");
+            object emptystring = (string)"";
+
+            Assert.AreEqual(sheet.GetCellContents("f2"), emptystring);
         }
         /// <summary>
         /// Creates a series of dependencies, both direct and indirect, and checks that all are found and returned as an ISet

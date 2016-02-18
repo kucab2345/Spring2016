@@ -110,6 +110,11 @@ namespace SS
         {
             name = name.ToLower();
             isValid(name);
+            if (!cellTable.ContainsKey(name))
+            {
+                object emptyStringCell = "";
+                return emptyStringCell;
+            }
             if (cellTable.ContainsKey(name))//if the table contains a cell named as name
             {
                 return cellTable[name].contents;//return that cell's contents
