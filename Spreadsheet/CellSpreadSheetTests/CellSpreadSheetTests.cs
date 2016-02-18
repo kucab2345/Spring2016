@@ -164,7 +164,7 @@ namespace CellSpreadSheetTests
             object formula = fstring;
             object result = sheet.GetCellContents("a1");
             Assert.AreEqual(test, result);
-            result = sheet.GetCellContents("f32");
+            result = (Formula)sheet.GetCellContents("f32");
             Assert.AreEqual(formula, result);
 
             List<string> cells = new List<string>();
