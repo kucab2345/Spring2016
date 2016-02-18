@@ -147,6 +147,7 @@ namespace SS
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
+                GetCellsToRecalculate(name);
             }
             else
             {

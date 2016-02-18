@@ -191,6 +191,7 @@ namespace CellSpreadSheetTests
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
             sheet.SetCellContents("a1", "This is the string");
+            sheet.SetCellContents("a1", "Rewriting the string");
             sheet.SetCellContents("b3", "This is the string1");
             sheet.SetCellContents("V2", "This is the string2");
             sheet.SetCellContents("N19", "This is the string3");
@@ -228,8 +229,26 @@ namespace CellSpreadSheetTests
             sheet.SetCellContents("a1", f0);
             sheet.SetCellContents("b1", f1);
             sheet.SetCellContents("c1", f2);
+        }
+        /// <summary>
+        /// Makes an empty spreadsheet and adds cells with contents.
+        /// The cells contents should lead to a CircularException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void SS15()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            Formula f0 = new Formula("b1 + 3");
+            Formula f1 = new Formula("c1 * 5");
 
+            sheet.SetCellContents("a1", f0);
+            sheet.SetCellContents("b1", f1);
 
+            Formula f2 = new Formula("4+5");
+            sheet.SetCellContents("b1", f2);
+
+            sheet.GetCellContents("f2");
         }
     }
 }
