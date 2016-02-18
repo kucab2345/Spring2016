@@ -28,7 +28,7 @@ namespace CellSpreadSheetTests
             AbstractSpreadsheet sheet = new Spreadsheet();
             sheet.SetCellContents("a1", 100);
 
-            object test = 100.00;
+            object test = (double)100;
             object result = sheet.GetCellContents("a1");
             Assert.AreEqual(test,result);
         }
@@ -159,17 +159,15 @@ namespace CellSpreadSheetTests
             sheet.SetCellContents("F32", f);
             sheet.SetCellContents("a1", "This is the string");
 
-            object test = "This is the string";
-            string fstring = f.ToString();
-            object formula = fstring;
-            object result = sheet.GetCellContents("a1");
-            Assert.AreEqual(test, result);
-            result = (Formula)sheet.GetCellContents("f32");
-            Assert.AreEqual(formula, result);
+            object stringtest = (string)"This is the string";
+            object formula = (string)f.ToString();
+
+            Assert.AreEqual(stringtest, sheet.GetCellContents("a1"));
+            Assert.AreEqual(formula, "2+3");
 
             List<string> cells = new List<string>();
             List<string> results = new List<string>();
-            cells.Add("f32");
+            cells.Add("F32");
             cells.Add("a1");
 
             foreach(string i in sheet.GetNamesOfAllNonemptyCells())
@@ -249,6 +247,68 @@ namespace CellSpreadSheetTests
             sheet.SetCellContents("b1", f2);
 
             sheet.GetCellContents("f2");
+        }
+        /// <summary>
+        /// Creates a series of dependencies, both direct and indirect, and checks that all are found and returned as an ISet
+        /// </summary>
+        [TestMethod]
+        public void SS16()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            Formula f0 = new Formula("b1 + 5");
+            Formula f1 = new Formula("b2 + 3");
+            Formula f2 = new Formula("c1 + 2");
+
+            List<string> dependencies = new List<string>();
+            HashSet<string> actual = new HashSet<string>();
+
+            sheet.SetCellContents("a1", f0);
+            sheet.SetCellContents("b1", f1);
+            sheet.SetCellContents("b2", f2);
+            actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
+
+            dependencies.Add("c1");
+            dependencies.Add("b2");
+            dependencies.Add("b1");
+            dependencies.Add("a1");
+
+            int counter = 0;
+            foreach (string i in actual)
+            {
+                Assert.AreEqual(dependencies[counter++], i);
+            }
+        }
+        /// <summary>
+        /// Creates a series of dependencies, both direct and indirect, and checks that all are found and returned as an ISet
+        /// CircularException exists in the set, should throw such an exception
+        /// </summary>
+        [ExpectedException(typeof(CircularException))]
+        [TestMethod]
+        public void SS17()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+            Formula f0 = new Formula("c1 + 5");
+            Formula f1 = new Formula("b1 + 3");
+            Formula f2 = new Formula("b2 + 2");
+
+            List<string> dependencies = new List<string>();
+            HashSet<string> actual = new HashSet<string>();
+
+            sheet.SetCellContents("a1", f0);
+            sheet.SetCellContents("b1", f1);
+            sheet.SetCellContents("b2", f2);
+            actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
+
+            dependencies.Add("");
+            dependencies.Add("");
+            dependencies.Add("");
+            dependencies.Add("");
+
+            int counter = 0;
+            foreach (string i in actual)
+            {
+                Assert.AreEqual(dependencies[counter++], i);
+            }
         }
     }
 }

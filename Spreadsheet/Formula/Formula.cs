@@ -150,6 +150,18 @@ namespace Formulas
                     throw new FormulaFormatException("Missing operator");
                 }
             }
+            for (int i = 0; i < rawFormula.Count; i++)//Addendum. Checks every token to ensure every character is valid.
+            {
+                for(int j = 0; j < rawFormula[i].Length; j++)
+                {
+                    string temp = rawFormula[i];
+                    double test = 0;
+                    if(temp != ")" && temp != "(" && temp != "+" && temp != "-" && temp != "*" && temp != "/" && (!double.TryParse(temp, out test)) && !char.IsLetterOrDigit(temp[0]))
+                    {
+                        throw new FormulaFormatException("Invalid character");
+                    }
+                }
+            }
         }
         /// <summary>
         /// Runs through RawFormula after it has been normalized, adds any character that is a letter
