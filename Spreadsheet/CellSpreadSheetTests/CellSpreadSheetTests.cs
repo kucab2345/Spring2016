@@ -312,5 +312,46 @@ namespace CellSpreadSheetTests
                 Assert.AreEqual(dependencies[counter++], i);
             }
         }
+        /// <summary>
+        /// Creates a dependency and then replaces it.
+        /// </summary>
+        [TestMethod]
+        public void SS18()
+        {
+            AbstractSpreadsheet sheet = new Spreadsheet();
+
+            Formula f0 = new Formula("a2 + 1");
+            Formula f1 = new Formula("f1 + 2");
+
+            HashSet<string> dependents = new HashSet<string>();
+
+            List<string> firstCheck = new List<string>();
+            List<string> secondCheck = new List<string>();
+
+            firstCheck.Add("a1");
+            firstCheck.Add("a2");
+            secondCheck.Add("a1");
+            secondCheck.Add("f1");
+
+            sheet.SetCellContents("a2", "hi");
+            dependents = (HashSet<string>)sheet.SetCellContents("a1", f0);
+
+            int count = 0;
+            foreach(string i in dependents)
+            {
+                Assert.AreEqual(firstCheck[count++], i);
+            }
+            
+
+            dependents.Clear();
+
+            dependents = (HashSet<string>)sheet.SetCellContents("a1", f1);
+
+            count = 0;
+            foreach (string i in dependents)
+            {
+                Assert.AreEqual(secondCheck[count++], i);
+            }
+        }
     }
 }

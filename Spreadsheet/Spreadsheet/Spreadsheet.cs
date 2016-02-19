@@ -162,11 +162,12 @@ namespace SS
 
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
-                foreach (string token in formula.GetVariables())//get the variables
+                Formula original = (Formula)cellTable[name].contents;
+                foreach (string token in original.GetVariables())//get the variables
                 {
                     if (isValid(token) == true)//check that the variable returned is in fact a cell name
                     {
-                        dgGraph.RemoveDependency(token, name);//remove the dependency to old cells
+                        dgGraph.RemoveDependency(name,token);//remove the dependency to old cells
                     }
                 }
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
@@ -174,7 +175,7 @@ namespace SS
                 {
                     if(isValid(token) == true)
                     {
-                        dgGraph.AddDependency(token, name);//create the new dependencies
+                        dgGraph.AddDependency(name,token);//create the new dependencies
                     }
                 }
             }
@@ -185,7 +186,7 @@ namespace SS
                 {
                     if(isValid(i))
                     {
-                        dgGraph.AddDependency(i, name);//Add new dependencies for each referenced cell
+                        dgGraph.AddDependency(name,i);//Add new dependencies for each referenced cell
                     }
                 }
                 
