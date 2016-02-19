@@ -287,33 +287,5 @@ namespace SS
                 throw new InvalidNameException();
             }
         }
-        /*
-        private HashSet<string> GetDirectandIndirectDependencies(string name)
-        {
-            List<string> current = new List<string>();
-            HashSet<string> results = new HashSet<string>();
-            
-            current.Add(name);
-            results.Add(name);
-
-            while(current.Count > 0)//while the current list of dependees to check is not empty
-            {
-                foreach(string dependent in dgGraph.GetDependents(current[0]))//check the dependents of each one
-                {
-                    if(dependent == name)//if a dependent of the current dependee = the current cell, CircularException
-                    {
-                        throw new CircularException();
-                    }
-                    if(dgGraph.HasDependents(dependent))//If the dependent has dependents, those are indirect dependencies to be checked.
-                    {
-                        current.Add(dependent);// Add that dependent as a new dependee for another round
-                    }
-                    results.Add(dependent);//Add the current dependent to the set for return
-                }
-                current.RemoveAt(0);//Remove the current dependent after analyzed through
-            }
-            return results;
-        }
-        */
     }
 }
