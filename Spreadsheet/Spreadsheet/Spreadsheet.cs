@@ -162,23 +162,39 @@ namespace SS
 
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
+                foreach (string token in formula.GetVariables())//get the variables
+                {
+                    if (isValid(token) == true)//check that the variable returned is in fact a cell name
+                    {
+                        dgGraph.RemoveDependency(token, name);//remove the dependency to old cells
+                    }
+                }
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
+                foreach(string token in formula.GetVariables())
+                {
+                    if(isValid(token) == true)
+                    {
+                        dgGraph.AddDependency(token, name);//create the new dependencies
+                    }
+                }
             }
             else
             {
                 cellTable.Add(name, new Cell(originalname, formula));//otherwise create a new cell, construct it w the name and formula passed to the method
-            }
-            foreach (string dependee in formula.GetVariables())//get the variables
-            {
-                if (isValid(dependee) == true)//check that the variable returned is in fact a cell name
+                foreach(string i in formula.GetVariables())
                 {
-                    dgGraph.AddDependency(dependee, name);//add it to the dependencyGraph
+                    if(isValid(i))
+                    {
+                        dgGraph.AddDependency(i, name);//Add new dependencies for each referenced cell
+                    }
                 }
+                
             }
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
                 dependents.Add(i);
             }
+            
             return dependents;//Return the hashset
         }
         /// <summary>
