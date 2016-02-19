@@ -10,7 +10,9 @@ using Dependencies;
 namespace SS
 {
     /// <summary>
-    /// Cell class ADD COMMENTS
+    /// Cell class holds three variables, name, contents, and value. The name field preserves the case sensitivity of the user-inputted cell name. 
+    /// Standard constructor allows the cell to be name with a cell_name, and a cell_contents.
+    /// 
     /// </summary>
     public class Cell
     {
@@ -35,6 +37,13 @@ namespace SS
         {
             name = cell_name;
             contents = cell_contents;
+        }
+        /// <summary>
+        /// Empty cell constructor. Name requires, but contents are not
+        /// </summary>
+        public Cell(string cell_name)
+        {
+            name = cell_name;
         }
     }
     /// <summary>
@@ -124,6 +133,8 @@ namespace SS
             }
         }
         /// <summary>
+        /// If formula parameter is null, throws an ArgumentNullException.
+        /// 
         /// Otherwise, if name is null or invalid, throws an InvalidNameException.
         /// 
         /// Otherwise, if changing the contents of the named cell to be the formula would cause a 
@@ -138,7 +149,7 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
-            HashSet<string> dependents = new HashSet<string>();
+            ISet<string> dependents = new HashSet<string>();
             string originalname = name;
             name = name.ToLower();
 
@@ -147,7 +158,6 @@ namespace SS
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
-                GetCellsToRecalculate(name);
             }
             else
             {
@@ -160,12 +170,10 @@ namespace SS
                     dgGraph.AddDependency(dependee, name);//add it to the dependencyGraph
                 }
             }
-            dependents = GetDirectandIndirectDependencies(name);
-            /*
-            foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
-                dependents.Add(i);//add them to the Hashset
-            }*/
+                dependents.Add(i);
+            }
             return dependents;//Return the hashset
         }
         /// <summary>
@@ -182,7 +190,7 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, string text)
         {
-            HashSet<string> resultant = new HashSet<string>();
+            ISet<string> resultant = new HashSet<string>();
             string originalname = name;
             name = name.ToLower();
             isValid(name);
@@ -190,30 +198,25 @@ namespace SS
             {
                 throw new ArgumentNullException();
             }
-            if (cellTable.ContainsKey(name))
+            if (cellTable.ContainsKey(name))//Check if cell in question exists. If it does, rewrite its contents
             {
                 cellTable[name].contents = text;
             }
             else
             {
-                cellTable.Add(name, new Cell(originalname, text));
+                cellTable.Add(name, new Cell(originalname, text));//Otherwise, create a new cell
             }
-            foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            foreach (string i in GetCellsToRecalculate(name))//Get ISet of cells who depend on the change
             {
-                resultant.Add(i);//add them to the Hashset
+                resultant.Add(i);
             }
             return resultant;
         }
         /// <summary>
-        /// If formula parameter is null, throws an ArgumentNullException.
+        /// If name is null or invalid, throws an InvalidNameException.
         /// 
-        /// Otherwise, if name is null or invalid, throws an InvalidNameException.
-        /// 
-        /// Otherwise, if changing the contents of the named cell to be the formula would cause a 
-        /// circular dependency, throws a CircularException.
-        /// 
-        /// Otherwise, the contents of the named cell becomes formula.  The method returns a
-        /// Set consisting of name plus the names of all other cells whose value depends,
+        /// Otherwise, the contents of the named cell becomes number.  The method returns a
+        /// set consisting of name plus the names of all other cells whose value depends, 
         /// directly or indirectly, on the named cell.
         /// 
         /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
@@ -221,21 +224,21 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, double number)
         {
-            HashSet<string> resultant = new HashSet<string>();
+            ISet<string> resultant = new HashSet<string>();
             string originalname = name;
             name = name.ToLower();
             isValid(name);
-            if (cellTable.ContainsKey(name))
+            if (cellTable.ContainsKey(name))//Check that cellTable contains the cell in question
             {
-                cellTable[name].contents = number;
+                cellTable[name].contents = number;//if it does, rewrite its contents
             }
             else
             {
-                cellTable.Add(name, new Cell(originalname, number));
+                cellTable.Add(name, new Cell(originalname, number));//otherwise make a new cell and assign the value
             }
-            foreach (string i in dgGraph.GetDependents(name))//iterate through the dependents under the current cell named
+            foreach (string i in GetCellsToRecalculate(name))//Recalculate all cells that depend on the change
             {
-                resultant.Add(i);//add them to the Hashset
+                resultant.Add(i);
             }
             return resultant;
         }
@@ -284,6 +287,7 @@ namespace SS
                 throw new InvalidNameException();
             }
         }
+        /*
         private HashSet<string> GetDirectandIndirectDependencies(string name)
         {
             List<string> current = new List<string>();
@@ -310,5 +314,6 @@ namespace SS
             }
             return results;
         }
+        */
     }
 }
