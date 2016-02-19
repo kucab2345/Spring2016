@@ -167,7 +167,7 @@ namespace SS
                 {
                     if (isValid(token) == true)//check that the variable returned is in fact a cell name
                     {
-                        dgGraph.RemoveDependency(name,token);//remove the dependency to old cells
+                        dgGraph.RemoveDependency(token,name);//remove the dependency to old cells
                     }
                 }
                 cellTable[name].contents = formula; //set the named cell's contents to the formula
@@ -175,7 +175,7 @@ namespace SS
                 {
                     if(isValid(token) == true)
                     {
-                        dgGraph.AddDependency(name,token);//create the new dependencies
+                        dgGraph.AddDependency(token,name);//create the new dependencies
                     }
                 }
             }
@@ -186,7 +186,7 @@ namespace SS
                 {
                     if(isValid(i))
                     {
-                        dgGraph.AddDependency(name,i);//Add new dependencies for each referenced cell
+                        dgGraph.AddDependency(i,name);//Add new dependencies for each referenced cell
                     }
                 }
                 
