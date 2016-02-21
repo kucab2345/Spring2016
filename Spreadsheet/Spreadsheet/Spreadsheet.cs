@@ -44,6 +44,15 @@ namespace SS
         public Cell(string cell_name)
         {
             name = cell_name;
+            contents = "";
+        }
+        /// <summary>
+        /// Empty cell with no name. Empty string;
+        /// </summary>
+        public Cell()
+        {
+            name = "";
+            contents = "";
         }
     }
     /// <summary>
@@ -159,7 +168,7 @@ namespace SS
             string originalname = name;
             name = name.ToUpper();
 
-            if (cellTable.ContainsKey(name))//if cellTable contains the named cell
+            if (cellTable.ContainsKey(name) && cellTable[name].contents is Formula)//if cellTable contains the named cell
             {
                 Formula original = (Formula)cellTable[name].contents;
                 foreach (string token in original.GetVariables())//get the variables
@@ -176,11 +185,13 @@ namespace SS
                         dgGraph.AddDependency(token,name);//create the new dependencies
                     }
                 }
-                cellTable[name].contents = formula; //set the named cell's contents to the formula
             }
             else
             {
-                cellTable.Add(name, new Cell(originalname, formula));//otherwise create a new cell, construct it w the name and formula passed to the method
+                if (!cellTable.ContainsKey(name))
+                {
+                    cellTable.Add(name, new Cell(originalname));//otherwise create a new cell, construct it w the name and formula passed to the method
+                }
                 foreach(string i in formula.GetVariables())
                 {
                     if(isValid(i))
@@ -189,11 +200,14 @@ namespace SS
                     }
                 }
             }
+
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
                 dependents.Add(i);
             }
 
+            cellTable[name].contents = formula; //set the named cell's contents to the formula
+           
             return dependents;//Return the hashset
         }
         /// <summary>
