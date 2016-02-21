@@ -13,7 +13,6 @@ namespace SS
     /// <summary>
     /// Cell class holds three variables, name, contents, and value. The name field preserves the case sensitivity of the user-inputted cell name. 
     /// Standard constructor allows the cell to be name with a cell_name, and a cell_contents.
-    /// 
     /// </summary>
     public class Cell
     {
@@ -56,6 +55,7 @@ namespace SS
             contents = "";
         }
     }
+    
     /// <summary>
     /// An AbstractSpreadsheet object represents the state of a simple spreadsheet.  A 
     /// spreadsheet consists of an infinite number of named cells.
@@ -102,15 +102,36 @@ namespace SS
     /// </summary>
     public class Spreadsheet : AbstractSpreadsheet
     {
+        /// <summary>
+        /// Dictionary that maps strings of names to the cells
+        /// </summary>
         Dictionary<string, Cell> cellTable = new Dictionary<string, Cell>();
+        /// <summary>
+        /// DependencyGraph that maps the dependencies of the formulas encapsulated in each cell
+        /// </summary>
         DependencyGraph dgGraph = new DependencyGraph();
+
+        private Regex IsValid;
         /// <summary>
         /// Creates a new spreadsheet object, empty.
         /// </summary>
         public Spreadsheet()
         {
+            IsValid = new Regex(".*?");
         }
-
+        /// <summary>
+        /// Creates a new spreadsheet object that adhears to the naming principles of the Regex constraints
+        /// </summary>
+        /// <param name="isValid"></param>
+        public Spreadsheet(Regex isValid)
+        {
+            IsValid = isValid;
+        }
+        // ADDED FOR PS6
+        /// <summary>
+        /// True if this spreadsheet has been modified since it was created or saved
+        /// (whichever happened most recently); false otherwise.
+        /// </summary>
         public override bool Changed
         {
             get
@@ -132,7 +153,7 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
-            isValid(name);
+            isValidName(name);
             name = name.ToUpper();
             if (!cellTable.ContainsKey(name))
             {
@@ -148,10 +169,26 @@ namespace SS
                 throw new InvalidNameException();
             }
         }
-
+        // ADDED FOR PS6
+        /// <summary>
+        /// If name is null or invalid, throws an InvalidNameException.
+        ///
+        /// Otherwise, returns the value (as opposed to the contents) of the named cell.  The return
+        /// value should be either a string, a double, or a FormulaError.
+        /// </summary>
         public override object GetCellValue(string name)
         {
-            throw new NotImplementedException();
+            isValidName(name);
+            string originalname = name;
+            name = name.ToUpper();
+
+            HashSet<string> dependents = new HashSet<string>();
+
+            foreach(string i in GetCellsToRecalculate(name))
+            {
+                dependents.Add(i);
+            }
+            
         }
 
         /// <summary>
@@ -167,7 +204,26 @@ namespace SS
                 }
             }
         }
-
+        // ADDED FOR PS6
+        /// <summary>
+        /// Writes the contents of this spreadsheet to dest using an XML format.
+        /// The XML elements should be structured as follows:
+        ///
+        /// <spreadsheet IsValid="IsValid regex goes here">
+        ///   <cell name="cell name goes here" contents="cell contents go here"></cell>
+        ///   <cell name="cell name goes here" contents="cell contents go here"></cell>
+        ///   <cell name="cell name goes here" contents="cell contents go here"></cell>
+        /// </spreadsheet>
+        ///
+        /// The value of the isvalid attribute should be IsValid.ToString()
+        /// 
+        /// There should be one cell element for each non-empty cell in the spreadsheet.
+        /// If the cell contains a string, the string (without surrounding double quotes) should be written as the contents.
+        /// If the cell contains a double d, d.ToString() should be written as the contents.
+        /// If the cell contains a Formula f, f.ToString() with "=" prepended should be written as the contents.
+        ///
+        /// If there are any problems writing to dest, the method should throw an IOException.
+        /// </summary>
         public override void Save(TextWriter dest)
         {
             throw new NotImplementedException();
@@ -191,7 +247,7 @@ namespace SS
         protected override ISet<string> SetCellContents(string name, Formula formula)
         {
             ISet<string> dependents = new HashSet<string>();
-            isValid(name);
+            isValidName(name);
             string originalname = name;
             name = name.ToUpper();
 
@@ -200,14 +256,14 @@ namespace SS
                 Formula original = (Formula)cellTable[name].contents;
                 foreach (string token in original.GetVariables())//get the variables
                 {
-                    if (isValid(token) == true)//check that the variable returned is in fact a cell name
+                    if (isValidName(token) == true)//check that the variable returned is in fact a cell name
                     {
                         dgGraph.RemoveDependency(token,name);//remove the dependency to old cells
                     }
                 }
                 foreach (string token in formula.GetVariables())
                 {
-                    if(isValid(token) == true)
+                    if(isValidName(token) == true)
                     {
                         dgGraph.AddDependency(token,name);//create the new dependencies
                     }
@@ -221,7 +277,7 @@ namespace SS
                 }
                 foreach(string i in formula.GetVariables())
                 {
-                    if(isValid(i))
+                    if(isValidName(i))
                     {
                         dgGraph.AddDependency(i,name);//Add new dependencies for each referenced cell
                     }
@@ -251,7 +307,7 @@ namespace SS
         /// </summary>
         protected override ISet<string> SetCellContents(string name, string text)
         {
-            isValid(name);
+            isValidName(name);
             ISet<string> resultant = new HashSet<string>();
             string originalname = name;
             name = name.ToUpper();
@@ -285,7 +341,7 @@ namespace SS
         /// </summary>
         protected override ISet<string> SetCellContents(string name, double number)
         {
-            isValid(name);
+            isValidName(name);
             ISet<string> resultant = new HashSet<string>();
             string originalname = name;
             name = name.ToUpper();
@@ -342,7 +398,7 @@ namespace SS
                 throw new ArgumentNullException();
             }
 
-            isValid(name);
+            isValidName(name);
             string originalname = name;
             name = name.ToUpper();
 
@@ -358,7 +414,7 @@ namespace SS
                 string remainder = content;
                 remainder.Remove(0);
 
-                result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValid(s)));
+                result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValidName(s)));
             }
             else
             {
@@ -386,7 +442,7 @@ namespace SS
         /// </summary>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            isValid(name);
+            isValidName(name);
             name = name.ToUpper();
             foreach (string child in dgGraph.GetDependents(name))
             {
@@ -398,7 +454,7 @@ namespace SS
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private bool isValid(string name)
+        private bool isValidName(string name)
         {
             Regex re = new Regex(@"^[A-Z]+[1-9][0-9]*$");
             if (name == null)
