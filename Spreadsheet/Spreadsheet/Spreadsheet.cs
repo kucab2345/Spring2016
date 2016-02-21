@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Formulas;
 using Dependencies;
+using System.IO;
 
 namespace SS
 {
@@ -109,6 +110,20 @@ namespace SS
         public Spreadsheet()
         {
         }
+
+        public override bool Changed
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            protected set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
         /// 
@@ -133,6 +148,12 @@ namespace SS
                 throw new InvalidNameException();
             }
         }
+
+        public override object GetCellValue(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Enumerates the names of all the non-empty cells in the spreadsheet.
         /// </summary>
@@ -146,6 +167,12 @@ namespace SS
                 }
             }
         }
+
+        public override void Save(TextWriter dest)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// If formula parameter is null, throws an ArgumentNullException.
         /// 
@@ -161,7 +188,7 @@ namespace SS
         /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
         /// set {A1, B1, C1} is returned.
         /// </summary>
-        public override ISet<string> SetCellContents(string name, Formula formula)
+        protected override ISet<string> SetCellContents(string name, Formula formula)
         {
             ISet<string> dependents = new HashSet<string>();
             isValid(name);
@@ -222,7 +249,7 @@ namespace SS
         /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
         /// set {A1, B1, C1} is returned.
         /// </summary>
-        public override ISet<string> SetCellContents(string name, string text)
+        protected override ISet<string> SetCellContents(string name, string text)
         {
             isValid(name);
             ISet<string> resultant = new HashSet<string>();
@@ -256,7 +283,7 @@ namespace SS
         /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
         /// set {A1, B1, C1} is returned.
         /// </summary>
-        public override ISet<string> SetCellContents(string name, double number)
+        protected override ISet<string> SetCellContents(string name, double number)
         {
             isValid(name);
             ISet<string> resultant = new HashSet<string>();
@@ -276,6 +303,70 @@ namespace SS
             }
             return resultant;
         }
+        // ADDED FOR PS6
+        /// <summary>
+        /// If content is null, throws an ArgumentNullException.
+        ///
+        /// Otherwise, if name is null or invalid, throws an InvalidNameException.
+        ///
+        /// Otherwise, if content parses as a double, the contents of the named
+        /// cell becomes that double.
+        ///
+        /// Otherwise, if content begins with the character '=', an attempt is made
+        /// to parse the remainder of content into a Formula f using the Formula
+        /// constructor with s => s.ToUpper() as the normalizer and a validator that
+        /// checks that s is a valid cell name as defined in the AbstractSpreadsheet
+        /// class comment.  There are then three possibilities:
+        ///
+        ///   (1) If the remainder of content cannot be parsed into a Formula, a
+        ///       Formulas.FormulaFormatException is thrown.
+        ///
+        ///   (2) Otherwise, if changing the contents of the named cell to be f
+        ///       would cause a circular dependency, a CircularException is thrown.
+        ///
+        ///   (3) Otherwise, the contents of the named cell becomes f.
+        ///
+        /// Otherwise, the contents of the named cell becomes content.
+        ///
+        /// If an exception is not thrown, the method returns a set consisting of
+        /// name plus the names of all other cells whose value depends, directly
+        /// or indirectly, on the named cell.
+        ///
+        /// For example, if name is A1, B1 contains A1*2, and C1 contains B1+A1, the
+        /// set {A1, B1, C1} is returned.
+        /// </summary>
+        public override ISet<string> SetContentsOfCell(string name, string content)
+        {
+            if(content == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            isValid(name);
+            string originalname = name;
+            name = name.ToUpper();
+
+            ISet<string> result;
+
+            double test = 0;
+            if(double.TryParse(content, out test))
+            {
+                result = SetCellContents(name, test);
+            }
+            else if(content[0] == '=')
+            {
+                string remainder = content;
+                remainder.Remove(0);
+
+                result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValid(s)));
+            }
+            else
+            {
+                result = SetCellContents(name, content);
+            }
+            return result;
+        }
+
         /// <summary>
         /// If name is null, throws an ArgumentNullException.
         /// 
