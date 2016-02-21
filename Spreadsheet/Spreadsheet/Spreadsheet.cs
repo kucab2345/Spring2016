@@ -108,8 +108,8 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
-            name = name.ToLower();
             isValid(name);
+            name = name.ToUpper();
             if (!cellTable.ContainsKey(name))
             {
                 object emptyStringCell = "";
@@ -131,7 +131,7 @@ namespace SS
         {
             foreach (KeyValuePair<string, Cell> cell in cellTable)//go through all cells
             {
-                if (cell.Value.contents != null)//if a cell's value is not null, yield return it's name
+                if (!(cell.Value.contents is string) || (string)cell.Value.contents != "")//if a cell's value is not null, yield return it's name
                 {
                     yield return cell.Value.name;
                 }
@@ -155,10 +155,9 @@ namespace SS
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
             ISet<string> dependents = new HashSet<string>();
-            string originalname = name;
-            name = name.ToLower();
-
             isValid(name);
+            string originalname = name;
+            name = name.ToUpper();
 
             if (cellTable.ContainsKey(name))//if cellTable contains the named cell
             {
@@ -170,14 +169,14 @@ namespace SS
                         dgGraph.RemoveDependency(token,name);//remove the dependency to old cells
                     }
                 }
-                cellTable[name].contents = formula; //set the named cell's contents to the formula
-                foreach(string token in formula.GetVariables())
+                foreach (string token in formula.GetVariables())
                 {
                     if(isValid(token) == true)
                     {
                         dgGraph.AddDependency(token,name);//create the new dependencies
                     }
                 }
+                cellTable[name].contents = formula; //set the named cell's contents to the formula
             }
             else
             {
@@ -189,13 +188,12 @@ namespace SS
                         dgGraph.AddDependency(i,name);//Add new dependencies for each referenced cell
                     }
                 }
-                
             }
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
                 dependents.Add(i);
             }
-            
+
             return dependents;//Return the hashset
         }
         /// <summary>
@@ -212,10 +210,10 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, string text)
         {
+            isValid(name);
             ISet<string> resultant = new HashSet<string>();
             string originalname = name;
-            name = name.ToLower();
-            isValid(name);
+            name = name.ToUpper();
             if (text == null)
             {
                 throw new ArgumentNullException();
@@ -246,10 +244,10 @@ namespace SS
         /// </summary>
         public override ISet<string> SetCellContents(string name, double number)
         {
+            isValid(name);
             ISet<string> resultant = new HashSet<string>();
             string originalname = name;
-            name = name.ToLower();
-            isValid(name);
+            name = name.ToUpper();
             if (cellTable.ContainsKey(name))//Check that cellTable contains the cell in question
             {
                 cellTable[name].contents = number;//if it does, rewrite its contents
@@ -283,8 +281,8 @@ namespace SS
         /// </summary>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            name = name.ToLower();
             isValid(name);
+            name = name.ToUpper();
             foreach (string child in dgGraph.GetDependents(name))
             {
                 yield return child;
@@ -297,9 +295,12 @@ namespace SS
         /// <returns></returns>
         private bool isValid(string name)
         {
-            name = name.ToLower();
-            Regex re = new Regex(@"^[a-z]+[1-9][0-9]*$");
-
+            Regex re = new Regex(@"^[A-Z]+[1-9][0-9]*$");
+            if (name == null)
+            {
+                throw new InvalidNameException();
+            }
+            name = name.ToUpper();
             if (re.IsMatch(name))
             {
                 return true;
