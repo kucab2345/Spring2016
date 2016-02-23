@@ -182,26 +182,44 @@ namespace SS
             string originalname = name;
             name = name.ToUpper();
 
-            //if the currently named cell's contents is of string or double type, simply set the value as the contents
-            if(cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))
+            //check to see if named cell exists
+            if (cellTable.ContainsKey(name))
             {
-                //cellTable[name].value = cellTable[name].contents;
-                if(cellTable[name].contents is string)
-                {
-                    return (string)cellTable[name].contents;
-                }
-                else
-                {
-                    return (double)cellTable[name].contents;
-                }
+                return cellTable[name].value;
             }
-            else//otherwise, the cells contents is a formula. Now it must be evaluated.
+            else
             {
-                if(!dgGraph.HasDependents(name))//if the current formula cell has no dependents, just evaluate it and set the value
+                SetCellContents(name,"");
+                return "";
+            }
+        }
+        private void SetCellValue(Dictionary<string, Cell> cellDictionary, string name)
+        {
+            if (cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))//if the content that needs to be valued is a double or string, just copy it to value
+            {
+                cellTable[name].value = cellTable[name].contents;
+            }
+            else if(cellTable[name].contents is Formula)//if the contents is of a formula type
+            {
+                try
                 {
-                    Formula f = new Formula((string)cellTable[name].contents);//Get the current formula cell's content, cast as string, and construct a formula from it
-                    //cellTable[name].value = f.Evaluate(s => 0);//evaluate it, with no lookups to consider
-                    return f.Evaluate(s => 0); 
+                    Formula f = (Formula)cellTable[name].contents;//cast it as a formula object
+                    cellTable[name].value = f.Evaluate(s=> (double)cellDictionary[s].value);//evaluate it and set that cell's value to the evaluated double
+                }
+                catch (Exception e)//caatch and handle any exceptions.
+                {
+                    if(e is FormulaFormatException)
+                    {
+                        cellTable[name].value = new FormulaError("Formula Format Exception");
+                    }
+                    else if(e is CircularException)
+                    {
+                        cellTable[name].value = new FormulaError("Circular Exception");
+                    }
+                    else if(e is FormulaEvaluationException)
+                    {
+                        cellTable[name].value = new FormulaError("Formula Evaluation Exception");
+                    }
                 }
             }
         }
@@ -302,10 +320,11 @@ namespace SS
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
                 dependents.Add(i);
+                
             }
 
             cellTable[name].contents = formula; //set the named cell's contents to the formula
-           
+            
             return dependents;//Return the hashset
         }
         /// <summary>
@@ -435,6 +454,11 @@ namespace SS
             {
                 result = SetCellContents(name, content);
             }
+            foreach(string i in result)
+            {
+                SetCellValue(cellTable, name);
+            }
+            Changed = true;//A cell's contents changed. No longer consistent since last save.
             return result;
         }
 
