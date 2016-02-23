@@ -182,13 +182,28 @@ namespace SS
             string originalname = name;
             name = name.ToUpper();
 
-            HashSet<string> dependents = new HashSet<string>();
-
-            foreach(string i in GetCellsToRecalculate(name))
+            //if the currently named cell's contents is of string or double type, simply set the value as the contents
+            if(cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))
             {
-                dependents.Add(i);
+                //cellTable[name].value = cellTable[name].contents;
+                if(cellTable[name].contents is string)
+                {
+                    return (string)cellTable[name].contents;
+                }
+                else
+                {
+                    return (double)cellTable[name].contents;
+                }
             }
-            
+            else//otherwise, the cells contents is a formula. Now it must be evaluated.
+            {
+                if(!dgGraph.HasDependents(name))//if the current formula cell has no dependents, just evaluate it and set the value
+                {
+                    Formula f = new Formula((string)cellTable[name].contents);//Get the current formula cell's content, cast as string, and construct a formula from it
+                    //cellTable[name].value = f.Evaluate(s => 0);//evaluate it, with no lookups to consider
+                    return f.Evaluate(s => 0); 
+                }
+            }
         }
 
         /// <summary>
