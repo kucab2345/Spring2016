@@ -26,7 +26,7 @@ namespace CellSpreadSheetTests
         public void SS2()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a1", 100);
+            sheet.SetContentsOfCell("a1", "100");
 
             object test = (double)100;
             object result = sheet.GetCellContents("a1");
@@ -41,7 +41,7 @@ namespace CellSpreadSheetTests
         public void SS3()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a1", 100);
+            sheet.SetContentsOfCell("a1", "100");
 
             object test = 100.00;
             object result = sheet.GetCellContents("A1");
@@ -56,7 +56,7 @@ namespace CellSpreadSheetTests
         public void SS4()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("A1", 100);
+            sheet.SetContentsOfCell("A1", "100");
 
             object test = 100.00;
             object result = sheet.GetCellContents("a1");
@@ -71,7 +71,7 @@ namespace CellSpreadSheetTests
         public void SS5()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("A1", 100);
+            sheet.SetContentsOfCell("A1", "100");
 
             object test = 100.00;
             object result = sheet.GetCellContents("A1");
@@ -85,7 +85,7 @@ namespace CellSpreadSheetTests
         public void SS6()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("A1", 100);
+            sheet.SetContentsOfCell("A1", "100");
 
             object test = 100.00;
             object result = sheet.GetCellContents("B01");
@@ -99,7 +99,7 @@ namespace CellSpreadSheetTests
         public void SS7()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("11", 100);
+            sheet.SetContentsOfCell("11", "100");
         }
         /// <summary>
         /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
@@ -109,7 +109,7 @@ namespace CellSpreadSheetTests
         public void SS8()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a0", 100);
+            sheet.SetContentsOfCell("a0", "100");
         }
         /// <summary>
         /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
@@ -119,7 +119,7 @@ namespace CellSpreadSheetTests
         public void SS9()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a1a", 100);
+            sheet.SetContentsOfCell("a1a", "100");
         }
         /// <summary>
         /// Invalid cell name. Should throw Invalid name exception. Testing the Regex 
@@ -129,7 +129,7 @@ namespace CellSpreadSheetTests
         public void SS10()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("0a5", 100);
+            sheet.SetContentsOfCell("0a5", "100");
         }
         /// <summary>
         /// Makes an empty spreadsheet and adds cell with contents of a string.
@@ -139,7 +139,7 @@ namespace CellSpreadSheetTests
         public void SS11()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a1", "This is the string");
+            sheet.SetContentsOfCell("a1", "This is the string");
 
             object test = "This is the string";
             object result = sheet.GetCellContents("a1");
@@ -155,15 +155,15 @@ namespace CellSpreadSheetTests
         public void SS12()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            Formula f = new Formula("2 + 3");
-            sheet.SetCellContents("F32", f);
-            sheet.SetCellContents("a1", "This is the string");
+            Formula f = new Formula("=2 + 3");
+            sheet.SetContentsOfCell("F32", "f");
+            sheet.SetContentsOfCell("a1", "This is the string");
 
             object stringtest = (string)"This is the string";
             object formula = (string)f.ToString();
 
             Assert.AreEqual(stringtest, sheet.GetCellContents("a1"));
-            Assert.AreEqual(formula, "2+3");
+            Assert.AreEqual(formula, "=2+3");
 
             List<string> cells = new List<string>();
             List<string> results = new List<string>();
@@ -188,11 +188,11 @@ namespace CellSpreadSheetTests
         public void SS13()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
-            sheet.SetCellContents("a1", "This is the string");
-            sheet.SetCellContents("a1", "Rewriting the string");
-            sheet.SetCellContents("b3", "This is the string1");
-            sheet.SetCellContents("V2", "This is the string2");
-            sheet.SetCellContents("N19", "This is the string3");
+            sheet.SetContentsOfCell("a1", "This is the string");
+            sheet.SetContentsOfCell("a1", "Rewriting the string");
+            sheet.SetContentsOfCell("b3", "This is the string1");
+            sheet.SetContentsOfCell("V2", "This is the string2");
+            sheet.SetContentsOfCell("N19", "This is the string3");
 
             List<string> actualnames = new List<string>();
             List<string> returnednames = new List<string>();
@@ -224,9 +224,9 @@ namespace CellSpreadSheetTests
             Formula f1 = new Formula("c1 * 5");
             Formula f2 = new Formula("b1 * a1");
 
-            sheet.SetCellContents("a1", f0);
-            sheet.SetCellContents("b1", f1);
-            sheet.SetCellContents("c1", f2);
+            sheet.SetContentsOfCell("a1", "f0");
+            sheet.SetContentsOfCell("b1", "f1");
+            sheet.SetContentsOfCell("c1", "f2");
         }
         /// <summary>
         /// Makes an empty spreadsheet and adds cells with contents.
@@ -240,11 +240,11 @@ namespace CellSpreadSheetTests
             Formula f0 = new Formula("b1 + 3");
             Formula f1 = new Formula("c1 * 5");
 
-            sheet.SetCellContents("a1", f0);
-            sheet.SetCellContents("b1", f1);
+            sheet.SetContentsOfCell("a1", "f0");
+            sheet.SetContentsOfCell("b1", "f1");
 
             Formula f2 = new Formula("4+5");
-            sheet.SetCellContents("b1", f2);
+            sheet.SetContentsOfCell("b1", "f2");
 
             object emptystring = (string)"";
 
@@ -264,10 +264,10 @@ namespace CellSpreadSheetTests
             List<string> dependencies = new List<string>();
             HashSet<string> actual = new HashSet<string>();
 
-            sheet.SetCellContents("a1", f0);
-            sheet.SetCellContents("b1", f1);
-            sheet.SetCellContents("b2", f2);
-            actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
+            sheet.SetContentsOfCell("a1", "f0");
+            sheet.SetContentsOfCell("b1", "f1");
+            sheet.SetContentsOfCell("b2", "f2");
+            actual = (HashSet<string>)sheet.SetContentsOfCell("c1", "End of dependencies");
 
             dependencies.Add("c1");
             dependencies.Add("b2");
@@ -296,10 +296,10 @@ namespace CellSpreadSheetTests
             List<string> dependencies = new List<string>();
             HashSet<string> actual = new HashSet<string>();
 
-            sheet.SetCellContents("a1", f0);
-            sheet.SetCellContents("b1", f1);
-            sheet.SetCellContents("b2", f2);
-            actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
+            sheet.SetContentsOfCell("a1", "f0");
+            sheet.SetContentsOfCell("b1", "f1");
+            sheet.SetContentsOfCell("b2", "f2");
+            actual = (HashSet<string>)sheet.SetContentsOfCell("c1", "End of dependencies");
 
             dependencies.Add("");
             dependencies.Add("");
@@ -333,8 +333,8 @@ namespace CellSpreadSheetTests
             secondCheck.Add("a1");
             secondCheck.Add("f1");
 
-            sheet.SetCellContents("a2", "hi");
-            dependents = (HashSet<string>)sheet.SetCellContents("a1", f0);
+            sheet.SetContentsOfCell("a2", "hi");
+            dependents = (HashSet<string>)sheet.SetContentsOfCell("a1", "f0");
 
             int count = 0;
             foreach(string i in dependents)
@@ -345,7 +345,7 @@ namespace CellSpreadSheetTests
 
             dependents.Clear();
 
-            dependents = (HashSet<string>)sheet.SetCellContents("a1", f1);
+            dependents = (HashSet<string>)sheet.SetContentsOfCell("a1", "f1");
 
             count = 0;
             foreach (string i in dependents)
