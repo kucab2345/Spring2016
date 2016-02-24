@@ -363,12 +363,11 @@ namespace GradingTests
             s.SetContentsOfCell("D4", "=E2");
             s.SetContentsOfCell("D8", "=E2");
 
-            TextWriter test = new StreamWriter("../../text.xml");
-
-            s.Save(test);
+            using (TextWriter test = File.CreateText("C:\\Users\\kucab2345\\Desktop\\text.xml"))
+            {
+                s.Save(test);
+            }
             
-            
-
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }
         [TestMethod()]

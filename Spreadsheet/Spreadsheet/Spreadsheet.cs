@@ -286,10 +286,11 @@ namespace SS
         /// </summary>
         public override void Save(TextWriter dest)
         {
-            using (XmlWriter writer = XmlWriter.Create("../../Spreadsheet.xml"))
+            using (XmlWriter writer = XmlWriter.Create(dest))
             {
                 writer.WriteStartDocument();
-                writer.WriteStartElement("Spreadsheet");
+                writer.WriteStartElement("spreadsheet");
+                writer.WriteAttributeString("IsValid",IsValid.ToString());
 
                 List<string> AllCells = new List<string>();
                 foreach (string i in GetNamesOfAllNonemptyCells())//Get names of all non empty cells and store them in the list
@@ -299,22 +300,25 @@ namespace SS
 
                 foreach(string i in AllCells)
                 {
-                    //writer.WriteStartElement("");
+                    writer.WriteStartElement("cell");
+                    writer.WriteAttributeString("name",i);
                     if(cellTable[i].contents is string)
                     {
-                        writer.WriteElementString("cell name=",cellTable[i].name);
-                        writer.WriteAttributeString("contents=",(string)cellTable[i].contents);
+                        writer.WriteAttributeString("contents",(string)cellTable[i].contents);
                     }
                     else if(cellTable[i].contents is double)
                     {
-                        writer.WriteElementString("cell name=",cellTable[i].name);
-                        writer.WriteAttributeString("contents=",cellTable[i].contents.ToString());
+                        writer.WriteAttributeString("contents",cellTable[i].contents.ToString());
                     }
-                    else if(cellTable[i].contents is Formula)
+                    else if(cellTable[i].contents is Formula)//What if it is a formula error?
                     {
-                        writer.WriteElementString("cell name=",cellTable[i].name);
-                        writer.WriteAttributeString("contents=",cellTable[i].contents.ToString());
+                        writer.WriteAttributeString("contents","="+cellTable[i].contents.ToString());
                     }
+                    else if(cellTable[i].contents is FormulaError)
+                    {
+                        writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
+                    }
+                    writer.WriteEndElement();
                 }
 
                 writer.WriteEndElement();
