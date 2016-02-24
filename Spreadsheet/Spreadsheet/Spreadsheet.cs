@@ -37,6 +37,7 @@ namespace SS
         {
             name = cell_name;
             contents = cell_contents;
+            value = cell_contents;
         }
         /// <summary>
         /// Empty cell constructor. Name requires, but contents are not
@@ -45,6 +46,7 @@ namespace SS
         {
             name = cell_name;
             contents = "";
+            value = "";
         }
         /// <summary>
         /// Empty cell with no name. Empty string;
@@ -53,6 +55,7 @@ namespace SS
         {
             name = "";
             contents = "";
+            value = "";
         }
     }
     
@@ -185,6 +188,14 @@ namespace SS
             //check to see if named cell exists
             if (cellTable.ContainsKey(name))
             {
+                if(cellTable[name].contents is string)
+                {
+                    cellTable[name].value = (string)cellTable[name].contents;
+                }
+                else if(cellTable[name].contents is double)
+                {
+                    cellTable[name].value = (double)cellTable[name].contents;
+                }
                 return cellTable[name].value;
             }
             else
@@ -193,8 +204,9 @@ namespace SS
                 return "";
             }
         }
-        private void SetCellValue(Dictionary<string, Cell> cellDictionary, string name)
+        private void SetCellValue(string name)
         {
+            
             if (cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))//if the content that needs to be valued is a double or string, just copy it to value
             {
                 cellTable[name].value = cellTable[name].contents;
@@ -204,7 +216,7 @@ namespace SS
                 try
                 {
                     Formula f = (Formula)cellTable[name].contents;//cast it as a formula object
-                    cellTable[name].value = f.Evaluate(s=> (double)cellDictionary[s].value);//evaluate it and set that cell's value to the evaluated double
+                    cellTable[name].value = f.Evaluate(s=> lookupHelper(s));//evaluate it and set that cell's value to the evaluated double
                 }
                 catch (Exception e)//caatch and handle any exceptions.
                 {
@@ -222,8 +234,15 @@ namespace SS
                     }
                 }
             }
+        } 
+        private double lookupHelper(string name)
+        {
+            if(!(cellTable[name].contents is double) && !(cellTable[name].contents is Formula))//catches invalid lookups and undefined variable exceptions
+            {
+                throw new UndefinedVariableException(name);
+            }
+            return (double)cellTable[name].value;
         }
-
         /// <summary>
         /// Enumerates the names of all the non-empty cells in the spreadsheet.
         /// </summary>
@@ -446,7 +465,7 @@ namespace SS
             else if(content[0] == '=')
             {
                 string remainder = content;
-                remainder.Remove(0);
+                remainder = remainder.Remove(0,1);
 
                 result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValidName(s)));
             }
@@ -456,9 +475,9 @@ namespace SS
             }
             foreach(string i in result)
             {
-                SetCellValue(cellTable, name);
+                SetCellValue(i);
             }
-            Changed = true;//A cell's contents changed. No longer consistent since last save.
+            //Changed = true;//A cell's contents changed. No longer consistent since last save.
             return result;
         }
 
