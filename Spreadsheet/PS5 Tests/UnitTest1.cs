@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Formulas;
-
+using System.IO;
 namespace GradingTests
 {
     /// <summary>
@@ -365,11 +365,11 @@ namespace GradingTests
             s.SetContentsOfCell("D4", "=E2");
             s.SetContentsOfCell("D8", "=E2");
 
-            double answer = (double)s.GetCellValue("A1");
+            TextWriter test = new StreamWriter("../../text.xml");
 
-            Assert.AreEqual(answer, 265.00);
-
-            s.Save();
+            s.Save(test);
+            
+            
 
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }/*

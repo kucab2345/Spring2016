@@ -302,21 +302,19 @@ namespace SS
                     //writer.WriteStartElement("");
                     if(cellTable[i].contents is string)
                     {
-                        writer.WriteAttributeString("cell name=", cellTable[i].name);
-                        writer.WriteAttributeString("contents=", (string)cellTable[i].contents);
+                        writer.WriteElementString("cell name=",cellTable[i].name);
+                        writer.WriteAttributeString("contents=",(string)cellTable[i].contents);
                     }
                     else if(cellTable[i].contents is double)
                     {
-                        writer.WriteAttributeString("cell name=", cellTable[i].name);
-                        writer.WriteAttributeString("contents=", cellTable[i].contents.ToString());
+                        writer.WriteElementString("cell name=",cellTable[i].name);
+                        writer.WriteAttributeString("contents=",cellTable[i].contents.ToString());
                     }
                     else if(cellTable[i].contents is Formula)
                     {
-
+                        writer.WriteElementString("cell name=",cellTable[i].name);
+                        writer.WriteAttributeString("contents=",cellTable[i].contents.ToString());
                     }
-                    writer.WriteElementString("Name", states[i]);
-                    writer.WriteElementString("Capital", capitals[i]);
-                    writer.WriteEndElement();
                 }
 
                 writer.WriteEndElement();
