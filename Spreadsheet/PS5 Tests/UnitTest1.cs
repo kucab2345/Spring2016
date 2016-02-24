@@ -303,7 +303,7 @@ namespace GradingTests
         {
             AbstractSpreadsheet s = new Spreadsheet();
             s.SetContentsOfCell("A1", "Hello");
-            s.SetContentsOfCell("A1", ("23"));
+            s.SetContentsOfCell("A1", ("=23"));
             Assert.AreEqual(23, ((Formula)s.GetCellContents("A1")).Evaluate(x => 0));
         }
         // STRESS TESTS

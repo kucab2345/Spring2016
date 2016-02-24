@@ -497,7 +497,11 @@ namespace SS
             ISet<string> result;
 
             double test = 0;
-            if(double.TryParse(content, out test))
+            if(content == "")
+            {
+                result = SetCellContents(name, "");
+            }
+            else if(double.TryParse(content, out test))
             {
                 result = SetCellContents(name, test);
             }
