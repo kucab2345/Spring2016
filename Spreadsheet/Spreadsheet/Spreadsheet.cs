@@ -139,12 +139,12 @@ namespace SS
         {
             get
             {
-                throw new NotImplementedException();
+                return Changed;
             }
 
             protected set
             {
-                throw new NotImplementedException();
+                Changed = value;
             }
         }
 
@@ -206,7 +206,6 @@ namespace SS
         }
         private void SetCellValue(string name)
         {
-            
             if (cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))//if the content that needs to be valued is a double or string, just copy it to value
             {
                 cellTable[name].value = cellTable[name].contents;
@@ -477,7 +476,7 @@ namespace SS
             {
                 SetCellValue(i);
             }
-            //Changed = true;//A cell's contents changed. No longer consistent since last save.
+            Changed = true;//A cell's contents changed. No longer consistent since last save.
             return result;
         }
 
