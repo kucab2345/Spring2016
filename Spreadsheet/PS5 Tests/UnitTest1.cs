@@ -339,6 +339,39 @@ namespace GradingTests
             Assert.AreEqual(answer, 265.00);
 
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
+        }
+        [TestMethod()]
+        public void Test31b()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
+            s.SetContentsOfCell("A1", "=B1+B2");
+            s.SetContentsOfCell("B1", "=C1-C2");
+            s.SetContentsOfCell("B2", "=C3*C4");
+            s.SetContentsOfCell("C1", "=D1*D2");
+            s.SetContentsOfCell("C2", "=D3*D4");
+            s.SetContentsOfCell("C3", "=D5*D6");
+            s.SetContentsOfCell("C4", "=D7*D8");
+            s.SetContentsOfCell("D1", "=E1");
+            s.SetContentsOfCell("D2", "=E1");
+            s.SetContentsOfCell("D3", "=E1");
+            s.SetContentsOfCell("D4", "=E1");
+            s.SetContentsOfCell("D5", "=E1");
+            s.SetContentsOfCell("D6", "=E1");
+            s.SetContentsOfCell("D7", "=E1");
+            s.SetContentsOfCell("D8", "=E1");
+
+            s.SetContentsOfCell("E1", "5.00");
+            s.SetContentsOfCell("E2", "2");
+            s.SetContentsOfCell("D4", "=E2");
+            s.SetContentsOfCell("D8", "=E2");
+
+            double answer = (double)s.GetCellValue("A1");
+
+            Assert.AreEqual(answer, 265.00);
+
+            s.Save();
+
+            //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }/*
         [TestMethod()]
         public void Test32()

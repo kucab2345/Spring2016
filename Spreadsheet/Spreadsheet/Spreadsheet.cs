@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Formulas;
 using Dependencies;
 using System.IO;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace SS
 {
@@ -113,10 +115,34 @@ namespace SS
         /// DependencyGraph that maps the dependencies of the formulas encapsulated in each cell
         /// </summary>
         DependencyGraph dgGraph = new DependencyGraph();
+        /// <summary>
+        /// Changed's method's boolean value. True by default.
+        /// </summary>
+        private bool ChangeBool = false;
 
         private Regex IsValid;
         /// <summary>
         /// Creates a new spreadsheet object, empty.
+        /// </summary>
+        /// // ADDED FOR PS6
+        /// <summary>
+        /// True if this spreadsheet has been modified since it was created or saved
+        /// (whichever happened most recently); false otherwise.
+        /// </summary>
+        public override bool Changed
+        {
+            get
+            {
+                return this.ChangeBool;
+            }
+
+            protected set
+            {
+                this.ChangeBool = value;
+            }
+        }
+        /// <summary>
+        /// Constructor with an empty regex IsValid parameter
         /// </summary>
         public Spreadsheet()
         {
@@ -130,24 +156,7 @@ namespace SS
         {
             IsValid = isValid;
         }
-        // ADDED FOR PS6
-        /// <summary>
-        /// True if this spreadsheet has been modified since it was created or saved
-        /// (whichever happened most recently); false otherwise.
-        /// </summary>
-        public override bool Changed
-        {
-            get
-            {
-                return Changed;
-            }
-
-            protected set
-            {
-                Changed = value;
-            }
-        }
-
+        
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
         /// 
@@ -277,9 +286,43 @@ namespace SS
         /// </summary>
         public override void Save(TextWriter dest)
         {
-            throw new NotImplementedException();
-        }
+            using (XmlWriter writer = XmlWriter.Create("../../Spreadsheet.xml"))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Spreadsheet");
 
+                List<string> AllCells = new List<string>();
+                foreach (string i in GetNamesOfAllNonemptyCells())//Get names of all non empty cells and store them in the list
+                {
+                    AllCells.Add(i);
+                }
+
+                foreach(string i in AllCells)
+                {
+                    //writer.WriteStartElement("");
+                    if(cellTable[i].contents is string)
+                    {
+                        writer.WriteAttributeString("cell name=", cellTable[i].name);
+                        writer.WriteAttributeString("contents=", (string)cellTable[i].contents);
+                    }
+                    else if(cellTable[i].contents is double)
+                    {
+                        writer.WriteAttributeString("cell name=", cellTable[i].name);
+                        writer.WriteAttributeString("contents=", cellTable[i].contents.ToString());
+                    }
+                    else if(cellTable[i].contents is Formula)
+                    {
+
+                    }
+                    writer.WriteElementString("Name", states[i]);
+                    writer.WriteElementString("Capital", capitals[i]);
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
         /// <summary>
         /// If formula parameter is null, throws an ArgumentNullException.
         /// 
@@ -338,7 +381,6 @@ namespace SS
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question
             {
                 dependents.Add(i);
-                
             }
 
             cellTable[name].contents = formula; //set the named cell's contents to the formula
@@ -476,7 +518,7 @@ namespace SS
             {
                 SetCellValue(i);
             }
-            Changed = true;//A cell's contents changed. No longer consistent since last save.
+            Changed = true;
             return result;
         }
 
