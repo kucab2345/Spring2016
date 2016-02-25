@@ -60,7 +60,7 @@ namespace SS
             value = "";
         }
     }
-    
+
     /// <summary>
     /// An AbstractSpreadsheet object represents the state of a simple spreadsheet.  A 
     /// spreadsheet consists of an infinite number of named cells.
@@ -116,7 +116,7 @@ namespace SS
         /// </summary>
         DependencyGraph dgGraph = new DependencyGraph();
         /// <summary>
-        /// Changed's method's boolean value. True by default.
+        /// Changed's method's boolean value. False by default.
         /// </summary>
         private bool ChangeBool = false;
 
@@ -156,7 +156,49 @@ namespace SS
         {
             IsValid = isValid;
         }
-        
+        /// <summary>
+        /// Takes in a source file and allows user to load in a previously saved XML file
+        /// </summary>
+        /// <param name="source"></param>
+        public Spreadsheet(TextReader source)
+        {
+            XmlSchemaSet sc = new XmlSchemaSet();
+
+            sc.Add(null, "Spreadsheet.xsd");
+
+            // Configure validation.
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.ValidationType = ValidationType.Schema;
+            settings.Schemas = sc;
+            settings.ValidationEventHandler += ValidationCallback;
+
+            using (XmlReader reader = XmlReader.Create(source, settings))
+            {
+                while (reader.Read())
+                {
+                    switch (reader.Name)
+                    {
+                        case "spreadsheet":
+                            if (reader.NodeType != XmlNodeType.EndElement)
+                            {
+                                IsValid = new Regex(reader["IsValid"]);
+                            }
+                            break;
+
+                        case "cell":
+                            SetContentsOfCell(reader["name"], reader["contents"]);
+                            break;
+                    }
+                }
+            }
+            foreach(string i in GetNamesOfAllNonemptyCells())
+            {
+                if (cellTable[i].value is FormulaError)
+                {
+                    throw new SpreadsheetReadException("Formula Error Stored in Cell");
+                }
+            }
+        }
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
         /// 
@@ -197,11 +239,11 @@ namespace SS
             //check to see if named cell exists
             if (cellTable.ContainsKey(name))
             {
-                if(cellTable[name].contents is string)
+                if (cellTable[name].contents is string)
                 {
                     cellTable[name].value = (string)cellTable[name].contents;
                 }
-                else if(cellTable[name].contents is double)
+                else if (cellTable[name].contents is double)
                 {
                     cellTable[name].value = (double)cellTable[name].contents;
                 }
@@ -209,7 +251,7 @@ namespace SS
             }
             else
             {
-                SetCellContents(name,"");
+                SetCellContents(name, "");
                 return "";
             }
         }
@@ -219,33 +261,33 @@ namespace SS
             {
                 cellTable[name].value = cellTable[name].contents;
             }
-            else if(cellTable[name].contents is Formula)//if the contents is of a formula type
+            else if (cellTable[name].contents is Formula)//if the contents is of a formula type
             {
                 try
                 {
                     Formula f = (Formula)cellTable[name].contents;//cast it as a formula object
-                    cellTable[name].value = f.Evaluate(s=> lookupHelper(s));//evaluate it and set that cell's value to the evaluated double
+                    cellTable[name].value = f.Evaluate(s => lookupHelper(s));//evaluate it and set that cell's value to the evaluated double
                 }
-                catch (Exception e)//caatch and handle any exceptions.
+                catch (Exception e)//catch and handle any exceptions.
                 {
-                    if(e is FormulaFormatException)
+                    if (e is FormulaFormatException)
                     {
                         cellTable[name].value = new FormulaError("Formula Format Exception");
                     }
-                    else if(e is CircularException)
+                    else if (e is CircularException)
                     {
                         cellTable[name].value = new FormulaError("Circular Exception");
                     }
-                    else if(e is FormulaEvaluationException)
+                    else if (e is FormulaEvaluationException)
                     {
                         cellTable[name].value = new FormulaError("Formula Evaluation Exception");
                     }
                 }
             }
-        } 
+        }
         private double lookupHelper(string name)
         {
-            if(!(cellTable[name].contents is double) && !(cellTable[name].contents is Formula))//catches invalid lookups and undefined variable exceptions
+            if (!(cellTable[name].contents is double) && !(cellTable[name].contents is Formula))//catches invalid lookups and undefined variable exceptions
             {
                 throw new UndefinedVariableException(name);
             }
@@ -290,7 +332,7 @@ namespace SS
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("spreadsheet");
-                writer.WriteAttributeString("IsValid",IsValid.ToString());
+                writer.WriteAttributeString("IsValid", IsValid.ToString());
 
                 List<string> AllCells = new List<string>();
                 foreach (string i in GetNamesOfAllNonemptyCells())//Get names of all non empty cells and store them in the list
@@ -298,23 +340,23 @@ namespace SS
                     AllCells.Add(i);
                 }
 
-                foreach(string i in AllCells)
+                foreach (string i in AllCells)
                 {
                     writer.WriteStartElement("cell");
-                    writer.WriteAttributeString("name",i);
-                    if(cellTable[i].contents is string)
+                    writer.WriteAttributeString("name", i);
+                    if (cellTable[i].contents is string)
                     {
-                        writer.WriteAttributeString("contents",(string)cellTable[i].contents);
+                        writer.WriteAttributeString("contents", (string)cellTable[i].contents);
                     }
-                    else if(cellTable[i].contents is double)
+                    else if (cellTable[i].contents is double)
                     {
-                        writer.WriteAttributeString("contents",cellTable[i].contents.ToString());
+                        writer.WriteAttributeString("contents", cellTable[i].contents.ToString());
                     }
-                    else if(cellTable[i].contents is Formula)//What if it is a formula error?
+                    else if (cellTable[i].contents is Formula)//What if it is a formula error?
                     {
-                        writer.WriteAttributeString("contents","="+cellTable[i].contents.ToString());
+                        writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
                     }
-                    else if(cellTable[i].contents is FormulaError)
+                    else if (cellTable[i].contents is FormulaError)
                     {
                         writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
                     }
@@ -324,6 +366,7 @@ namespace SS
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
+            Changed = false;
         }
         /// <summary>
         /// If formula parameter is null, throws an ArgumentNullException.
@@ -354,14 +397,14 @@ namespace SS
                 {
                     if (isValidName(token) == true)//check that the variable returned is in fact a cell name
                     {
-                        dgGraph.RemoveDependency(token,name);//remove the dependency to old cells
+                        dgGraph.RemoveDependency(token, name);//remove the dependency to old cells
                     }
                 }
                 foreach (string token in formula.GetVariables())
                 {
-                    if(isValidName(token) == true)
+                    if (isValidName(token) == true)
                     {
-                        dgGraph.AddDependency(token,name);//create the new dependencies
+                        dgGraph.AddDependency(token, name);//create the new dependencies
                     }
                 }
             }
@@ -371,11 +414,11 @@ namespace SS
                 {
                     cellTable.Add(name, new Cell(originalname));//otherwise create a new cell, construct it w the name and formula passed to the method
                 }
-                foreach(string i in formula.GetVariables())
+                foreach (string i in formula.GetVariables())
                 {
-                    if(isValidName(i))
+                    if (isValidName(i))
                     {
-                        dgGraph.AddDependency(i,name);//Add new dependencies for each referenced cell
+                        dgGraph.AddDependency(i, name);//Add new dependencies for each referenced cell
                     }
                 }
             }
@@ -386,7 +429,7 @@ namespace SS
             }
 
             cellTable[name].contents = formula; //set the named cell's contents to the formula
-            
+
             return dependents;//Return the hashset
         }
         /// <summary>
@@ -489,7 +532,7 @@ namespace SS
         /// </summary>
         public override ISet<string> SetContentsOfCell(string name, string content)
         {
-            if(content == null)
+            if (content == null)
             {
                 throw new ArgumentNullException();
             }
@@ -501,18 +544,18 @@ namespace SS
             ISet<string> result;
 
             double test = 0;
-            if(content == "")
+            if (content == "")
             {
                 result = SetCellContents(name, "");
             }
-            else if(double.TryParse(content, out test))
+            else if (double.TryParse(content, out test))
             {
                 result = SetCellContents(name, test);
             }
-            else if(content[0] == '=')
+            else if (content[0] == '=')
             {
                 string remainder = content;
-                remainder = remainder.Remove(0,1);
+                remainder = remainder.Remove(0, 1);
 
                 result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValidName(s)));
             }
@@ -520,7 +563,7 @@ namespace SS
             {
                 result = SetCellContents(name, content);
             }
-            foreach(string i in result)
+            foreach (string i in result)
             {
                 SetCellValue(i);
             }
@@ -575,6 +618,10 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
+        }
+        private static void ValidationCallback(object sender, ValidationEventArgs e)
+        {
+            throw new SpreadsheetReadException("Validation of Spreadsheet Failed");
         }
     }
 }

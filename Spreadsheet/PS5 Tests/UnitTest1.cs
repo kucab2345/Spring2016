@@ -371,6 +371,25 @@ namespace GradingTests
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }
         [TestMethod()]
+        public void Test31c()
+        {
+            AbstractSpreadsheet s;
+            using (TextReader test = File.OpenText("C:\\Users\\kucab2345\\Desktop\\text.xml"))
+            {
+                s = new Spreadsheet(test);
+            }
+            List<string> names = new List<string>();
+
+            foreach(string i in s.GetNamesOfAllNonemptyCells())
+            {
+                names.Add(i);
+            }
+
+            Assert.AreEqual(17, names.Count);
+            Assert.AreEqual(265.00, (double)s.GetCellValue("A1"));
+            //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
+        }
+        [TestMethod()]
         public void Test32()
         {
             Test31();
