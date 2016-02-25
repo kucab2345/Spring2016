@@ -347,6 +347,10 @@ namespace SS
         /// </summary>
         public override void Save(TextWriter dest)
         {
+            if(Changed == false)
+            {
+                return;
+            }
             try
             {
                 using (XmlWriter writer = XmlWriter.Create(dest))
