@@ -200,15 +200,14 @@ namespace SS
             }
             catch (Exception e)//if an exception was thrown, break it down
             {
-                if (e is InvalidNameException)//if a cell name was invalid
+                if(!(e is IOException))
                 {
-                    throw new SpreadsheetReadException("Invalid cell name in source");
+                    throw new SpreadsheetReadException(e.Message);
                 }
-                if (e is SpreadsheetReadException)//is a duplicate cell name was caught
+                else
                 {
-                    throw new SpreadsheetReadException("Duplicated cell names detected");
+                    throw new IOException(e.Message);
                 }
-                throw new IOException();//Other generic IO error, like invalid Source/Destination
             }
 
             foreach (string i in GetNamesOfAllNonemptyCells())
@@ -389,12 +388,9 @@ namespace SS
                     writer.WriteEndDocument();
                 }
             }
-            catch(Exception e)
+            catch
             {
-                if (e is FileNotFoundException)
-                {
-                    throw new IOException("Invalid destination name");
-                }
+                throw new IOException();
             }
             Changed = false;
         }

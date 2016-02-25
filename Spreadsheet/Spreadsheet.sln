@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS5GradingTests", "PS5Gradi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellSpreadSheetTests", "CellSpreadSheetTests\CellSpreadSheetTests.csproj", "{2D26BF80-444F-4E31-B349-CB00B1324C5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS5 Tests", "PS5 Tests\PS5 Tests.csproj", "{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPS6Tests(ModifiedPS5andMore)", "PS5 Tests\MyPS6Tests(ModifiedPS5andMore).csproj", "{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

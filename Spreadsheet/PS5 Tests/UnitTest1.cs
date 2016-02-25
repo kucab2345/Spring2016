@@ -307,6 +307,10 @@ namespace GradingTests
             Assert.AreEqual(23, ((Formula)s.GetCellContents("A1")).Evaluate(x => 0));
         }
         // STRESS TESTS
+        /// <summary>
+        /// Assigns extra cells to the professor's original Test31.  With the values assigned,
+        /// the value of A1 should be 265. 
+        /// </summary>
         [TestMethod()]
         public void Test31()
         {
@@ -338,6 +342,10 @@ namespace GradingTests
 
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }
+        /// <summary>
+        /// Exactly the same as Test31 but this time, it saves an XML file
+        /// to the project folder. That file will eventually be opened in Test31c
+        /// </summary>
         [TestMethod()]
         public void Test31b()
         {
