@@ -527,6 +527,19 @@ namespace GradingTests
         {
             RunRandomizedTest(50, 2521);
         }
+        /// <summary>
+        /// Invalid source name for XML file. Should throw IO error
+        /// </summary>
+        [ExpectedException(typeof(FileNotFoundException))]
+        [TestMethod]
+        public void Test51()
+        {
+            AbstractSpreadsheet s;
+            using (TextReader test = File.OpenText("../../bob.xml"))
+            {
+                s = new Spreadsheet(test);
+            }
+        }
 
         public void RunRandomizedTest(int seed, int size)
         {

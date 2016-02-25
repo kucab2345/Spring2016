@@ -188,7 +188,7 @@ namespace SS
                                 break;
 
                             case "cell":
-                                if(cellTable.ContainsKey(reader["name"]))//checks for duplicate cell names, throws SpreadsheetReadException
+                                if (cellTable.ContainsKey(reader["name"]))//checks for duplicate cell names, throws SpreadsheetReadException
                                 {
                                     throw new SpreadsheetReadException("Duplicate cell names detected");
                                 }
@@ -200,18 +200,18 @@ namespace SS
             }
             catch (Exception e)//if an exception was thrown, break it down
             {
-                if(e is InvalidNameException)//if a cell name was invalid
+                if (e is InvalidNameException)//if a cell name was invalid
                 {
                     throw new SpreadsheetReadException("Invalid cell name in source");
                 }
-                if(e is SpreadsheetReadException)//is a duplicate cell name was caught
+                if (e is SpreadsheetReadException)//is a duplicate cell name was caught
                 {
                     throw new SpreadsheetReadException("Duplicated cell names detected");
                 }
                 throw new IOException();//Other generic IO error, like invalid Source/Destination
             }
-           
-            foreach(string i in GetNamesOfAllNonemptyCells())
+
+            foreach (string i in GetNamesOfAllNonemptyCells())
             {
                 if (cellTable[i].value is FormulaError)
                 {
@@ -348,20 +348,21 @@ namespace SS
         /// </summary>
         public override void Save(TextWriter dest)
         {
-            using (XmlWriter writer = XmlWriter.Create(dest))
+            try
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("spreadsheet");
-                writer.WriteAttributeString("IsValid", IsValid.ToString());
-
-                List<string> AllCells = new List<string>();
-                foreach (string i in GetNamesOfAllNonemptyCells())//Get names of all non empty cells and store them in the list
+                using (XmlWriter writer = XmlWriter.Create(dest))
                 {
-                    AllCells.Add(i);
-                }
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("spreadsheet");
+                    writer.WriteAttributeString("IsValid", IsValid.ToString());
 
-                try
-                {
+                    List<string> AllCells = new List<string>();
+                    foreach (string i in GetNamesOfAllNonemptyCells())//Get names of all non empty cells and store them in the list
+                    {
+                        AllCells.Add(i);
+                    }
+
+
                     foreach (string i in AllCells)
                     {
                         writer.WriteStartElement("cell");
@@ -384,13 +385,16 @@ namespace SS
                         }
                         writer.WriteEndElement();
                     }
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
                 }
-                catch (Exception e)
+            }
+            catch(Exception e)
+            {
+                if (e is FileNotFoundException)
                 {
-
+                    throw new IOException("Invalid destination name");
                 }
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
             }
             Changed = false;
         }
