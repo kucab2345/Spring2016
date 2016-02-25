@@ -172,25 +172,45 @@ namespace SS
             settings.Schemas = sc;
             settings.ValidationEventHandler += ValidationCallback;
 
-            using (XmlReader reader = XmlReader.Create(source, settings))
+            try
             {
-                while (reader.Read())
+                using (XmlReader reader = XmlReader.Create(source, settings))
                 {
-                    switch (reader.Name)
+                    while (reader.Read())
                     {
-                        case "spreadsheet":
-                            if (reader.NodeType != XmlNodeType.EndElement)
-                            {
-                                IsValid = new Regex(reader["IsValid"]);
-                            }
-                            break;
+                        switch (reader.Name)
+                        {
+                            case "spreadsheet":
+                                if (reader.NodeType != XmlNodeType.EndElement)
+                                {
+                                    IsValid = new Regex(reader["IsValid"]);//create regex 
+                                }
+                                break;
 
-                        case "cell":
-                            SetContentsOfCell(reader["name"], reader["contents"]);
-                            break;
+                            case "cell":
+                                if(cellTable.ContainsKey(reader["name"]))//checks for duplicate cell names, throws SpreadsheetReadException
+                                {
+                                    throw new SpreadsheetReadException("Duplicate cell names detected");
+                                }
+                                SetContentsOfCell(reader["name"], reader["contents"]);
+                                break;
+                        }
                     }
                 }
             }
+            catch (Exception e)//if an exception was thrown, break it down
+            {
+                if(e is InvalidNameException)//if a cell name was invalid
+                {
+                    throw new SpreadsheetReadException("Invalid cell name in source");
+                }
+                if(e is SpreadsheetReadException)//is a duplicate cell name was caught
+                {
+                    throw new SpreadsheetReadException("Duplicated cell names detected");
+                }
+                throw new IOException();//Other generic IO error, like invalid Source/Destination
+            }
+           
             foreach(string i in GetNamesOfAllNonemptyCells())
             {
                 if (cellTable[i].value is FormulaError)
