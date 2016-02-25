@@ -241,13 +241,13 @@ namespace SS
             {
                 if (cellTable[name].contents is string)
                 {
-                    cellTable[name].value = (string)cellTable[name].contents;
+                    cellTable[name].value = (string)cellTable[name].contents;//set value as contents if it is a string
                 }
                 else if (cellTable[name].contents is double)
                 {
-                    cellTable[name].value = (double)cellTable[name].contents;
+                    cellTable[name].value = (double)cellTable[name].contents;//set value as contents if it is a double
                 }
-                return cellTable[name].value;
+                return cellTable[name].value;//return the value
             }
             else
             {
@@ -270,7 +270,7 @@ namespace SS
                 }
                 catch (Exception e)//catch and handle any exceptions.
                 {
-                    if (e is FormulaFormatException)
+                    if (e is FormulaFormatException)//catch expected errors and throw appropriate exceptions. Save them to the cell's value
                     {
                         cellTable[name].value = new FormulaError("Formula Format Exception");
                     }
@@ -344,11 +344,11 @@ namespace SS
                 {
                     writer.WriteStartElement("cell");
                     writer.WriteAttributeString("name", i);
-                    if (cellTable[i].contents is string)
+                    if (cellTable[i].contents is string)//write string attribute of contents if is a string
                     {
                         writer.WriteAttributeString("contents", (string)cellTable[i].contents);
                     }
-                    else if (cellTable[i].contents is double)
+                    else if (cellTable[i].contents is double)//write string attribute of contents if it is a string
                     {
                         writer.WriteAttributeString("contents", cellTable[i].contents.ToString());
                     }
@@ -356,7 +356,7 @@ namespace SS
                     {
                         writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
                     }
-                    else if (cellTable[i].contents is FormulaError)
+                    else if (cellTable[i].contents is FormulaError)//Handling formula error
                     {
                         writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
                     }
