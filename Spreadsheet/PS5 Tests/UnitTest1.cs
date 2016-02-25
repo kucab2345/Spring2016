@@ -363,7 +363,8 @@ namespace GradingTests
             s.SetContentsOfCell("D4", "=E2");
             s.SetContentsOfCell("D8", "=E2");
 
-            using (TextWriter test = File.CreateText("C:\\Users\\kucab2345\\Desktop\\text.xml"))
+            //using (TextWriter test = File.CreateText("C:\\Users\\kucab2345\\Desktop\\text.xml"))
+            using (TextWriter test = File.CreateText("../../text.xml"))
             {
                 s.Save(test);
             }
@@ -374,7 +375,7 @@ namespace GradingTests
         public void Test31c()
         {
             AbstractSpreadsheet s;
-            using (TextReader test = File.OpenText("C:\\Users\\kucab2345\\Desktop\\text.xml"))
+            using (TextReader test = File.OpenText("../../text.xml"))
             {
                 s = new Spreadsheet(test);
             }

@@ -360,29 +360,35 @@ namespace SS
                     AllCells.Add(i);
                 }
 
-                foreach (string i in AllCells)
+                try
                 {
-                    writer.WriteStartElement("cell");
-                    writer.WriteAttributeString("name", i);
-                    if (cellTable[i].contents is string)//write string attribute of contents if is a string
+                    foreach (string i in AllCells)
                     {
-                        writer.WriteAttributeString("contents", (string)cellTable[i].contents);
+                        writer.WriteStartElement("cell");
+                        writer.WriteAttributeString("name", i);
+                        if (cellTable[i].contents is string)//write string attribute of contents if is a string
+                        {
+                            writer.WriteAttributeString("contents", (string)cellTable[i].contents);
+                        }
+                        else if (cellTable[i].contents is double)//write string attribute of contents if it is a string
+                        {
+                            writer.WriteAttributeString("contents", cellTable[i].contents.ToString());
+                        }
+                        else if (cellTable[i].contents is Formula)//What if it is a formula error?
+                        {
+                            writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
+                        }
+                        else if (cellTable[i].contents is FormulaError)//Handling formula error
+                        {
+                            writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
+                        }
+                        writer.WriteEndElement();
                     }
-                    else if (cellTable[i].contents is double)//write string attribute of contents if it is a string
-                    {
-                        writer.WriteAttributeString("contents", cellTable[i].contents.ToString());
-                    }
-                    else if (cellTable[i].contents is Formula)//What if it is a formula error?
-                    {
-                        writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
-                    }
-                    else if (cellTable[i].contents is FormulaError)//Handling formula error
-                    {
-                        writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
-                    }
-                    writer.WriteEndElement();
                 }
+                catch (Exception e)
+                {
 
+                }
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
