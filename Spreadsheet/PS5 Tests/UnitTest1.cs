@@ -380,6 +380,11 @@ namespace GradingTests
             
             //AssertSetEqualsIgnoreCase(new HashSet<string>() { "A1", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E1" }, cells);
         }
+        /// <summary>
+        /// Saves a file of the previous test and opens it back up.
+        /// Asserts that the evaluation of the cell value is still correct
+        /// after the entire save and load process.
+        /// </summary>
         [TestMethod()]
         public void Test31c()
         {
@@ -425,6 +430,33 @@ namespace GradingTests
                 cells.Add("A" + i.ToString());
                 AssertSetEqualsIgnoreCase(cells, s.SetContentsOfCell("A" + i, ("=A" + (i + 1))));
             }
+        }
+        /// <summary>
+        /// Stress test that creates 200 cells, saves them, reads them back in, and
+        /// checks that the value was preserved across the save and load of so many cells
+        /// </summary>
+        [TestMethod()]
+        public void Test35a()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
+            ISet<String> cells = new HashSet<string>();
+            for (int i = 1; i < 200; i++)
+            {
+                cells.Add("A" + i.ToString());
+                AssertSetEqualsIgnoreCase(cells, s.SetContentsOfCell("A" + i, ("=A" + (i + 1))));
+            }
+            s.SetContentsOfCell("A199", "999");
+            using (TextWriter outFile = File.CreateText("../../StressTest.xml"))
+            {
+                s.Save(outFile);
+            }
+            AbstractSpreadsheet s1;
+            using (TextReader inFile = File.OpenText("../../StressTest.xml"))
+            {
+                s1 = new Spreadsheet(inFile);
+            }
+            Assert.AreEqual(999, (double)s1.GetCellValue("A199"));
+
         }
         [TestMethod()]
         public void Test36()
@@ -651,6 +683,20 @@ namespace GradingTests
 
 
             Assert.AreEqual("",s.GetCellValue("A1"));
+        }
+        /// <summary>
+        /// opening a friend's xml file and checking that all values have come across into my spreadsheet program.
+        /// </summary>
+        [TestMethod]
+        public void OtherCompiledXMLTest()
+        {
+            AbstractSpreadsheet s;
+            using (TextReader inFile = File.OpenText("../../FriendXML.xml"))
+            {
+                s = new Spreadsheet(inFile);
+            }
+
+            Assert.AreEqual(0.15, s.GetCellValue("A6"));
         }
         /// <param name="seed"></param>
         /// <param name="size"></param>
