@@ -39,7 +39,7 @@ namespace SS
         {
             name = cell_name;
             contents = cell_contents;
-            value = cell_contents;
+            value = new FormulaError();
         }
         /// <summary>
         /// Empty cell constructor. Name requires, but contents are not
@@ -48,16 +48,7 @@ namespace SS
         {
             name = cell_name;
             contents = "";
-            value = "";
-        }
-        /// <summary>
-        /// Empty cell with no name. Empty string;
-        /// </summary>
-        public Cell()
-        {
-            name = "";
-            contents = "";
-            value = "";
+            value = new FormulaError();
         }
     }
 
@@ -216,14 +207,14 @@ namespace SS
                     throw new IOException(e.Message);
                 }
             }
-
+            /*
             foreach (string i in GetNamesOfAllNonemptyCells())
             {
                 if (cellTable[i].value is FormulaError)
                 {
                     throw new SpreadsheetReadException("Formula Error Stored in Cell");
                 }
-            }
+            }*/
         }
         /// <summary>
         /// If name is null or invalid, throws an InvalidNameException.
@@ -277,8 +268,8 @@ namespace SS
             }
             else
             {
-                SetCellContents(name, "");
-                return "";
+                SetContentsOfCell(name, "");
+                return cellTable[name].value;
             }
         }
         private void SetCellValue(string name)
@@ -385,10 +376,6 @@ namespace SS
                             writer.WriteAttributeString("contents", cellTable[i].contents.ToString());
                         }
                         else if (cellTable[i].contents is Formula)//What if it is a formula error?
-                        {
-                            writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
-                        }
-                        else if (cellTable[i].contents is FormulaError)//Handling formula error
                         {
                             writer.WriteAttributeString("contents", "=" + cellTable[i].contents.ToString());
                         }

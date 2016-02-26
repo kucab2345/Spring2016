@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<spreadsheet IsValid=".*?">
+  <cell name="A1" contents="=B1+B2" />
+  <cell name="B1" contents="=A1-C2" />
+  <cell name="B2" contents="=C3*C4" />
+  <cell name="C1" contents="=D1*D2" />
+  <cell name="C2" contents="=D3*D4" />
+  <cell name="C3" contents="=D5*D6" />
+  <cell name="C4" contents="=D7*D8" />
+  <cell name="D1" contents="=E1" />
+  <cell name="D2" contents="=E1" />
+  <cell name="D3" contents="=E1" />
+  <cell name="D4" contents="=E2" />
+  <cell name="D5" contents="=E1" />
+  <cell name="D6" contents="=E1" />
+  <cell name="D7" contents="=E1" />
+  <cell name="D8" contents="=E2" />
+  <cell name="E1" contents="5" />
+  <cell name="E2" contents="2" />
+</spreadsheet>

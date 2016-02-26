@@ -560,9 +560,100 @@ namespace GradingTests
 
             s.SetContentsOfCell("a1", "100");
         }
+        /// <summary>
+        /// Tried to open a spreadsheet source file WHILE saving it, forces an IO error
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(IOException))]
+        public void Test53()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
+            AbstractSpreadsheet s1;
+            s.SetContentsOfCell("A1", "100");
+            TextReader source = File.OpenText("../../Test53.xml");
+            using (TextWriter test = File.CreateText("../../Test53.xml"))
+            {
+                s.Save(test);
+                s = new Spreadsheet(source);
+            }
+        }
+        /// <summary>
+        /// Custom XML w. force call name duplicates. Should throw an IOexception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadException))]
+        public void Test54()
+        {
+            AbstractSpreadsheet s;
+
+            using (TextReader source = File.OpenText("../../DuplicateTest.xml"))
+            {
+                s = new Spreadsheet(source);
+            }
+        }
+        /// <summary>
+        /// Custom XML w. force cell circular dependency. Should throw an SpreadSheetReadException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadException))]
+        public void Test55()
+        {
+            AbstractSpreadsheet s;
+
+            using (TextReader source = File.OpenText("../../CircularDepCheck.xml"))
+            {
+                s = new Spreadsheet(source);
+            }
+        }
+        /// <summary>
+        /// Creating a cell with a string as the contents, saves, it, then reopens
+        /// </summary>
+        [TestMethod]
+        public void Test56()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
+
+            s.SetContentsOfCell("A1", "This is a test string.");
+
+            using (TextWriter outFile = File.CreateText("../../StringSaveandWriteTest.xml"))
+            {
+                s.Save(outFile);
+            }
+            AbstractSpreadsheet s1;
+            using(TextReader source = File.OpenText("../../StringSaveandWriteTest.xml"))
+            {
+                s1 = new Spreadsheet(source);
+            }
+            Assert.AreEqual("This is a test string.", s1.GetCellValue("A1"));
+            Assert.AreEqual("This is a test string.", s1.GetCellValue("a1"));
+        }
+        
+        /// <summary>
+        /// Forcing a FormulaError as a cell value, and trying to return it.
+        /// </summary>
+        [TestMethod]
+        public void Test57()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
+
+            s.SetContentsOfCell("A1", "=A2 + 3");
+            s.SetContentsOfCell("A2", "=A3");
+            
+            Assert.IsTrue(s.GetCellValue("A1") is FormulaError);
+        }
+        /// <summary>
+        /// Testing returning an empty Cell. Should get an empty string as contents.
+        /// </summary>
+        [TestMethod]
+        public void Test58()
+        {
+            AbstractSpreadsheet s = new Spreadsheet();
 
 
-
+            Assert.AreEqual("",s.GetCellValue("A1"));
+        }
+        /// <param name="seed"></param>
+        /// <param name="size"></param>
         public void RunRandomizedTest(int seed, int size)
         {
             AbstractSpreadsheet s = new Spreadsheet();
