@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Formulas;
 using System.IO;
+using System.Text.RegularExpressions;
 namespace GradingTests
 {
     /// <summary>
@@ -548,6 +549,19 @@ namespace GradingTests
                 s = new Spreadsheet(test);
             }
         }
+        /// <summary>
+        /// Tests the second spreadsheet constructor that takes in a regex argument for IsValid
+        /// </summary>
+        [TestMethod]
+        public void Test52()
+        {
+            Regex re = new Regex(@"^[a-z]+[1-9][0-9]*$");
+            AbstractSpreadsheet s = new Spreadsheet(re);
+
+            s.SetContentsOfCell("a1", "100");
+        }
+
+
 
         public void RunRandomizedTest(int seed, int size)
         {

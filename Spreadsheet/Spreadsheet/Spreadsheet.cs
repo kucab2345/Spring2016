@@ -110,11 +110,11 @@ namespace SS
         /// <summary>
         /// Dictionary that maps strings of names to the cells
         /// </summary>
-        Dictionary<string, Cell> cellTable = new Dictionary<string, Cell>();
+        Dictionary<string, Cell> cellTable; 
         /// <summary>
         /// DependencyGraph that maps the dependencies of the formulas encapsulated in each cell
         /// </summary>
-        DependencyGraph dgGraph = new DependencyGraph();
+        DependencyGraph dgGraph; 
         /// <summary>
         /// Changed's method's boolean value. False by default.
         /// </summary>
@@ -146,6 +146,8 @@ namespace SS
         /// </summary>
         public Spreadsheet()
         {
+            cellTable = new Dictionary<string, Cell>();
+            dgGraph = new DependencyGraph();
             IsValid = new Regex(".*?");
         }
         /// <summary>
@@ -154,6 +156,8 @@ namespace SS
         /// <param name="isValid"></param>
         public Spreadsheet(Regex isValid)
         {
+            cellTable = new Dictionary<string, Cell>();
+            dgGraph = new DependencyGraph();
             IsValid = isValid;
         }
         /// <summary>
@@ -162,6 +166,9 @@ namespace SS
         /// <param name="source"></param>
         public Spreadsheet(TextReader source)
         {
+            cellTable = new Dictionary<string, Cell>();
+            dgGraph = new DependencyGraph();
+
             XmlSchemaSet sc = new XmlSchemaSet();
 
             sc.Add(null, "Spreadsheet.xsd");
@@ -364,8 +371,7 @@ namespace SS
                     {
                         AllCells.Add(i);
                     }
-
-
+                    
                     foreach (string i in AllCells)
                     {
                         writer.WriteStartElement("cell");
