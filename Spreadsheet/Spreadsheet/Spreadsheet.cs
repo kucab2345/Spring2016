@@ -567,26 +567,26 @@ namespace SS
             ISet<string> result;
 
             double test = 0;
-            if (content == "")
+            if (content == "")//if cell name parameter is an empty string
             {
-                result = SetCellContents(name, "");
+                result = SetCellContents(name, "");//set it as such
             }
-            else if (double.TryParse(content, out test))
+            else if (double.TryParse(content, out test))//if it is a double, parse it and set it
             {
                 result = SetCellContents(name, test);
             }
-            else if (content[0] == '=')
+            else if (content[0] == '=')//catch formulas
             {
-                string remainder = content;
+                string remainder = content;//remove the = char
                 remainder = remainder.Remove(0, 1);
 
-                result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValidName(s)));
+                result = SetCellContents(name, new Formula(remainder, s => s.ToUpper(), s => isValidName(s)));//Run it through the SetCellContents for Formulas
             }
             else
             {
-                result = SetCellContents(name, content);
+                result = SetCellContents(name, content);//Otherwise, just return the cell
             }
-            foreach (string i in result)
+            foreach (string i in result)//Calculate cell values
             {
                 SetCellValue(i);
             }
