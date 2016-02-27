@@ -213,10 +213,8 @@ namespace CellSpreadSheetTests
         }
         /// <summary>
         /// Makes an empty spreadsheet and adds cells with contents.
-        /// The cells contents should lead to a CircularException
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(CircularException))]
         public void SS14()
         {
             AbstractSpreadsheet sheet = new Spreadsheet();
@@ -269,10 +267,10 @@ namespace CellSpreadSheetTests
             sheet.SetCellContents("b2", f2);
             actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
 
-            dependencies.Add("c1");
-            dependencies.Add("b2");
-            dependencies.Add("b1");
-            dependencies.Add("a1");
+            dependencies.Add("C1");
+            dependencies.Add("B2");
+            dependencies.Add("B1");
+            dependencies.Add("A1");
 
             int counter = 0;
             foreach (string i in actual)
@@ -280,38 +278,7 @@ namespace CellSpreadSheetTests
                 Assert.AreEqual(dependencies[counter++], i);
             }
         }
-        /// <summary>
-        /// Creates a series of dependencies, both direct and indirect, and checks that all are found and returned as an ISet
-        /// CircularException exists in the set, should throw such an exception
-        /// </summary>
-        [ExpectedException(typeof(CircularException))]
-        [TestMethod]
-        public void SS17()
-        {
-            AbstractSpreadsheet sheet = new Spreadsheet();
-            Formula f0 = new Formula("c1 + 5");
-            Formula f1 = new Formula("b1 + 3");
-            Formula f2 = new Formula("b2 + 2");
-
-            List<string> dependencies = new List<string>();
-            HashSet<string> actual = new HashSet<string>();
-
-            sheet.SetCellContents("a1", f0);
-            sheet.SetCellContents("b1", f1);
-            sheet.SetCellContents("b2", f2);
-            actual = (HashSet<string>)sheet.SetCellContents("c1", "End of dependencies");
-
-            dependencies.Add("");
-            dependencies.Add("");
-            dependencies.Add("");
-            dependencies.Add("");
-
-            int counter = 0;
-            foreach (string i in actual)
-            {
-                Assert.AreEqual(dependencies[counter++], i);
-            }
-        }
+       
         /// <summary>
         /// Creates a dependency and then replaces it.
         /// </summary>
@@ -328,13 +295,13 @@ namespace CellSpreadSheetTests
             List<string> firstCheck = new List<string>();
             List<string> secondCheck = new List<string>();
 
-            firstCheck.Add("a1");
-            firstCheck.Add("a2");
-            secondCheck.Add("a1");
-            secondCheck.Add("f1");
+            firstCheck.Add("A1");
+            firstCheck.Add("A2");
+            secondCheck.Add("A1");
+            secondCheck.Add("F1");
 
             sheet.SetCellContents("a2", "hi");
-            dependents = (HashSet<string>)sheet.SetCellContents("a1", f0);
+            dependents = (HashSet<string>)sheet.SetCellContents("A1", f0);
 
             int count = 0;
             foreach(string i in dependents)
@@ -345,7 +312,7 @@ namespace CellSpreadSheetTests
 
             dependents.Clear();
 
-            dependents = (HashSet<string>)sheet.SetCellContents("a1", f1);
+            dependents = (HashSet<string>)sheet.SetCellContents("A1", f1);
 
             count = 0;
             foreach (string i in dependents)
