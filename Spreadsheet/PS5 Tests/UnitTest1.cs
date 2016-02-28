@@ -587,7 +587,7 @@ namespace GradingTests
         [TestMethod]
         public void Test52()
         {
-            Regex re = new Regex(@"^[a-z]+[1-9][0-9]*$");
+            Regex re = new Regex(@"^[A-Z]+[1-9][0-9]*$");
             AbstractSpreadsheet s = new Spreadsheet(re);
 
             s.SetContentsOfCell("a1", "100");

@@ -39,7 +39,7 @@ namespace SS
         {
             name = cell_name;
             contents = cell_contents;
-            value = new FormulaError();
+            value = "";
         }
         /// <summary>
         /// Empty cell constructor. Name requires, but contents are not
@@ -48,7 +48,7 @@ namespace SS
         {
             name = cell_name;
             contents = "";
-            value = new FormulaError();
+            value = "";
         }
     }
 
@@ -224,7 +224,10 @@ namespace SS
         /// </summary>
         public override object GetCellContents(string name)
         {
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             name = name.ToUpper();
             if (!cellTable.ContainsKey(name))
             {
@@ -249,7 +252,10 @@ namespace SS
         /// </summary>
         public override object GetCellValue(string name)
         {
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             string originalname = name;
             name = name.ToUpper();
 
@@ -274,11 +280,12 @@ namespace SS
         }
         private void SetCellValue(string name)
         {
+            
             if (cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))//if the content that needs to be valued is a double or string, just copy it to value
             {
                 cellTable[name].value = cellTable[name].contents;
             }
-            else if (cellTable[name].contents is Formula)//if the contents is of a formula type
+            else if (cellTable.ContainsKey(name) && cellTable[name].contents is Formula)//if the contents is of a formula type
             {
                 try
                 {
@@ -287,28 +294,31 @@ namespace SS
                 }
                 catch (Exception e)//catch and handle any exceptions.
                 {
-                    if (e is FormulaFormatException)//catch expected errors and throw appropriate exceptions. Save them to the cell's value
-                    {
-                        cellTable[name].value = new FormulaError("Formula Format Exception");
-                    }
-                    else if (e is CircularException)
-                    {
-                        cellTable[name].value = new FormulaError("Circular Exception");
-                    }
-                    else if (e is FormulaEvaluationException)
+                    if (e is FormulaEvaluationException)
                     {
                         cellTable[name].value = new FormulaError("Formula Evaluation Exception");
                     }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
+
         }
         private double lookupHelper(string name)
         {
-            if (!(cellTable[name].contents is double) && !(cellTable[name].contents is Formula))//catches invalid lookups and undefined variable exceptions
+            if (!cellTable.ContainsKey(name))
+            {
+                throw new UndefinedVariableException(name);
+            }
+            if (!(cellTable[name].value is double))// && !(cellTable[name].value is Formula))//catches invalid lookups and undefined variable exceptions
             {
                 throw new UndefinedVariableException(name);
             }
             return (double)cellTable[name].value;
+            
+
         }
         /// <summary>
         /// Enumerates the names of all the non-empty cells in the spreadsheet.
@@ -409,7 +419,10 @@ namespace SS
         protected override ISet<string> SetCellContents(string name, Formula formula)
         {
             ISet<string> dependents = new HashSet<string>();
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             string originalname = name;
             name = name.ToUpper();
 
@@ -469,7 +482,10 @@ namespace SS
         /// </summary>
         protected override ISet<string> SetCellContents(string name, string text)
         {
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             ISet<string> resultant = new HashSet<string>();
             string originalname = name;
             name = name.ToUpper();
@@ -560,7 +576,10 @@ namespace SS
                 throw new ArgumentNullException();
             }
 
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             string originalname = name;
             name = name.ToUpper();
 
@@ -613,7 +632,10 @@ namespace SS
         /// </summary>
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            isValidName(name);
+            if (!isValidName(name))
+            {
+                throw new InvalidNameException();
+            }
             name = name.ToUpper();
             foreach (string child in dgGraph.GetDependents(name))
             {
@@ -633,13 +655,13 @@ namespace SS
                 throw new InvalidNameException();
             }
             name = name.ToUpper();
-            if (re.IsMatch(name))
+            if (re.IsMatch(name) && IsValid.IsMatch(name))
             {
                 return true;
             }
             else
             {
-                throw new InvalidNameException();
+                return false;
             }
         }
         private static void ValidationCallback(object sender, ValidationEventArgs e)
