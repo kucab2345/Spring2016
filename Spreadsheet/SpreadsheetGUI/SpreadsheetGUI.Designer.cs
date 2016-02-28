@@ -85,6 +85,7 @@
             this.Controls.Add(this.menuStrip2);
             this.MainMenuStrip = this.menuStrip2;
             this.Name = "SpreadsheetGUI";
+            this.Text = "Spreadsheet Program";
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
