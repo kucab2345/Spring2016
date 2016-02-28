@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.spreadsheetPanel2 = new SSGui.SpreadsheetPanel();
+            this.spreadsheetPanel = new SSGui.SpreadsheetPanel();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,12 +36,16 @@
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // spreadsheetPanel2
+            // spreadsheetPanel
             // 
-            this.spreadsheetPanel2.Location = new System.Drawing.Point(0, 25);
-            this.spreadsheetPanel2.Name = "spreadsheetPanel2";
-            this.spreadsheetPanel2.Size = new System.Drawing.Size(285, 235);
-            this.spreadsheetPanel2.TabIndex = 0;
+            this.spreadsheetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spreadsheetPanel.AutoSize = true;
+            this.spreadsheetPanel.Location = new System.Drawing.Point(0, 25);
+            this.spreadsheetPanel.Name = "spreadsheetPanel";
+            this.spreadsheetPanel.Size = new System.Drawing.Size(285, 235);
+            this.spreadsheetPanel.TabIndex = 0;
             // 
             // menuStrip2
             // 
@@ -77,7 +81,7 @@
             // SpreadsheetGUI
             // 
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.spreadsheetPanel2);
+            this.Controls.Add(this.spreadsheetPanel);
             this.Controls.Add(this.menuStrip2);
             this.MainMenuStrip = this.menuStrip2;
             this.Name = "SpreadsheetGUI";
@@ -96,7 +100,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenButton;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private SSGui.SpreadsheetPanel spreadsheetPanel2;
+        private SSGui.SpreadsheetPanel spreadsheetPanel;
         private System.Windows.Forms.MenuStrip menuStrip2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
