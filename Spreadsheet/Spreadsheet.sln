@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS6GradingTests", "PS6Gradi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPS6Tests(ModifiedPS5andMore)", "PS5 Tests\MyPS6Tests(ModifiedPS5andMore).csproj", "{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetGUI", "SpreadsheetGUI\SpreadsheetGUI.csproj", "{3B075213-B197-4A73-BE8B-2F580137D4DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,18 @@ Global
 		{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1BDD6C1-3826-4430-AE09-1A5F7E88F512}.Release|x86.Build.0 = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B075213-B197-4A73-BE8B-2F580137D4DD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
