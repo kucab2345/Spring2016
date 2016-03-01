@@ -46,7 +46,7 @@ namespace SpreadsheetGUI
             }
             catch (Exception ex)
             {
-                //window.Message = "Unable to open file\n" + ex.Message;
+                window.Message = "Unable to open file\n" + ex.Message;
             }
         }
     }

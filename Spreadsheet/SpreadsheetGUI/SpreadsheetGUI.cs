@@ -14,6 +14,14 @@ namespace SpreadsheetGUI
 {
     public partial class SpreadsheetGUI : Form , ISSInterface
     {
+        public string Message
+        {
+            set
+            {
+                MessageBox.Show(value);
+            }
+        }
+
         public SpreadsheetGUI()
         {
             InitializeComponent();

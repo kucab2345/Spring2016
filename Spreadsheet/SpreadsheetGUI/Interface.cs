@@ -8,6 +8,7 @@ namespace SpreadsheetGUI
 {
     public interface ISSInterface
     {
+        string Message { set; }
         event Action NewWindowEvent;
         event Action CloseWindowEvent;
         event Action<string> FileChosenEvent;
