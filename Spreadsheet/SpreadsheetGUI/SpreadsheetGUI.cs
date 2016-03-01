@@ -44,11 +44,14 @@ namespace SpreadsheetGUI
         }
         public void CloseCurrentWindowHandler()
         {
-            //
+            //Added in a check to make sure user has saved
             Close();
         }
+        private void FileDialogueBox_FileOk(object sender, EventArgs e)
+        {
 
-        private void FileDialogueBox_FileOk(object sender, CancelEventArgs e)
+        }
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)//File > Open
         {
             DialogResult result = FileDialogueBox.ShowDialog();
             if (result == DialogResult.Yes || result == DialogResult.OK)

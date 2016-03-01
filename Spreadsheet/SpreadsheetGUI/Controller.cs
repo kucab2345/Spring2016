@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SSGui;
+using System.IO;
 using SpreadsheetGUI;
 using SS;
 
@@ -30,25 +31,22 @@ namespace SpreadsheetGUI
         {
             window.CloseCurrentWindowHandler();
         }
-        public string OpenFile()
+        public void OpenFile(string filename)
         {
-            
+            FileChosenHandler(filename);
         }
         public void FileChosenHandler(String filename)
         {
-            try
+            try//Go back to PS6 tests to implement file reading system;
             {
-                model.ReadFile(filename);
-                window.CharCount = model.CountChars();
-                window.WordCount = model.CountWords();
-                window.LineCount = model.CountLines();
-                window.SubstringCount = 0;
-                window.SearchString = "";
-                window.Title = filename;
+                using (TextReader inFile = File.OpenText(filename))
+                {
+                    sheet = new Spreadsheet(inFile);
+                }
             }
             catch (Exception ex)
             {
-                window.Message = "Unable to open file\n" + ex.Message;
+                //window.Message = "Unable to open file\n" + ex.Message;
             }
         }
     }
