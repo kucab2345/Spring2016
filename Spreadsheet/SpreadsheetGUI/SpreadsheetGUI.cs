@@ -30,6 +30,7 @@ namespace SpreadsheetGUI
         public event Action NewWindowEvent;
         public event Action CloseWindowEvent;
         public event Action<string> FileChosenEvent;
+        public event Action<string> SaveFileEvent;
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)//FILE>NEW
         {
@@ -71,7 +72,23 @@ namespace SpreadsheetGUI
             }
         }
 
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = SaveDialogueBox.ShowDialog();
+            if (result == DialogResult.Yes || result == DialogResult.OK)
+            {
+                if (SaveFileEvent != null)
+                {
+                    SaveFileEvent(SaveDialogueBox.FileName);
+                }
+            }
+        }
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
         {
 
         }

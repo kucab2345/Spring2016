@@ -32,7 +32,7 @@
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.NewButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveButton = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -47,6 +47,7 @@
             this.CellValueBox = new System.Windows.Forms.TextBox();
             this.CellNameLabel = new System.Windows.Forms.Label();
             this.CellNameBox = new System.Windows.Forms.TextBox();
+            this.SaveDialogueBox = new System.Windows.Forms.SaveFileDialog();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -56,11 +57,12 @@
             // 
             // MenuStrip
             // 
+            this.MenuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(845, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(137, 24);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -68,7 +70,7 @@
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewButton,
-            this.toolStripMenuItem3,
+            this.SaveButton,
             this.openToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -78,27 +80,28 @@
             // NewButton
             // 
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(112, 22);
+            this.NewButton.Size = new System.Drawing.Size(152, 22);
             this.NewButton.Text = "New...";
             this.NewButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem3
+            // SaveButton
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
-            this.toolStripMenuItem3.Text = "Save...";
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(152, 22);
+            this.SaveButton.Text = "Save...";
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "Close...";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -168,6 +171,10 @@
             this.CellNameBox.Size = new System.Drawing.Size(100, 20);
             this.CellNameBox.TabIndex = 8;
             // 
+            // SaveDialogueBox
+            // 
+            this.SaveDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveDialogueBox_FileOk);
+            // 
             // SpreadsheetGUI
             // 
             this.ClientSize = new System.Drawing.Size(845, 446);
@@ -203,7 +210,7 @@
         private SSGui.SpreadsheetPanel spreadsheetPanel;
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem SaveButton;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.BindingSource bindingSource2;
@@ -219,6 +226,7 @@
         private System.Windows.Forms.TextBox CellValueBox;
         private System.Windows.Forms.Label CellNameLabel;
         private System.Windows.Forms.TextBox CellNameBox;
+        private System.Windows.Forms.SaveFileDialog SaveDialogueBox;
     }
 }
 

@@ -6,6 +6,7 @@ using SSGui;
 using System.IO;
 using SpreadsheetGUI;
 using SS;
+using System.Xml;
 
 
 namespace SpreadsheetGUI
@@ -22,7 +23,14 @@ namespace SpreadsheetGUI
             window.NewWindowEvent += NewWindow;
             window.CloseWindowEvent += CloseWindow;
             window.FileChosenEvent += OpenFile;
+            window.SaveFileEvent += SaveFile;
         }
+
+        public void SaveFile(string filename)
+        {
+            SaveFileHandler(filename);
+        }
+
         public void NewWindow()
         {
             window.CreateNewWindowHandler();
@@ -37,7 +45,7 @@ namespace SpreadsheetGUI
         }
         public void FileChosenHandler(String filename)
         {
-            try//Go back to PS6 tests to implement file reading system;
+            try
             {
                 using (TextReader inFile = File.OpenText(filename))
                 {
@@ -47,6 +55,23 @@ namespace SpreadsheetGUI
             catch (Exception ex)
             {
                 window.Message = "Unable to open file\n" + ex.Message;
+            }
+        }
+        public void SaveFileHandler(String filename)
+        {
+            //FORCED XML FILETYPE. ADJUST TO MEET SPEC!
+            // .ss filetype?
+            filename = filename + ".xml";
+            try
+            {
+                using (TextWriter outFile = File.CreateText(filename))
+                {
+                    sheet.Save(outFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                window.Message = "Unable to save file\n" + ex.Message;
             }
         }
     }
