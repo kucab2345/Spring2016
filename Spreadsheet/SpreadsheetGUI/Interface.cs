@@ -24,5 +24,7 @@ namespace SpreadsheetGUI
 
         void OpenNew();
 
+        void ReadSpreadsheet();??
+
     }
 }
