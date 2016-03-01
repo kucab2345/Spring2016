@@ -19,23 +19,45 @@ namespace SpreadsheetGUI
             InitializeComponent();
         }
 
-        public event Action NewWindow;
+        public event Action NewWindowEvent;
+        public event Action CloseWindowEvent;
+        public event Action<string> FileChosenEvent;
 
-        private void spreadsheetPanel_Load(object sender, EventArgs e)
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)//FILE>NEW
         {
-            
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (NewWindow != null)
+            if (NewWindowEvent != null)
             {
-                NewWindow();
+                NewWindowEvent();
             }
         }
-        public void CreateNewWindow()
+        public void CreateNewWindowHandler()
         {
             SpreadsheetApplicationContext.GetContext().RunNew();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)//FILE>CLOSE
+        {
+            if(CloseWindowEvent != null)
+            {
+                CloseWindowEvent();
+            }
+        }
+        public void CloseCurrentWindowHandler()
+        {
+            //
+            Close();
+        }
+
+        private void FileDialogueBox_FileOk(object sender, CancelEventArgs e)
+        {
+            DialogResult result = FileDialogueBox.ShowDialog();
+            if (result == DialogResult.Yes || result == DialogResult.OK)
+            {
+                if (FileChosenEvent != null)
+                {
+                    FileChosenEvent(FileDialogueBox.FileName);
+                }
+            }
         }
     }
 }
