@@ -9,6 +9,9 @@ namespace SpreadsheetGUI
     public interface ISSInterface
     {
         string Message { set; }
+        string CellNameField { set; }
+        string CellContentsField { set; }
+        string CellValueField { set; }
         event Action NewWindowEvent;
         event Action CloseWindowEvent;
         event Action<string> SaveFileEvent;
@@ -16,5 +19,6 @@ namespace SpreadsheetGUI
         event Action<int, int> ChangeSelectionEvent;
         void CreateNewWindowHandler();
         void CloseCurrentWindowHandler();
+        
     }
 }

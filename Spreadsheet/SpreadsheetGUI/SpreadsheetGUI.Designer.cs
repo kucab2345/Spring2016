@@ -41,7 +41,7 @@
             this.bindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.spreadsheetPanel2 = new SSGui.SpreadsheetPanel();
             this.FileDialogueBox = new System.Windows.Forms.OpenFileDialog();
-            this.CellInputBox = new System.Windows.Forms.RichTextBox();
+            this.CellContentBox = new System.Windows.Forms.RichTextBox();
             this.CellContentsLabel = new System.Windows.Forms.Label();
             this.CellValueLabel = new System.Windows.Forms.Label();
             this.CellValueBox = new System.Windows.Forms.TextBox();
@@ -62,7 +62,7 @@
             this.toolStripMenuItem1});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(137, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(45, 24);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -80,28 +80,28 @@
             // NewButton
             // 
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(152, 22);
+            this.NewButton.Size = new System.Drawing.Size(112, 22);
             this.NewButton.Text = "New...";
             this.NewButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // SaveButton
             // 
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(152, 22);
+            this.SaveButton.Size = new System.Drawing.Size(112, 22);
             this.SaveButton.Text = "Save...";
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.closeToolStripMenuItem.Text = "Close...";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -120,13 +120,13 @@
             this.FileDialogueBox.FileName = "FileDialogueBox";
             this.FileDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.FileDialogueBox_FileOk);
             // 
-            // CellInputBox
+            // CellContentBox
             // 
-            this.CellInputBox.Location = new System.Drawing.Point(586, -72);
-            this.CellInputBox.Name = "CellInputBox";
-            this.CellInputBox.Size = new System.Drawing.Size(100, 96);
-            this.CellInputBox.TabIndex = 3;
-            this.CellInputBox.Text = "";
+            this.CellContentBox.Location = new System.Drawing.Point(586, -72);
+            this.CellContentBox.Name = "CellContentBox";
+            this.CellContentBox.Size = new System.Drawing.Size(100, 96);
+            this.CellContentBox.TabIndex = 3;
+            this.CellContentBox.Text = "";
             // 
             // CellContentsLabel
             // 
@@ -183,11 +183,12 @@
             this.Controls.Add(this.CellValueBox);
             this.Controls.Add(this.CellValueLabel);
             this.Controls.Add(this.CellContentsLabel);
-            this.Controls.Add(this.CellInputBox);
+            this.Controls.Add(this.CellContentBox);
             this.Controls.Add(this.spreadsheetPanel2);
             this.Controls.Add(this.MenuStrip);
             this.MainMenuStrip = this.MenuStrip;
             this.Name = "SpreadsheetGUI";
+            this.Load += new System.EventHandler(this.SpreadsheetGUI_Load);
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
@@ -220,7 +221,7 @@
         private System.Windows.Forms.ToolStripMenuItem NewButton;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog FileDialogueBox;
-        private System.Windows.Forms.RichTextBox CellInputBox;
+        private System.Windows.Forms.RichTextBox CellContentBox;
         private System.Windows.Forms.Label CellContentsLabel;
         private System.Windows.Forms.Label CellValueLabel;
         private System.Windows.Forms.TextBox CellValueBox;

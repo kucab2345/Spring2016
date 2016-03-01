@@ -22,6 +22,30 @@ namespace SpreadsheetGUI
             }
         }
 
+        public string CellNameField
+        {
+            set
+            {
+                CellNameBox.Text = value;
+            }
+        }
+
+        public string CellContentsField
+        {
+            set
+            {
+                CellContentBox.Text = value;
+            }
+        }
+
+        public string CellValueField
+        {
+            set
+            {
+                CellValueBox.Text = value;
+            }
+        }
+
         public SpreadsheetGUI()
         {
             InitializeComponent();
@@ -79,6 +103,10 @@ namespace SpreadsheetGUI
                 {
                     FileChosenEvent(FileDialogueBox.FileName);
                 }
+                if(ChangeSelectionEvent != null)
+                {
+                    ChangeSelectionEvent(0, 0);
+                }
             }
         }
 
@@ -105,6 +133,14 @@ namespace SpreadsheetGUI
         private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
         {
 
+        }
+
+        private void SpreadsheetGUI_Load(object sender, EventArgs e)
+        {
+            if(ChangeSelectionEvent != null)
+            {
+                ChangeSelectionEvent(0, 0);
+            }
         }
     }
 }
