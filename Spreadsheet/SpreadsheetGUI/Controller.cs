@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpreadsheetGUI
 {
-    class Controller
+    class Controller : Interface
     {
     }
 }

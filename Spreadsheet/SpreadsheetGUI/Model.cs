@@ -17,7 +17,7 @@ namespace SpreadsheetGUI
         public Model()
         {
             ss = new Spreadsheet();
-        }
+        }/*
         public Model(loaded in spreadsheet?)//loading in a spreadsheet constructor
         {
             ss = new Spreadsheet(otherspreadsheet);
@@ -29,5 +29,6 @@ namespace SpreadsheetGUI
                 ss = new Spreadsheet(source);
             }
         }
+        */
     }
 }
