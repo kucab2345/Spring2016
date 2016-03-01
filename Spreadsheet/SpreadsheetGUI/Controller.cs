@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using SSGui;
+using SpreadsheetGUI;
+
 
 namespace SpreadsheetGUI
 {
-    class Controller : Interface
+    class Controller
     {
+        ISSInterface window; 
+        public Controller(ISSInterface view)
+        {
+            window = view;
+            window.NewWindow += NewWindow;
+        }
+        public void NewWindow()
+        {
+            SpreadsheetApplicationContext.GetContext().RunNew();
+        }
     }
 }

@@ -6,23 +6,8 @@ using System.Threading.Tasks;
 
 namespace SpreadsheetGUI
 {
-    public interface Interface
+    public interface ISSInterface
     {
-        event Action<string> FileChosenEvent;
-
-        event Action<string> CountEvent;
-
-        event Action CloseEvent;
-
-        event Action NewEvent;
-
-        string Title { set; }
-
-        string Message { set; }
-
-        void DoClose();
-
-        void OpenNew();
-
+        event Action NewWindow;
     }
 }
