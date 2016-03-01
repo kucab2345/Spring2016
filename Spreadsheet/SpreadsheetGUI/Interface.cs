@@ -13,6 +13,7 @@ namespace SpreadsheetGUI
         event Action CloseWindowEvent;
         event Action<string> SaveFileEvent;
         event Action<string> FileChosenEvent;
+        event Action<int, int> ChangeSelectionEvent;
         void CreateNewWindowHandler();
         void CloseCurrentWindowHandler();
     }

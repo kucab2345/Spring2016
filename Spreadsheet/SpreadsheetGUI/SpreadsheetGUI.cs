@@ -25,10 +25,23 @@ namespace SpreadsheetGUI
         public SpreadsheetGUI()
         {
             InitializeComponent();
+            spreadsheetPanel2.SelectionChanged += displaySelection;
+        }
+
+        private void displaySelection(SpreadsheetPanel sender)
+        {
+            int row, col;
+            sender.GetSelection(out row, out col);
+
+            if(ChangeSelectionEvent != null)
+            {
+                ChangeSelectionEvent(row,col);
+            }
         }
 
         public event Action NewWindowEvent;
         public event Action CloseWindowEvent;
+        public event Action<int,int> ChangeSelectionEvent;
         public event Action<string> FileChosenEvent;
         public event Action<string> SaveFileEvent;
 
@@ -56,10 +69,7 @@ namespace SpreadsheetGUI
             //Added in a check to make sure user has saved
             Close();
         }
-        private void FileDialogueBox_FileOk(object sender, EventArgs e)
-        {
 
-        }
         private void openToolStripMenuItem_Click(object sender, EventArgs e)//File > Open
         {
             DialogResult result = FileDialogueBox.ShowDialog();
@@ -82,6 +92,10 @@ namespace SpreadsheetGUI
                     SaveFileEvent(SaveDialogueBox.FileName);
                 }
             }
+        }
+        private void FileDialogueBox_FileOk(object sender, EventArgs e)
+        {
+
         }
         private void label1_Click(object sender, EventArgs e)
         {
