@@ -9,5 +9,6 @@ namespace SpreadsheetGUI
     public interface ISSInterface
     {
         event Action NewWindow;
+        void CreateNewWindow();
     }
 }

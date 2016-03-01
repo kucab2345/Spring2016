@@ -18,7 +18,7 @@ namespace SpreadsheetGUI
         }
         public void NewWindow()
         {
-            SpreadsheetApplicationContext.GetContext().RunNew();
+            window.CreateNewWindow();
         }
     }
 }

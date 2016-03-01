@@ -28,10 +28,14 @@ namespace SpreadsheetGUI
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(NewWindow != null)
+            if (NewWindow != null)
             {
                 NewWindow();
             }
+        }
+        public void CreateNewWindow()
+        {
+            SpreadsheetApplicationContext.GetContext().RunNew();
         }
     }
 }
