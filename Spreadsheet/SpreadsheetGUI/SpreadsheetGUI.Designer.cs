@@ -34,13 +34,19 @@
             this.NewButton = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.spreadsheetPanel2 = new SSGui.SpreadsheetPanel();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FileDialogueBox = new System.Windows.Forms.OpenFileDialog();
+            this.CellInputBox = new System.Windows.Forms.RichTextBox();
+            this.CellContentsLabel = new System.Windows.Forms.Label();
+            this.CellValueLabel = new System.Windows.Forms.Label();
+            this.CellValueBox = new System.Windows.Forms.TextBox();
+            this.CellNameLabel = new System.Windows.Forms.Label();
+            this.CellNameBox = new System.Windows.Forms.TextBox();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -54,7 +60,7 @@
             this.toolStripMenuItem1});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(596, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(845, 24);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -72,22 +78,29 @@
             // NewButton
             // 
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(152, 22);
+            this.NewButton.Size = new System.Drawing.Size(112, 22);
             this.NewButton.Text = "New...";
             this.NewButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem3.Text = "Save...";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.closeToolStripMenuItem.Text = "Close...";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // spreadsheetPanel2
             // 
@@ -96,24 +109,74 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.spreadsheetPanel2.Location = new System.Drawing.Point(0, 27);
             this.spreadsheetPanel2.Name = "spreadsheetPanel2";
-            this.spreadsheetPanel2.Size = new System.Drawing.Size(596, 416);
+            this.spreadsheetPanel2.Size = new System.Drawing.Size(845, 416);
             this.spreadsheetPanel2.TabIndex = 2;
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close...";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // FileDialogueBox
             // 
             this.FileDialogueBox.FileName = "FileDialogueBox";
             this.FileDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.FileDialogueBox_FileOk);
             // 
+            // CellInputBox
+            // 
+            this.CellInputBox.Location = new System.Drawing.Point(586, -72);
+            this.CellInputBox.Name = "CellInputBox";
+            this.CellInputBox.Size = new System.Drawing.Size(100, 96);
+            this.CellInputBox.TabIndex = 3;
+            this.CellInputBox.Text = "";
+            // 
+            // CellContentsLabel
+            // 
+            this.CellContentsLabel.AutoSize = true;
+            this.CellContentsLabel.Location = new System.Drawing.Point(511, 9);
+            this.CellContentsLabel.Name = "CellContentsLabel";
+            this.CellContentsLabel.Size = new System.Drawing.Size(69, 13);
+            this.CellContentsLabel.TabIndex = 4;
+            this.CellContentsLabel.Text = "Cell Contents";
+            // 
+            // CellValueLabel
+            // 
+            this.CellValueLabel.AutoSize = true;
+            this.CellValueLabel.Location = new System.Drawing.Point(326, 9);
+            this.CellValueLabel.Name = "CellValueLabel";
+            this.CellValueLabel.Size = new System.Drawing.Size(54, 13);
+            this.CellValueLabel.TabIndex = 5;
+            this.CellValueLabel.Text = "Cell Value";
+            // 
+            // CellValueBox
+            // 
+            this.CellValueBox.Location = new System.Drawing.Point(386, 2);
+            this.CellValueBox.Name = "CellValueBox";
+            this.CellValueBox.ReadOnly = true;
+            this.CellValueBox.Size = new System.Drawing.Size(100, 20);
+            this.CellValueBox.TabIndex = 6;
+            // 
+            // CellNameLabel
+            // 
+            this.CellNameLabel.AutoSize = true;
+            this.CellNameLabel.Location = new System.Drawing.Point(142, 9);
+            this.CellNameLabel.Name = "CellNameLabel";
+            this.CellNameLabel.Size = new System.Drawing.Size(55, 13);
+            this.CellNameLabel.TabIndex = 7;
+            this.CellNameLabel.Text = "Cell Name";
+            // 
+            // CellNameBox
+            // 
+            this.CellNameBox.Location = new System.Drawing.Point(203, 2);
+            this.CellNameBox.Name = "CellNameBox";
+            this.CellNameBox.ReadOnly = true;
+            this.CellNameBox.Size = new System.Drawing.Size(100, 20);
+            this.CellNameBox.TabIndex = 8;
+            // 
             // SpreadsheetGUI
             // 
-            this.ClientSize = new System.Drawing.Size(596, 446);
+            this.ClientSize = new System.Drawing.Size(845, 446);
+            this.Controls.Add(this.CellNameBox);
+            this.Controls.Add(this.CellNameLabel);
+            this.Controls.Add(this.CellValueBox);
+            this.Controls.Add(this.CellValueLabel);
+            this.Controls.Add(this.CellContentsLabel);
+            this.Controls.Add(this.CellInputBox);
             this.Controls.Add(this.spreadsheetPanel2);
             this.Controls.Add(this.MenuStrip);
             this.MainMenuStrip = this.MenuStrip;
@@ -150,6 +213,12 @@
         private System.Windows.Forms.ToolStripMenuItem NewButton;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog FileDialogueBox;
+        private System.Windows.Forms.RichTextBox CellInputBox;
+        private System.Windows.Forms.Label CellContentsLabel;
+        private System.Windows.Forms.Label CellValueLabel;
+        private System.Windows.Forms.TextBox CellValueBox;
+        private System.Windows.Forms.Label CellNameLabel;
+        private System.Windows.Forms.TextBox CellNameBox;
     }
 }
 
