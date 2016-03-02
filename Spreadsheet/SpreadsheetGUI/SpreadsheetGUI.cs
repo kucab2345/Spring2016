@@ -108,13 +108,9 @@ namespace SpreadsheetGUI
             DialogResult result = FileDialogueBox.ShowDialog();
             if (result == DialogResult.Yes || result == DialogResult.OK)
             {
-                if(NewWindowEvent != null)
-                {
-                    NewWindowEvent();
-                }
                 if (FileChosenEvent != null)
                 {
-                    FileChosenEvent(FileDialogueBox.FileName);
+                    SpreadsheetApplicationContext.GetContext().RunNew(FileDialogueBox.FileName);
                 }
                 if(ChangeSelectionEvent != null)
                 {
