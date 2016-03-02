@@ -38,8 +38,16 @@ namespace SpreadsheetGUI
 
             window.CellValueField = sheet.GetCellValue(cellName).ToString();
 
-            
+            object temp = sheet.GetCellContents(cellName);
 
+            if(!(temp is double) && !(temp is string) && !(temp is FormulaError))
+            {
+                window.CellContentField = "= " + temp.ToString();
+            }
+            else
+            {
+                window.CellContentField = temp.ToString();
+            }
         }
 
         public void SaveFile(string filename)
@@ -76,9 +84,6 @@ namespace SpreadsheetGUI
         }
         public void SaveFileHandler(String filename)
         {
-            //FORCED XML FILETYPE. ADJUST TO MEET SPEC!
-            // .ss filetype?
-            filename = filename + ".xml";
             try
             {
                 using (TextWriter outFile = File.CreateText(filename))

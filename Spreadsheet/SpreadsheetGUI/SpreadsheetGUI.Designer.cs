@@ -41,13 +41,13 @@
             this.bindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.spreadsheetPanel2 = new SSGui.SpreadsheetPanel();
             this.FileDialogueBox = new System.Windows.Forms.OpenFileDialog();
-            this.CellContentBox = new System.Windows.Forms.RichTextBox();
             this.CellContentsLabel = new System.Windows.Forms.Label();
             this.CellValueLabel = new System.Windows.Forms.Label();
             this.CellValueBox = new System.Windows.Forms.TextBox();
             this.CellNameLabel = new System.Windows.Forms.Label();
             this.CellNameBox = new System.Windows.Forms.TextBox();
             this.SaveDialogueBox = new System.Windows.Forms.SaveFileDialog();
+            this.CellContentBox = new System.Windows.Forms.TextBox();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -117,16 +117,10 @@
             // 
             // FileDialogueBox
             // 
+            this.FileDialogueBox.DefaultExt = "ss";
             this.FileDialogueBox.FileName = "FileDialogueBox";
+            this.FileDialogueBox.Filter = "ss files|*.ss|All files|*.*";
             this.FileDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.FileDialogueBox_FileOk);
-            // 
-            // CellContentBox
-            // 
-            this.CellContentBox.Location = new System.Drawing.Point(586, -72);
-            this.CellContentBox.Name = "CellContentBox";
-            this.CellContentBox.Size = new System.Drawing.Size(100, 96);
-            this.CellContentBox.TabIndex = 3;
-            this.CellContentBox.Text = "";
             // 
             // CellContentsLabel
             // 
@@ -173,17 +167,26 @@
             // 
             // SaveDialogueBox
             // 
+            this.SaveDialogueBox.DefaultExt = "ss";
+            this.SaveDialogueBox.Filter = "ss files|*.ss|All files|*.*";
             this.SaveDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveDialogueBox_FileOk);
+            // 
+            // CellContentBox
+            // 
+            this.CellContentBox.Location = new System.Drawing.Point(597, 3);
+            this.CellContentBox.Name = "CellContentBox";
+            this.CellContentBox.Size = new System.Drawing.Size(100, 20);
+            this.CellContentBox.TabIndex = 9;
             // 
             // SpreadsheetGUI
             // 
             this.ClientSize = new System.Drawing.Size(845, 446);
+            this.Controls.Add(this.CellContentBox);
             this.Controls.Add(this.CellNameBox);
             this.Controls.Add(this.CellNameLabel);
             this.Controls.Add(this.CellValueBox);
             this.Controls.Add(this.CellValueLabel);
             this.Controls.Add(this.CellContentsLabel);
-            this.Controls.Add(this.CellContentBox);
             this.Controls.Add(this.spreadsheetPanel2);
             this.Controls.Add(this.MenuStrip);
             this.MainMenuStrip = this.MenuStrip;
@@ -221,13 +224,13 @@
         private System.Windows.Forms.ToolStripMenuItem NewButton;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog FileDialogueBox;
-        private System.Windows.Forms.RichTextBox CellContentBox;
         private System.Windows.Forms.Label CellContentsLabel;
         private System.Windows.Forms.Label CellValueLabel;
         private System.Windows.Forms.TextBox CellValueBox;
         private System.Windows.Forms.Label CellNameLabel;
         private System.Windows.Forms.TextBox CellNameBox;
         private System.Windows.Forms.SaveFileDialog SaveDialogueBox;
+        private System.Windows.Forms.TextBox CellContentBox;
     }
 }
 

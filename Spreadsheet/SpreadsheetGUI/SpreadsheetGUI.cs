@@ -30,7 +30,7 @@ namespace SpreadsheetGUI
             }
         }
 
-        public string CellContentsField
+        public string CellContentField
         {
             set
             {

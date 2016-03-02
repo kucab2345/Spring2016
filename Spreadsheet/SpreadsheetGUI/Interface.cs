@@ -10,7 +10,7 @@ namespace SpreadsheetGUI
     {
         string Message { set; }
         string CellNameField { set; }
-        string CellContentsField { set; }
+        string CellContentField { set; }
         string CellValueField { set; }
         event Action NewWindowEvent;
         event Action CloseWindowEvent;
