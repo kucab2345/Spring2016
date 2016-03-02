@@ -1,1 +1,24 @@
-﻿I made two mistakes
+﻿I made two mistakes when submitting PS5
+
+The first mistake was that I had the order of ToUpper and isValid
+switched in each of my functions. Since the names had to be case-insensitive,
+I thought it was appropriate to first lower the incoming name and then
+check it's validity. That failed if the name coming in was invalid. Since I
+tried lowering the string before checking that it was valid, the tests often 
+bombed.
+
+This fixed all but 2 tests. (See the history of branch PS5 commit titled "Only failing two tests" to see these changes)
+Also note that I originally used ToLower and changed it to ToUpper, for aesthetic reasons. 
+
+The second mistake I made was a bit larger, and I don't expect it to
+be counted on the regrade since it required more changes.
+
+This mistake was that I was I failed to check in my SetCellContents for formulas that the CellTable[name]'s 
+contents were actually of Formula type. I originally had the ordering a little off too, such that I was
+assigning the contents of a particular cell before adding the dependency. Duplicate cells, circular dependencies, and other 
+illegal operations don't allow for the dependency to be created, but I had already created
+a cell with the content in question. This caused me to fail the remaining two tests.
+
+*See branch history of PS5, commit "Fixed last two tests" to see these changes. Since these 
+changes are substantial and could be detrimental to my grade, I do not expect them to be part of the
+regrade.
