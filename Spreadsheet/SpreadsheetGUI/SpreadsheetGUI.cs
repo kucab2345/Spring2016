@@ -168,5 +168,10 @@ namespace SpreadsheetGUI
         {
             spreadsheetPanel2.SetValue(col, row, obj);
         }
+
+        private void HelpButton_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

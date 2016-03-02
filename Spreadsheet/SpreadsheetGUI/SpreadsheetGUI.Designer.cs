@@ -35,6 +35,7 @@
             this.SaveButton = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpButton = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource3 = new System.Windows.Forms.BindingSource(this.components);
@@ -48,6 +49,7 @@
             this.CellNameBox = new System.Windows.Forms.TextBox();
             this.SaveDialogueBox = new System.Windows.Forms.SaveFileDialog();
             this.CellContentBox = new System.Windows.Forms.TextBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -59,10 +61,11 @@
             // 
             this.MenuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.HelpButton});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(45, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(89, 24);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -104,6 +107,13 @@
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.closeToolStripMenuItem.Text = "Close...";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // HelpButton
+            // 
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(44, 20);
+            this.HelpButton.Text = "Help";
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
             // 
             // spreadsheetPanel2
             // 
@@ -234,6 +244,8 @@
         private System.Windows.Forms.TextBox CellNameBox;
         private System.Windows.Forms.SaveFileDialog SaveDialogueBox;
         private System.Windows.Forms.TextBox CellContentBox;
+        private System.Windows.Forms.ToolStripMenuItem HelpButton;
+        private System.Windows.Forms.HelpProvider helpProvider1;
     }
 }
 

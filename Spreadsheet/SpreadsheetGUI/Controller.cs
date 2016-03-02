@@ -27,7 +27,7 @@ namespace SpreadsheetGUI
             window.ChangeSelectionEvent += ChangeSelectedCellHandler;
             window.ChangeContentEvent += ChangeContentEventHandler;
         }
-        public Controller(ISSInterface view,string fileName)//Create a new, blank spreadsheet
+        public Controller(ISSInterface view,string fileName)//Create a new, spreadsheet and load in data from a .ss file
         {
             sheet = new Spreadsheet(new System.Text.RegularExpressions.Regex(@"^[A-Z]+[1-9]{1}[0-9]{0,1}$"));
 
@@ -125,7 +125,6 @@ namespace SpreadsheetGUI
                 {
                     window.Update(sheet.GetCellValue(i).ToString(), colNum, numRow - 1);
                 }
-
             }
             
             window.Title = filename;
