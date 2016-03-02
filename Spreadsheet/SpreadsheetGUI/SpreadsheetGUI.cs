@@ -73,7 +73,6 @@ namespace SpreadsheetGUI
 
         public event Action NewWindowEvent;
         public event Action CloseWindowEvent;
-        public event Action<string, int, int> ChangeContentsEvent;
         public event Action<int,int> ChangeSelectionEvent;
         public event Action<string> FileChosenEvent;
         public event Action<string> SaveFileEvent;
@@ -109,6 +108,10 @@ namespace SpreadsheetGUI
             DialogResult result = FileDialogueBox.ShowDialog();
             if (result == DialogResult.Yes || result == DialogResult.OK)
             {
+                if(NewWindowEvent != null)
+                {
+                    NewWindowEvent();
+                }
                 if (FileChosenEvent != null)
                 {
                     FileChosenEvent(FileDialogueBox.FileName);

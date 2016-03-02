@@ -17,8 +17,8 @@ namespace SpreadsheetGUI
         ISSInterface window;
         public Controller(ISSInterface view)//Create a new, blank spreadsheet
         {
-            sheet = new Spreadsheet();
-
+            sheet = new Spreadsheet(new System.Text.RegularExpressions.Regex(@"^[A-Z]+[1-9]{1}[0-9]{0,1}$"));
+            
             window = view;
             window.NewWindowEvent += NewWindow;
             window.CloseWindowEvent += CloseWindow;
@@ -113,6 +113,7 @@ namespace SpreadsheetGUI
                 }
 
             }
+            
             window.Title = filename;
         }
         public void SaveFileHandler(String filename)

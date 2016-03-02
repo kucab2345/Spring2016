@@ -173,11 +173,12 @@
             // 
             // CellContentBox
             // 
+            this.CellContentBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CellContentBox.Location = new System.Drawing.Point(597, 3);
             this.CellContentBox.Name = "CellContentBox";
             this.CellContentBox.Size = new System.Drawing.Size(100, 20);
             this.CellContentBox.TabIndex = 9;
-
             this.CellContentBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CellContentBox_TextChanged);
             // 
             // SpreadsheetGUI
