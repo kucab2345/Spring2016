@@ -51,9 +51,24 @@ namespace SpreadsheetGUI
             }
             window.Update(sheet.GetCellValue(cellName).ToString(), col, row);
         }
-        public void ChangeContentEventHandler(string cellName, int col, int row)
+        public void ChangeContentEventHandler(string cellContent, int col, int row)
         {
+            char prefixLetter = (char)(97 + col);
+            string cellNamePrefix = prefixLetter.ToString().ToUpper();
+            string cellNameSuffix = (row + 1).ToString();
+            string cellName = cellNamePrefix + cellNameSuffix;
+            
+            foreach(string i in sheet.SetContentsOfCell(cellName, cellContent.ToString()))
+            {
+                char prefix = i[0];
+                int colNum = prefix - 65;
+                int numRow;
 
+                if (int.TryParse(i.Substring(1), out numRow))
+                {
+                    window.Update(sheet.GetCellValue(i).ToString(), colNum, numRow - 1);
+                }
+            }
         }
 
         public void SaveFile(string filename)

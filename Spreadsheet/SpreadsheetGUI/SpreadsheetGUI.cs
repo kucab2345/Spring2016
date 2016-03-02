@@ -125,10 +125,10 @@ namespace SpreadsheetGUI
 
             if(e.KeyCode == Keys.Enter)
             {
-                if(ChangeContentsEvent != null)
+                if(ChangeContentEvent != null)
                 {
                     spreadsheetPanel2.GetSelection(out col, out row);
-                    ChangeContentsEvent(CellContentBox.Text, col, row);
+                    ChangeContentEvent(CellContentBox.Text, col, row);
                 }
             }
         }
