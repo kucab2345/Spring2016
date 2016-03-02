@@ -25,6 +25,7 @@ namespace SpreadsheetGUI
             window.FileChosenEvent += OpenFile;
             window.SaveFileEvent += SaveFile;
             window.ChangeSelectionEvent += ChangeSelectedCellHandler;
+            window.ChangeContentEvent += ChangeContentEventHandler;
         }
 
         public void ChangeSelectedCellHandler(int col, int row)
@@ -48,6 +49,11 @@ namespace SpreadsheetGUI
             {
                 window.CellContentField = temp.ToString();
             }
+            window.Update(sheet.GetCellValue(cellName).ToString(), col, row);
+        }
+        public void ChangeContentEventHandler(string cellName, int col, int row)
+        {
+
         }
 
         public void SaveFile(string filename)
@@ -80,7 +86,19 @@ namespace SpreadsheetGUI
             {
                 window.Message = "Unable to open file\n" + ex.Message;
             }
+            foreach(string i in sheet.GetNamesOfAllNonemptyCells())
+            {
+                char prefix = i[0];
+                int colNum = prefix - 65;
+                int numRow;
 
+                if(int.TryParse(i.Substring(1), out numRow))
+                {
+                    window.Update(sheet.GetCellValue(i).ToString(), colNum, numRow - 1);
+                }
+
+            }
+            window.Title = filename;
         }
         public void SaveFileHandler(String filename)
         {

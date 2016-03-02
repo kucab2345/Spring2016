@@ -177,6 +177,8 @@
             this.CellContentBox.Name = "CellContentBox";
             this.CellContentBox.Size = new System.Drawing.Size(100, 20);
             this.CellContentBox.TabIndex = 9;
+
+            this.CellContentBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CellContentBox_TextChanged);
             // 
             // SpreadsheetGUI
             // 

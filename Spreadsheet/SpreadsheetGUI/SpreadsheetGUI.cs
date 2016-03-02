@@ -46,6 +46,14 @@ namespace SpreadsheetGUI
             }
         }
 
+        public string Title
+        {
+            set
+            {
+                Text = value;
+            }
+        }
+
         public SpreadsheetGUI()
         {
             InitializeComponent();
@@ -55,19 +63,21 @@ namespace SpreadsheetGUI
         private void displaySelection(SpreadsheetPanel sender)
         {
             int row, col;
-            sender.GetSelection(out row, out col);
+            sender.GetSelection(out col, out row);
 
             if(ChangeSelectionEvent != null)
             {
-                ChangeSelectionEvent(row,col);
+                ChangeSelectionEvent(col,row);
             }
         }
 
         public event Action NewWindowEvent;
         public event Action CloseWindowEvent;
+        public event Action<string, int, int> ChangeContentsEvent;
         public event Action<int,int> ChangeSelectionEvent;
         public event Action<string> FileChosenEvent;
         public event Action<string> SaveFileEvent;
+        public event Action<string, int, int> ChangeContentEvent;
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)//FILE>NEW
         {
@@ -109,6 +119,19 @@ namespace SpreadsheetGUI
                 }
             }
         }
+        private void CellContentBox_TextChanged(object sender, KeyEventArgs e)
+        {
+            int col, row;
+
+            if(e.KeyCode == Keys.Enter)
+            {
+                if(ChangeContentsEvent != null)
+                {
+                    spreadsheetPanel2.GetSelection(out col, out row);
+                    ChangeContentsEvent(CellContentBox.Text, col, row);
+                }
+            }
+        }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
@@ -141,6 +164,10 @@ namespace SpreadsheetGUI
             {
                 ChangeSelectionEvent(0, 0);
             }
+        }
+        public void Update(string obj, int col, int row)
+        {
+            spreadsheetPanel2.SetValue(col, row, obj);
         }
     }
 }
