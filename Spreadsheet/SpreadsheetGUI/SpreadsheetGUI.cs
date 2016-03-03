@@ -53,7 +53,6 @@ namespace SpreadsheetGUI
                 Text = value;
             }
         }
-        public string currentFile { get; set; }
 
         public SpreadsheetGUI()
         {
@@ -135,33 +134,14 @@ namespace SpreadsheetGUI
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (currentFile != null)
+            DialogResult result = SaveDialogueBox.ShowDialog();
+            if (result == DialogResult.Yes || result == DialogResult.OK)
             {
                 if (SaveFileEvent != null)
                 {
                     SaveFileEvent(SaveDialogueBox.FileName);
                 }
             }
-            else
-            {
-                try
-                {
-                    DialogResult result = SaveDialogueBox.ShowDialog();
-                    currentFile = SaveDialogueBox.FileName;
-                    if (result == DialogResult.Yes || result == DialogResult.OK)
-                    {
-                        if (SaveFileEvent != null)
-                        {
-                            SaveFileEvent(SaveDialogueBox.FileName);
-                        }
-                    }
-                }
-                catch (Exception error)
-                {
-                    Message = error.Message;
-                }
-            }
-            Title = currentFile;
         }
         private void FileDialogueBox_FileOk(object sender, EventArgs e)
         {
@@ -174,7 +154,7 @@ namespace SpreadsheetGUI
 
         private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
         {
-            
+
         }
 
         private void SpreadsheetGUI_Load(object sender, EventArgs e)
@@ -192,26 +172,6 @@ namespace SpreadsheetGUI
         private void HelpButton_Click(object sender, EventArgs e)
         {
             
-        }
-
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DialogResult result = SaveDialogueBox.ShowDialog();
-                currentFile = SaveDialogueBox.FileName;
-                if (result == DialogResult.Yes || result == DialogResult.OK)
-                {
-                    if (SaveFileEvent != null)
-                    {
-                        SaveFileEvent(SaveDialogueBox.FileName);
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                Message = error.Message;
-            }
         }
     }
 }

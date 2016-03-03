@@ -45,7 +45,6 @@
             this.SaveDialogueBox = new System.Windows.Forms.SaveFileDialog();
             this.CellContentBox = new System.Windows.Forms.TextBox();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +56,7 @@
             this.HelpButton});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(181, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(89, 24);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "MenuStrip";
             // 
@@ -65,9 +64,8 @@
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewButton,
-            this.openToolStripMenuItem,
             this.SaveButton,
-            this.saveAsToolStripMenuItem,
+            this.openToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
@@ -76,28 +74,28 @@
             // NewButton
             // 
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(152, 22);
+            this.NewButton.Size = new System.Drawing.Size(112, 22);
             this.NewButton.Text = "New...";
             this.NewButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // SaveButton
             // 
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(152, 22);
+            this.SaveButton.Size = new System.Drawing.Size(112, 22);
             this.SaveButton.Text = "Save...";
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.closeToolStripMenuItem.Text = "Close...";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -184,13 +182,6 @@
             this.CellContentBox.TabIndex = 9;
             this.CellContentBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CellContentBox_TextChanged);
             // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            // 
             // SpreadsheetGUI
             // 
             this.ClientSize = new System.Drawing.Size(845, 446);
@@ -238,7 +229,6 @@
         private System.Windows.Forms.TextBox CellContentBox;
         private System.Windows.Forms.ToolStripMenuItem HelpButton;
         private System.Windows.Forms.HelpProvider helpProvider1;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 
