@@ -1,0 +1,18 @@
+﻿I made one simple mistake way back in PS2 that finally surfaced as a result of
+a specification in PS6.
+
+In my Formula constructor, I made a charArray of the exact formula as it was passed into the constructor.
+I used it to check the first and last characters of the Formula to make their they were valid, ie a (, number, letter.
+However, in PS6, the professor added the specification that all formulas would need to be preceeded by the = char, which
+was actually not problematic in-and-of itself. 
+
+I strip off the = char before sending it to the formula constructor, so again, my constructor would see the very next character, 
+be it a number or letter or (. The problem was that the professor's tests have a space immediately after the = char. In my tests, I had
+no space after the = signs.
+
+For example, the professor might have "= A1 + 100" as a formula. I wrote mine as "=A1+100". That whitespace caused my constructor to throw
+an invalid name error for almost every test as whitespace is not a valid starting character. I switched it to check the first character of the
+tokens after they have been parsed, removing white space entirely. 
+
+3 lines of code changed (2 for checking the end and beginning of the string respectively, and one to check the length of the string) to correct
+34 failed tests.

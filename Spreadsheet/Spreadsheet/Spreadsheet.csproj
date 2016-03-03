@@ -46,6 +46,7 @@
     <Compile Include="Spreadsheet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PS6Regrade.txt" />
     <Content Include="SampleSavedSpreadsheet.xml">
       <SubType>Designer</SubType>
     </Content>
