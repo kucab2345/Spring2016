@@ -15,4 +15,4 @@ an invalid name error for almost every test as whitespace is not a valid startin
 tokens after they have been parsed, removing white space entirely. 
 
 3 lines of code changed (2 for checking the end and beginning of the string respectively, and one to check the length of the string) to correct
-34 failed tests.
+33 failed tests.
