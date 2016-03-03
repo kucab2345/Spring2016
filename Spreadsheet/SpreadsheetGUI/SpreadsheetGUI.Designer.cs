@@ -28,67 +28,185 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.spreadsheetPanel = new SSGui.SpreadsheetPanel();
-            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveButton = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip2.SuspendLayout();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.spreadsheetPanel2 = new SSGui.SpreadsheetPanel();
+            this.FileDialogueBox = new System.Windows.Forms.OpenFileDialog();
+            this.CellContentsLabel = new System.Windows.Forms.Label();
+            this.CellValueLabel = new System.Windows.Forms.Label();
+            this.CellValueBox = new System.Windows.Forms.TextBox();
+            this.CellNameLabel = new System.Windows.Forms.Label();
+            this.CellNameBox = new System.Windows.Forms.TextBox();
+            this.SaveDialogueBox = new System.Windows.Forms.SaveFileDialog();
+            this.CellContentBox = new System.Windows.Forms.TextBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // spreadsheetPanel
+            // MenuStrip
             // 
-            this.spreadsheetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.spreadsheetPanel.AutoSize = true;
-            this.spreadsheetPanel.Location = new System.Drawing.Point(0, 25);
-            this.spreadsheetPanel.Name = "spreadsheetPanel";
-            this.spreadsheetPanel.Size = new System.Drawing.Size(285, 235);
-            this.spreadsheetPanel.TabIndex = 0;
-            this.spreadsheetPanel.Load += new System.EventHandler(this.spreadsheetPanel_Load);
-            // 
-            // menuStrip2
-            // 
-            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(284, 24);
-            this.menuStrip2.TabIndex = 1;
-            this.menuStrip2.Text = "menuStrip2";
+            this.MenuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.HelpButton});
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(181, 24);
+            this.MenuStrip.TabIndex = 1;
+            this.MenuStrip.Text = "MenuStrip";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem3,
-            this.openToolStripMenuItem});
+            this.NewButton,
+            this.openToolStripMenuItem,
+            this.SaveButton,
+            this.saveAsToolStripMenuItem,
+            this.closeToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
             // 
-            // toolStripMenuItem3
+            // NewButton
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
-            this.toolStripMenuItem3.Text = "Save...";
+            this.NewButton.Name = "NewButton";
+            this.NewButton.Size = new System.Drawing.Size(152, 22);
+            this.NewButton.Text = "New...";
+            this.NewButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(152, 22);
+            this.SaveButton.Text = "Save...";
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open...";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Text = "Close...";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // HelpButton
+            // 
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(44, 20);
+            this.HelpButton.Text = "Help";
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+            // 
+            // spreadsheetPanel2
+            // 
+            this.spreadsheetPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spreadsheetPanel2.Location = new System.Drawing.Point(0, 27);
+            this.spreadsheetPanel2.Name = "spreadsheetPanel2";
+            this.spreadsheetPanel2.Size = new System.Drawing.Size(845, 416);
+            this.spreadsheetPanel2.TabIndex = 2;
+            // 
+            // FileDialogueBox
+            // 
+            this.FileDialogueBox.DefaultExt = "ss";
+            this.FileDialogueBox.FileName = "FileDialogueBox";
+            this.FileDialogueBox.Filter = "ss files|*.ss|All files|*.*";
+            this.FileDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.FileDialogueBox_FileOk);
+            // 
+            // CellContentsLabel
+            // 
+            this.CellContentsLabel.AutoSize = true;
+            this.CellContentsLabel.Location = new System.Drawing.Point(511, 9);
+            this.CellContentsLabel.Name = "CellContentsLabel";
+            this.CellContentsLabel.Size = new System.Drawing.Size(69, 13);
+            this.CellContentsLabel.TabIndex = 4;
+            this.CellContentsLabel.Text = "Cell Contents";
+            // 
+            // CellValueLabel
+            // 
+            this.CellValueLabel.AutoSize = true;
+            this.CellValueLabel.Location = new System.Drawing.Point(326, 9);
+            this.CellValueLabel.Name = "CellValueLabel";
+            this.CellValueLabel.Size = new System.Drawing.Size(54, 13);
+            this.CellValueLabel.TabIndex = 5;
+            this.CellValueLabel.Text = "Cell Value";
+            // 
+            // CellValueBox
+            // 
+            this.CellValueBox.Location = new System.Drawing.Point(386, 2);
+            this.CellValueBox.Name = "CellValueBox";
+            this.CellValueBox.ReadOnly = true;
+            this.CellValueBox.Size = new System.Drawing.Size(100, 20);
+            this.CellValueBox.TabIndex = 6;
+            // 
+            // CellNameLabel
+            // 
+            this.CellNameLabel.AutoSize = true;
+            this.CellNameLabel.Location = new System.Drawing.Point(142, 9);
+            this.CellNameLabel.Name = "CellNameLabel";
+            this.CellNameLabel.Size = new System.Drawing.Size(55, 13);
+            this.CellNameLabel.TabIndex = 7;
+            this.CellNameLabel.Text = "Cell Name";
+            // 
+            // CellNameBox
+            // 
+            this.CellNameBox.Location = new System.Drawing.Point(203, 2);
+            this.CellNameBox.Name = "CellNameBox";
+            this.CellNameBox.ReadOnly = true;
+            this.CellNameBox.Size = new System.Drawing.Size(100, 20);
+            this.CellNameBox.TabIndex = 8;
+            // 
+            // SaveDialogueBox
+            // 
+            this.SaveDialogueBox.DefaultExt = "ss";
+            this.SaveDialogueBox.Filter = "ss files|*.ss|All files|*.*";
+            this.SaveDialogueBox.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveDialogueBox_FileOk);
+            // 
+            // CellContentBox
+            // 
+            this.CellContentBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CellContentBox.Location = new System.Drawing.Point(597, 3);
+            this.CellContentBox.Name = "CellContentBox";
+            this.CellContentBox.Size = new System.Drawing.Size(100, 20);
+            this.CellContentBox.TabIndex = 9;
+            this.CellContentBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CellContentBox_TextChanged);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // SpreadsheetGUI
             // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.spreadsheetPanel);
-            this.Controls.Add(this.menuStrip2);
-            this.MainMenuStrip = this.menuStrip2;
+            this.ClientSize = new System.Drawing.Size(845, 446);
+            this.Controls.Add(this.CellContentBox);
+            this.Controls.Add(this.CellNameBox);
+            this.Controls.Add(this.CellNameLabel);
+            this.Controls.Add(this.CellValueBox);
+            this.Controls.Add(this.CellValueLabel);
+            this.Controls.Add(this.CellContentsLabel);
+            this.Controls.Add(this.spreadsheetPanel2);
+            this.Controls.Add(this.MenuStrip);
+            this.MainMenuStrip = this.MenuStrip;
             this.Name = "SpreadsheetGUI";
-            this.Text = "Spreadsheet Program";
-            this.menuStrip2.ResumeLayout(false);
-            this.menuStrip2.PerformLayout();
+            this.Load += new System.EventHandler(this.SpreadsheetGUI_Load);
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -103,10 +221,24 @@
         private System.Windows.Forms.ToolStripMenuItem OpenButton;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private SSGui.SpreadsheetPanel spreadsheetPanel;
-        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem SaveButton;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private SSGui.SpreadsheetPanel spreadsheetPanel2;
+        private System.Windows.Forms.ToolStripMenuItem NewButton;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog FileDialogueBox;
+        private System.Windows.Forms.Label CellContentsLabel;
+        private System.Windows.Forms.Label CellValueLabel;
+        private System.Windows.Forms.TextBox CellValueBox;
+        private System.Windows.Forms.Label CellNameLabel;
+        private System.Windows.Forms.TextBox CellNameBox;
+        private System.Windows.Forms.SaveFileDialog SaveDialogueBox;
+        private System.Windows.Forms.TextBox CellContentBox;
+        private System.Windows.Forms.ToolStripMenuItem HelpButton;
+        private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 

@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="Interface.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="SpreadsheetApplicationContext.cs" />
     <Compile Include="SpreadsheetGUI.cs">
       <SubType>Form</SubType>
     </Compile>
