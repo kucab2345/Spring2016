@@ -10,7 +10,6 @@ using SSGui;
 using SpreadsheetGUI;
 using System.Windows.Forms;
 
-//Sync comment
 
 namespace SpreadsheetGUI
 {
