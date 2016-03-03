@@ -73,15 +73,15 @@ namespace Formulas
                 }
                 count++;
             }
-            if (formula.Length < 1)//ensures formula not empty
+            if (rawFormula.Count < 1)//ensures formula not empty
             {
                 throw new Exception("Formula length too short!");
             }
-            if (char.IsLetterOrDigit(formula[0]) == false && formula[0] != '(')//checks first character validity
+            if (char.IsLetterOrDigit(rawFormula[0][0]) == false && rawFormula[0][0] != '(')//checks first character validity
             {
                 throw new FormulaFormatException("Starting character in formula invalid");
             }
-            if (char.IsLetterOrDigit(formula[formula.Length - 1]) == false && formula[formula.Length - 1] != ')')//checks last character validity
+            if (char.IsLetterOrDigit(rawFormula[rawFormula.Count - 1][0]) == false && rawFormula[rawFormula.Count - 1][0] != ')')//checks last character validity
             {
                 throw new FormulaFormatException("Ending character in formula invalid");
             }
