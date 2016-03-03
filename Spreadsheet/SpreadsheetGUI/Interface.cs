@@ -22,6 +22,8 @@ namespace SpreadsheetGUI
         void CreateNewWindowHandler();
         void CloseCurrentWindowHandler();
         void Update(string obj, int col, int row);
-        
+
+        void ReadSpreadsheet();??
+
     }
 }
