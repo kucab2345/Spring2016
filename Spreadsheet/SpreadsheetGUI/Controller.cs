@@ -131,15 +131,11 @@ namespace SpreadsheetGUI
         /// Calls the correct SaveFileHandler based on the SaveFileEvent that was fired
         /// </summary>
         /// <param name="filename"></param>
-        public void SaveFile(string filename)
+        public void SaveFile(string filename, bool saveAsBool)
         {
-            if(!sheet.Changed == false)
+            if(sheet.Changed || saveAsBool)
             {
                 SaveFileHandler(filename);
-            }
-            else
-            {
-                window.Message = "No changes to save";
             }
         }
         /// <summary>

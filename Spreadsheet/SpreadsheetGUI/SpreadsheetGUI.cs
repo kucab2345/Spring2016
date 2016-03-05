@@ -55,6 +55,7 @@ namespace SpreadsheetGUI
             }
         }
         public string currentFile { get; set; }
+        public bool saveAsBool { get; set; }
 
         public SpreadsheetGUI()
         {
@@ -77,7 +78,7 @@ namespace SpreadsheetGUI
         public event Action CloseWindowEvent;
         public event Action<int,int> ChangeSelectionEvent;
         public event Action<string> FileChosenEvent;
-        public event Action<string> SaveFileEvent;
+        public event Action<string,bool> SaveFileEvent;
         public event Action<string, int, int> ChangeContentEvent;
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)//FILE>NEW
@@ -101,7 +102,6 @@ namespace SpreadsheetGUI
         }
         public void CloseCurrentWindowHandler()
         {
-            //Added in a check to make sure user has saved
             Close();
         }
 
@@ -140,7 +140,7 @@ namespace SpreadsheetGUI
             {
                 if (SaveFileEvent != null)
                 {
-                    SaveFileEvent(SaveDialogueBox.FileName);
+                    SaveFileEvent(SaveDialogueBox.FileName,saveAsBool = false);
                 }
             }
             else
@@ -153,7 +153,7 @@ namespace SpreadsheetGUI
                     {
                         if (SaveFileEvent != null)
                         {
-                            SaveFileEvent(SaveDialogueBox.FileName);
+                            SaveFileEvent(SaveDialogueBox.FileName,saveAsBool = true);
                         }
                     }
                 }
@@ -205,7 +205,7 @@ namespace SpreadsheetGUI
                 {
                     if (SaveFileEvent != null)
                     {
-                        SaveFileEvent(SaveDialogueBox.FileName);
+                        SaveFileEvent(SaveDialogueBox.FileName, saveAsBool = true);
                     }
                 }
             }

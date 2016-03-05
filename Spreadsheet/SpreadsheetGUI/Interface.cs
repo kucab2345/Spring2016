@@ -15,7 +15,7 @@ namespace SpreadsheetGUI
         string CellValueField { set; }
         event Action NewWindowEvent;
         event Action CloseWindowEvent;
-        event Action<string> SaveFileEvent;
+        event Action<string,bool> SaveFileEvent;
         event Action<string> FileChosenEvent;
         event Action<int, int> ChangeSelectionEvent;
         event Action<string, int, int> ChangeContentEvent;
