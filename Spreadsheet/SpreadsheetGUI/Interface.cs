@@ -20,7 +20,7 @@ namespace SpreadsheetGUI
         event Action<int, int> ChangeSelectionEvent;
         event Action<string, int, int> ChangeContentEvent;
         void CreateNewWindowHandler();
-        void CloseCurrentWindowHandler();
+        void CloseCurrentWindowHandler(bool closingSave);
         void Update(string obj, int col, int row);
         
     }

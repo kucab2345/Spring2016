@@ -61,6 +61,7 @@ namespace SpreadsheetGUI
         {
             InitializeComponent();
             spreadsheetPanel2.SelectionChanged += displaySelection;
+            Title = "untitled";
         }
 
         private void displaySelection(SpreadsheetPanel sender)
@@ -100,9 +101,20 @@ namespace SpreadsheetGUI
                 CloseWindowEvent();
             }
         }
-        public void CloseCurrentWindowHandler()
+        public void CloseCurrentWindowHandler(bool closingSave)
         {
-            Close();
+            if(closingSave == true)
+            {
+                DialogResult dialogResult = MessageBox.Show("You are attempting to close the file without saving your work.\nYes: Close out and lose unsaved changes\nNo: Cancel closing and return to program", "Exiting without saving", MessageBoxButtons.YesNo);
+                if(dialogResult == DialogResult.Yes)
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)//File > Open

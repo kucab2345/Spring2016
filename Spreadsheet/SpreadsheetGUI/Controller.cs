@@ -150,13 +150,14 @@ namespace SpreadsheetGUI
         /// </summary>
         public void CloseWindow()
         {
+            bool closingSave = false;
             if(sheet.Changed == true)
             {
-                window.Message = "You have unsaved changes. Save Changes before closing!";
+                window.CloseCurrentWindowHandler(closingSave = true);
             }
             else
             {
-                window.CloseCurrentWindowHandler();
+                window.CloseCurrentWindowHandler(closingSave);
             }
         }
         /// <summary>
