@@ -15,7 +15,7 @@ namespace SpreadsheetGUI
     /// Acts as the middle man between the view and model. Model is not aware of the Controller at all and neither
     /// is the view (SpreadsheetGUI). Contains a spreadsheet and an interface instance variable, interface inherits
     /// from Interface.cs
-    class Controller
+    public class Controller
     {
 
         /// <summary>
