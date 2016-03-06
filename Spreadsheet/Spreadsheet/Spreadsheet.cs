@@ -105,11 +105,11 @@ namespace SS
         /// <summary>
         /// DependencyGraph that maps the dependencies of the formulas encapsulated in each cell
         /// </summary>
-        DependencyGraph dgGraph; 
+        DependencyGraph dgGraph;
         /// <summary>
         /// Changed's method's boolean value. False by default.
         /// </summary>
-        private bool ChangeBool = false;
+        private bool ChangeBool;
 
         private Regex IsValid;
         /// <summary>
@@ -140,6 +140,7 @@ namespace SS
             cellTable = new Dictionary<string, Cell>();
             dgGraph = new DependencyGraph();
             IsValid = new Regex(".*?");
+            Changed = false;
         }
         /// <summary>
         /// Creates a new spreadsheet object that adhears to the naming principles of the Regex constraints
@@ -150,6 +151,7 @@ namespace SS
             cellTable = new Dictionary<string, Cell>();
             dgGraph = new DependencyGraph();
             IsValid = isValid;
+            Changed = false;
         }
         /// <summary>
         /// Takes in a source file and allows user to load in a previously saved XML file
@@ -195,6 +197,7 @@ namespace SS
                         }
                     }
                 }
+                Changed = false;
             }
             catch (Exception e)//if an exception was thrown, break it down
             {
@@ -393,13 +396,14 @@ namespace SS
                     }
                     writer.WriteEndElement();
                     writer.WriteEndDocument();
+                    Changed = false;
                 }
             }
             catch
             {
                 throw new IOException();
             }
-            Changed = false;
+            
         }
         /// <summary>
         /// If formula parameter is null, throws an ArgumentNullException.

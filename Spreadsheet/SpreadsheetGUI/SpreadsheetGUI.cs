@@ -74,6 +74,11 @@ namespace SpreadsheetGUI
         /// </summary>
         public bool saveAsBool { get; set; }
         /// <summary>
+        /// corresponds to the models spreadsheet.Changed variable
+        /// </summary>
+        public bool fileChanged { get; set; }
+
+        /// <summary>
         /// Constructor for SpreadsheetGUI. Creates form, displays panels, and sets title to untitled.
         /// </summary>
         public SpreadsheetGUI()
@@ -330,17 +335,19 @@ namespace SpreadsheetGUI
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-
             if (e.CloseReason == CloseReason.WindowsShutDown) return;
 
-            // Confirm user wants to close
-            switch (MessageBox.Show(this, "Are you sure you want to close?\nYou will lose any unsaved changes.", "Closing", MessageBoxButtons.YesNo))
+            if(fileChanged == true)
             {
-                case DialogResult.No:
-                    e.Cancel = true;
-                    break;
-                default:
-                    break;
+                // Confirm user wants to close
+                switch (MessageBox.Show(this, "Are you sure you want to close?\nYou will lose any unsaved changes.", "Closing", MessageBoxButtons.YesNo))
+                {
+                    case DialogResult.No:
+                        e.Cancel = true;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         /// <summary>

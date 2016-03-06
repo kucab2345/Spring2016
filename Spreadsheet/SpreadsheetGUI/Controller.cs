@@ -44,6 +44,8 @@ namespace SpreadsheetGUI
             window.SaveFileEvent += SaveFile;
             window.ChangeSelectionEvent += ChangeSelectedCellHandler;
             window.ChangeContentEvent += ChangeContentEventHandler;
+
+            window.fileChanged = sheet.Changed;
         }
         /// <summary>
         /// Controller constructor that only takes in the view. Useful for loading in a spreadsheet file
@@ -63,6 +65,7 @@ namespace SpreadsheetGUI
             window.ChangeContentEvent += ChangeContentEventHandler;
 
             FileChosenHandler(fileName);
+            window.fileChanged = sheet.Changed;
         }
 
         /// <summary>
@@ -92,6 +95,7 @@ namespace SpreadsheetGUI
                 window.CellContentField = temp.ToString();
             }
             window.Update(sheet.GetCellValue(cellName).ToString(), col, row);
+            window.fileChanged = sheet.Changed;
         }
         /// <summary>
         /// Handles the changing of a selected cell's contents. Adjusts the contents, finds all affected
@@ -126,6 +130,7 @@ namespace SpreadsheetGUI
             {
                 window.Message = e.Message;
             }
+            window.fileChanged = sheet.Changed;
         }
         /// <summary>
         /// Calls the correct SaveFileHandler based on the SaveFileEvent that was fired
@@ -143,6 +148,7 @@ namespace SpreadsheetGUI
         /// </summary>
         public void NewWindow()
         {
+            window.fileChanged = false;
             window.CreateNewWindowHandler();
         }
         /// <summary>
@@ -151,7 +157,8 @@ namespace SpreadsheetGUI
         public void CloseWindow()
         {
             bool closingSave = false;
-            if(sheet.Changed == true)
+            window.fileChanged = sheet.Changed;
+            if (sheet.Changed == true)
             {
                 window.CloseCurrentWindowHandler(closingSave = true);
             }
@@ -197,6 +204,7 @@ namespace SpreadsheetGUI
                 }
             }
             window.Title = filename;
+            window.fileChanged = sheet.Changed;
         }
         /// <summary>
         /// Handles the saving of a file given the filename.
@@ -215,6 +223,7 @@ namespace SpreadsheetGUI
             {
                 window.Message = "Unable to save file\n" + ex.Message;
             }
+            window.fileChanged = sheet.Changed;
         }
     }
 }

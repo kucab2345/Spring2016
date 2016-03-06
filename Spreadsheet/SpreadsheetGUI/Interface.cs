@@ -29,6 +29,10 @@ namespace SpreadsheetGUI
         /// </summary>
         string CellValueField { set; }
         /// <summary>
+        /// bool that corresponds to the models spreadsheet.Changed
+        /// </summary>
+        bool fileChanged { get; set; }
+        /// <summary>
         /// Registering the same events from the GUI file. See there for precise decriptions of each event
         /// </summary>
         event Action NewWindowEvent;
