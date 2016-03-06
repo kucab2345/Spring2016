@@ -51,6 +51,11 @@ namespace SpreadsheetGUI
             // Run the form
             window.Show();
         }
+        /// <summary>
+        /// Runs a form in a new window but also carries in string filename and passes it to an
+        /// overloaded Controller constructor in the event of loading in a new file.
+        /// </summary>
+        /// <param name="filename"></param>
         public void RunNew(string filename)
         {
             // Create the window and the controller

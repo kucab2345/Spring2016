@@ -17,6 +17,7 @@ namespace SpreadsheetGUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            //ApplicationContext version of launcher which allows for multiwindow setup
             var context = SpreadsheetApplicationContext.GetContext();
             SpreadsheetApplicationContext.GetContext().RunNew();
             Application.Run(context);
