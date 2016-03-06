@@ -15,6 +15,9 @@ namespace SpreadsheetGUI
 {
     public partial class SpreadsheetGUI : Form , ISSInterface
     {
+        /// <summary>
+        /// Message dialogue box property
+        /// </summary>
         public string Message
         {
             set
@@ -22,7 +25,9 @@ namespace SpreadsheetGUI
                 MessageBox.Show(value);
             }
         }
-
+        /// <summary>
+        /// Field input for CellNameBox
+        /// </summary>
         public string CellNameField
         {
             set
@@ -30,7 +35,9 @@ namespace SpreadsheetGUI
                 CellNameBox.Text = value;
             }
         }
-
+        /// <summary>
+        /// Field input for CellContentField
+        /// </summary>
         public string CellContentField
         {
             set
@@ -38,7 +45,9 @@ namespace SpreadsheetGUI
                 CellContentBox.Text = value;
             }
         }
-
+        /// <summary>
+        /// Field input for CellValueField
+        /// </summary>
         public string CellValueField
         {
             set
@@ -46,7 +55,9 @@ namespace SpreadsheetGUI
                 CellValueBox.Text = value;
             }
         }
-
+        /// <summary>
+        /// Form title property
+        /// </summary>
         public string Title
         {
             set
@@ -54,16 +65,27 @@ namespace SpreadsheetGUI
                 Text = value;
             }
         }
+        /// <summary>
+        /// Property for currently opened file
+        /// </summary>
         public string currentFile { get; set; }
+        /// <summary>
+        /// Bool that gets passed ot SaveHandler in controller to distinguish between save and saveas
+        /// </summary>
         public bool saveAsBool { get; set; }
-
+        /// <summary>
+        /// Constructor for SpreadsheetGUI. Creates form, displays panels, and sets title to untitled.
+        /// </summary>
         public SpreadsheetGUI()
         {
             InitializeComponent();
             spreadsheetPanel2.SelectionChanged += displaySelection;
             Title = "untitled";
         }
-
+        /// <summary>
+        /// Receives event if user clicks on a cell in the panel. Derived from professors demo
+        /// </summary>
+        /// <param name="sender"></param>
         private void displaySelection(SpreadsheetPanel sender)
         {
             int row, col;
@@ -74,14 +96,35 @@ namespace SpreadsheetGUI
                 ChangeSelectionEvent(col,row);
             }
         }
-
+        /// <summary>
+        /// NewWindowEvent declaration. Called when loading a new file or hitting File>New
+        /// </summary>
         public event Action NewWindowEvent;
+        /// <summary>
+        /// CloseWindowEvent. Called when closing with red X or File>Close
+        /// </summary>
         public event Action CloseWindowEvent;
+        /// <summary>
+        /// ChangeSelectionEvent. Called when user selects cell on panel
+        /// </summary>
         public event Action<int,int> ChangeSelectionEvent;
+        /// <summary>
+        /// FileChosenEvent. Called when FileDialogue successfully loads receives a valid file address
+        /// </summary>
         public event Action<string> FileChosenEvent;
+        /// <summary>
+        /// SaveFileEvent. Called whenever user hits File>Save or File>SaveAs
+        /// </summary>
         public event Action<string,bool> SaveFileEvent;
+        /// <summary>
+        /// ChangeContentEvent. Called whenever user changes the contents of currently selected cell
+        /// </summary>
         public event Action<string, int, int> ChangeContentEvent;
-
+        /// <summary>
+        /// Fires New Window event on click of File>New
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)//FILE>NEW
         {
             if (NewWindowEvent != null)
@@ -89,11 +132,18 @@ namespace SpreadsheetGUI
                 NewWindowEvent();
             }
         }
+        /// <summary>
+        /// Handles creation of new Window. Communicates with ApplicationContext to ensure new window is added
+        /// </summary>
         public void CreateNewWindowHandler()
         {
             SpreadsheetApplicationContext.GetContext().RunNew();
         }
-
+        /// <summary>
+        /// Fires CloseWindowEvent on when user hits File>Close
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)//FILE>CLOSE
         {
             if(CloseWindowEvent != null)
@@ -101,6 +151,10 @@ namespace SpreadsheetGUI
                 CloseWindowEvent();
             }
         }
+        /// <summary>
+        /// Handles closing of window
+        /// </summary>
+        /// <param name="closingSave"></param>
         public void CloseCurrentWindowHandler(bool closingSave)
         {
             /*
@@ -119,7 +173,13 @@ namespace SpreadsheetGUI
             */
             Close();
         }
-
+        /// <summary>
+        /// Creates a new window through SpreadsheetApplicationContext's overloaded RunNew. Passes filename
+        /// through RunNew to an overloaded Controller constructor that creates a new, blank spreadsheet, and then
+        /// loads in the data with the carried over filename
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)//File > Open
         {
             DialogResult result = FileDialogueBox.ShowDialog();
@@ -135,6 +195,11 @@ namespace SpreadsheetGUI
                 }
             }
         }
+        /// <summary>
+        /// Fires ChangeContentEvent. Passes the column, row, and new contents of the cell in question
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CellContentBox_TextChanged(object sender, KeyEventArgs e)
         {
             int col, row;
@@ -148,17 +213,22 @@ namespace SpreadsheetGUI
                 }
             }
         }
-
+        /// <summary>
+        /// Fires SaveFileEvent and determines if the file being written to is the same as the current file.
+        /// Handles whether or not we should treat the current save as a "save as" or just a regular save.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (currentFile != null)
+            if (currentFile != null)//if current file is the same as the destination file, overwrite w/o permission
             {
                 if (SaveFileEvent != null)
                 {
                     SaveFileEvent(SaveDialogueBox.FileName,saveAsBool = false);
                 }
             }
-            else
+            else//otherwise, treat this as a save as
             {
                 try
                 {
@@ -179,19 +249,12 @@ namespace SpreadsheetGUI
             }
             Title = currentFile;
         }
-        private void FileDialogueBox_FileOk(object sender, EventArgs e)
-        {
-
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
-        {
-            
-        }
+        /// <summary>
+        /// Selected A1 in the panel on opening of a new spreadsheet. Fulfills requirement
+        /// that a cell be selected at all times
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void SpreadsheetGUI_Load(object sender, EventArgs e)
         {
@@ -200,11 +263,22 @@ namespace SpreadsheetGUI
                 ChangeSelectionEvent(0, 0);
             }
         }
+        /// <summary>
+        /// Updates the panel. Controller methods use this to update all cells in question
+        /// after a parent cell changes
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="col"></param>
+        /// <param name="row"></param>
         public void Update(string obj, int col, int row)
         {
             spreadsheetPanel2.SetValue(col, row, obj);
         }
-
+        /// <summary>
+        /// Help menu dialogue
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HelpButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("OPERATION\n"
@@ -222,7 +296,13 @@ namespace SpreadsheetGUI
                 + "if source name is identical to current name.\n"
                 + "File > Close : Closes current spreadsheet. Always prompts user, letting them know that unsaved changes will be lost\n");
         }
-
+        /// <summary>
+        /// Standard save as treatment. Does not care whether user has saved before or not.
+        /// Prompts user for destination name and asks for overwrite permission if destination already
+        /// exists.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -242,6 +322,11 @@ namespace SpreadsheetGUI
                 Message = error.Message;
             }
         }
+        /// <summary>
+        /// Prompts user, letting them know that any unsaved changes will be lost on closing. Fired
+        /// whenever user attempts to close a form, via File > Close, the red X in the corner, Alt-F4, etc
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
@@ -257,6 +342,24 @@ namespace SpreadsheetGUI
                 default:
                     break;
             }
+        }
+        /// <summary>
+        /// File dialogue method.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FileDialogueBox_FileOk(object sender, EventArgs e)
+        {
+
+        }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }
