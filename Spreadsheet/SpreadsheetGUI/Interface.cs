@@ -29,6 +29,10 @@ namespace SpreadsheetGUI
         /// </summary>
         string CellValueField { set; }
         /// <summary>
+        /// current file open
+        /// </summary>
+        string currentFile { set; get; }
+        /// <summary>
         /// bool that corresponds to the models spreadsheet.Changed
         /// </summary>
         bool fileChanged { get; set; }

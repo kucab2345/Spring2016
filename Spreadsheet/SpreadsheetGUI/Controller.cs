@@ -187,6 +187,7 @@ namespace SpreadsheetGUI
                 {
                     sheet = new Spreadsheet(inFile);
                 }
+                window.currentFile = filename;
             }
             catch (Exception ex)
             {

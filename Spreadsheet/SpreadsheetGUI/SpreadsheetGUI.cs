@@ -230,7 +230,8 @@ namespace SpreadsheetGUI
             {
                 if (SaveFileEvent != null)
                 {
-                    SaveFileEvent(SaveDialogueBox.FileName,saveAsBool = false);
+                    SaveFileEvent(currentFile, saveAsBool = false);
+                    //SaveFileEvent(SaveDialogueBox.FileName,saveAsBool = false);
                 }
             }
             else//otherwise, treat this as a save as
