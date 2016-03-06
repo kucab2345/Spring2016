@@ -352,11 +352,11 @@ namespace SpreadsheetGUI
         {
 
         }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Save Dialogue method.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveDialogueBox_FileOk(object sender, CancelEventArgs e)
         {
 
