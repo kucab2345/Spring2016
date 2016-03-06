@@ -103,6 +103,7 @@ namespace SpreadsheetGUI
         }
         public void CloseCurrentWindowHandler(bool closingSave)
         {
+            /*
             if(closingSave == true)
             {
                 DialogResult dialogResult = MessageBox.Show("You are attempting to close the file without saving your work.\nYes: Close out and lose unsaved changes\nNo: Cancel closing and return to program", "Exiting without saving", MessageBoxButtons.YesNo);
@@ -115,6 +116,8 @@ namespace SpreadsheetGUI
             {
                 Close();
             }
+            */
+            Close();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)//File > Open
@@ -204,7 +207,20 @@ namespace SpreadsheetGUI
 
         private void HelpButton_Click(object sender, EventArgs e)
         {
-            
+            MessageBox.Show("OPERATION\n"
+                + "==============================================\n"
+                + "Click on a cell to select it\n"
+                + "Type in the Cell Contents box and press ENTER to change its contents\n"
+                + "Observe the value of the cell both on the grid and in the Cell Value box\n"
+                + "*Cell's whose contents are formulas should begin with a preceeding '=' character. Ex) =A1 + 3\n"
+                + "==============================================\n"
+                + "File > New : Creates a new, untitled spreadsheet\n"
+                + "File > Open : Opens a new spreadsheet (preferred .ss extension) into a new window\n"
+                + "File > Save : Saves current spreadsheet. If spreadsheet has not been saves before, will prompt"
+                + "user for initial filename. Does not ask overwrite permission if saving ontop of current file.\n"
+                + "File > Save As : Saves a copy of the current file under a new, user specified name. Asks permission"
+                + "if source name is identical to current name.\n"
+                + "File > Close : Closes current spreadsheet. Always prompts user, letting them know that unsaved changes will be lost\n");
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
