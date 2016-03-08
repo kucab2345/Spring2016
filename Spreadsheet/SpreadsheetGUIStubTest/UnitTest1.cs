@@ -82,5 +82,20 @@ namespace SpreadsheetGUIStub
 
             stub.FireChangeSelectionEvent(200, 500);
         }
+        /// <summary>
+        /// Open a new window, 
+        /// Make a circular dependency
+        /// Expect an exception
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(CircularException))]
+        public void GUITestMethod5()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub);
+
+            stub.FireChangeContentEvent("=a2", 0, 0);
+            stub.FireChangeContentEvent("=a1", 0, 1);
+        }
     }
 }
