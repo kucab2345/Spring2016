@@ -178,7 +178,8 @@ namespace SpreadsheetGUI
             {
                 if (FileChosenEvent != null)
                 {
-                    SpreadsheetApplicationContext.GetContext().RunNew(FileDialogueBox.FileName);
+                    FileChosenEvent(FileDialogueBox.FileName);
+                    //SpreadsheetApplicationContext.GetContext().RunNew(FileDialogueBox.FileName);
                 }
                 if(ChangeSelectionEvent != null)
                 {

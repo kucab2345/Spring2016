@@ -27,6 +27,7 @@ namespace SpreadsheetGUIStub
         public event Action NewWindowEvent;
         public event Action<string, bool> SaveFileEvent;
 
+
         public void FireNewWindowEvent()
         {
             if (NewWindowEvent != null)
