@@ -75,7 +75,6 @@ namespace SpreadsheetGUIStub
 
         public bool CalledUpdate { get; set; }
 
-
         public void CloseCurrentWindowHandler(bool closingSave)
         {
             CalledCloseCurrentWindowHandler = true;

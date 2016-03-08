@@ -89,8 +89,7 @@ namespace SpreadsheetGUIStub
             stub.FireChangeSelectionEvent(1, 2);
             stub.FireChangeContentEvent("=b2 + 10", 1, 2);
 
-            stub.FireSaveFileEvent("", false);
-            
+            stub.FireSaveFileEvent("../../test2.ss", false);
         }
     }
 }
