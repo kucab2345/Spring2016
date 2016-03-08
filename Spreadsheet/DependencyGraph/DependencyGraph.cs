@@ -146,7 +146,8 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if(HasDependents(s) == true)//Ensure the key maps to a hashset
+            //if(HasDependents(s) == true)//Ensure the key maps to a hashset
+            if(dependentGraph.ContainsKey(s))
             {
                 foreach(string i in dependentGraph[s])//navigate to and return each element in the key's hashset
                 {
@@ -164,7 +165,8 @@ namespace Dependencies
             {
                 throw new ArgumentNullException("s cannot be null");
             }
-            if (HasDependees(s) == true)//Ensure the key maps to a hashset
+            //if (HasDependees(s) == true)//Ensure the key maps to a hashset
+            if(dependeeGraph.ContainsKey(s))
             {
                 foreach (string i in dependeeGraph[s])//navigate to and return each element in the key's hashset
                 {

@@ -71,25 +71,16 @@ namespace SpreadsheetGUIStub
             Assert.AreEqual((double)test.GetCellValue("b3"), 20);
         }
         /// <summary>
-        /// Open a new window, create a dependency and formula.
-        /// Save the file, close both windows
+        /// Open a new window, try to select an out of bounds cell
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(InvalidNameException))]
         public void GUITestMethod4()
         {
             SpreadsheetStub stub = new SpreadsheetStub();
             Controller controller = new Controller(stub);
-            stub.FireCloseWindowEvent();
-            Assert.IsTrue(stub.CalledCloseCurrentWindowHandler);
 
-            stub.FireChangeSelectionEvent(1, 1);
-            stub.FireChangeContentEvent("10", 1, 1);
-
-            stub.FireChangeSelectionEvent(1, 2);
-            stub.FireChangeContentEvent("=b2 + 10", 1, 2);
-
-            stub.FireSaveFileEvent("../../test2.ss", false);
+            stub.FireChangeSelectionEvent(200, 500);
         }
     }
 }

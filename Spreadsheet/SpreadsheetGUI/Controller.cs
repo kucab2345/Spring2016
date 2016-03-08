@@ -111,6 +111,7 @@ namespace SpreadsheetGUI
             string cellNamePrefix = prefixLetter.ToString().ToUpper();
             string cellNameSuffix = (row + 1).ToString();
             string cellName = cellNamePrefix + cellNameSuffix;
+            
             try
             {
                 foreach (string i in sheet.SetContentsOfCell(cellName, cellContent.ToString()))
@@ -128,8 +129,7 @@ namespace SpreadsheetGUI
             catch (Exception e)
             {
                 window.Message = e.Message;
-                Debug.WriteLine(e);
-                //window.Update(sheet.GetCellValue(cellName).ToString(), col, row);
+                Debug.WriteLine(e); 
             }
             window.fileChanged = sheet.Changed;
         }

@@ -446,6 +446,7 @@ namespace SS
                         dgGraph.AddDependency(token, name);//create the new dependencies
                     }
                 }
+                cellTable[name].contents = formula;
             }
             else
             {
