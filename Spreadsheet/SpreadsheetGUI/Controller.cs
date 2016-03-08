@@ -174,7 +174,8 @@ namespace SpreadsheetGUI
         /// <param name="filename"></param>
         public void OpenFile(string filename)
         {
-            SpreadsheetApplicationContext.GetContext().RunNew(filename);
+            FileChosenHandler(filename);
+            //SpreadsheetApplicationContext.GetContext().RunNew(filename);
         }
         /// <summary>
         /// Handles the opening of a file based on the filename. Called by the 2nd, overloaded Controller constructor
