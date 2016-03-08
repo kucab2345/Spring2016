@@ -162,20 +162,6 @@ namespace SpreadsheetGUI
         /// <param name="closingSave"></param>
         public void CloseCurrentWindowHandler(bool closingSave)
         {
-            /*
-            if(closingSave == true)
-            {
-                DialogResult dialogResult = MessageBox.Show("You are attempting to close the file without saving your work.\nYes: Close out and lose unsaved changes\nNo: Cancel closing and return to program", "Exiting without saving", MessageBoxButtons.YesNo);
-                if(dialogResult == DialogResult.Yes)
-                {
-                    Close();
-                }
-            }
-            else
-            {
-                Close();
-            }
-            */
             Close();
         }
         /// <summary>
