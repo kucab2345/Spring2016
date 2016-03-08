@@ -7,7 +7,7 @@ using System.IO;
 using SpreadsheetGUI;
 using SS;
 using System.Xml;
-
+using System.Diagnostics;
 
 namespace SpreadsheetGUI
 {
@@ -107,13 +107,12 @@ namespace SpreadsheetGUI
         /// <param name="row"></param>
         public void ChangeContentEventHandler(string cellContent, int col, int row)
         {
+            char prefixLetter = (char)(97 + col);
+            string cellNamePrefix = prefixLetter.ToString().ToUpper();
+            string cellNameSuffix = (row + 1).ToString();
+            string cellName = cellNamePrefix + cellNameSuffix;
             try
             {
-                char prefixLetter = (char)(97 + col);
-                string cellNamePrefix = prefixLetter.ToString().ToUpper();
-                string cellNameSuffix = (row + 1).ToString();
-                string cellName = cellNamePrefix + cellNameSuffix;
-
                 foreach (string i in sheet.SetContentsOfCell(cellName, cellContent.ToString()))
                 {
                     char prefix = i[0];
@@ -129,6 +128,8 @@ namespace SpreadsheetGUI
             catch (Exception e)
             {
                 window.Message = e.Message;
+                Debug.WriteLine(e);
+                //window.Update(sheet.GetCellValue(cellName).ToString(), col, row);
             }
             window.fileChanged = sheet.Changed;
         }

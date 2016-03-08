@@ -283,7 +283,6 @@ namespace SS
         }
         private void SetCellValue(string name)
         {
-            
             if (cellTable.ContainsKey(name) && (cellTable[name].contents is string || cellTable[name].contents is double))//if the content that needs to be valued is a double or string, just copy it to value
             {
                 cellTable[name].value = cellTable[name].contents;
@@ -461,6 +460,7 @@ namespace SS
                         dgGraph.AddDependency(i, name);//Add new dependencies for each referenced cell
                     }
                 }
+                cellTable[name].contents = formula; //set the named cell's contents to the formula
             }
 
             foreach (string i in GetCellsToRecalculate(name))//Get names of all cells that depend on the change in question

@@ -229,11 +229,13 @@ namespace Dependencies
                 }
             }
             //if HasDependents == true then inner if
-            if(HasDependents(s))
+            //if(HasDependents(s))
+            if(dependentGraph.ContainsKey(s))
             {
                 dependentGraph[s].Remove(t);
             }
-            if (HasDependees(t))
+            //if (HasDependees(t))
+            if(dependeeGraph.ContainsKey(t))
             {
                 dependeeGraph[t].Remove(s);
             }
