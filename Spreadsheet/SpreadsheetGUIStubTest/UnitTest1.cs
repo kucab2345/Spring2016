@@ -70,5 +70,27 @@ namespace SpreadsheetGUIStub
             
             Assert.AreEqual((double)test.GetCellValue("b3"), 20);
         }
+        /// <summary>
+        /// Open a new window, create a dependency and formula.
+        /// Save the file, close both windows
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GUITestMethod4()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub);
+            stub.FireCloseWindowEvent();
+            Assert.IsTrue(stub.CalledCloseCurrentWindowHandler);
+
+            stub.FireChangeSelectionEvent(1, 1);
+            stub.FireChangeContentEvent("10", 1, 1);
+
+            stub.FireChangeSelectionEvent(1, 2);
+            stub.FireChangeContentEvent("=b2 + 10", 1, 2);
+
+            stub.FireSaveFileEvent("", false);
+            
+        }
     }
 }
