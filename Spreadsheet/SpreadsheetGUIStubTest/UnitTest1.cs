@@ -181,5 +181,14 @@ namespace SpreadsheetGUIStub
             stub.FireChangeContentEvent("=b2 + 20", 1, 2);
             stub.FireCloseWindowEvent();
         }
+        /// <summary>
+        /// Invalid file name to load
+        /// </summary>
+        [TestMethod]
+        public void GUITestMethod9()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub, "../../nonexistent.ss");
+        }
     }
 }
