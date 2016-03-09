@@ -266,6 +266,7 @@ namespace SpreadsheetGUI
         public void Update(string obj, int col, int row)
         {
             spreadsheetPanel2.SetValue(col, row, obj);
+            CellValueField = obj.ToString();
         }
         /// <summary>
         /// Help menu dialogue
