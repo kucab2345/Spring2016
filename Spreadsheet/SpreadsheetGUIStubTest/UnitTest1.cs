@@ -182,7 +182,7 @@ namespace SpreadsheetGUIStub
             stub.FireCloseWindowEvent();
         }
         /// <summary>
-        /// Invalid file name to load
+        /// Invalid file name to load. No exception needed
         /// </summary>
         [TestMethod]
         public void GUITestMethod9()
