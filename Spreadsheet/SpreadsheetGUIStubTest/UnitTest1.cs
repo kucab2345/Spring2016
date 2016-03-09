@@ -8,6 +8,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpreadsheetGUIStub
 {
+    /// <summary>
+    /// Test stub that runs as much of the controller as possible.
+    /// Most exceptions are handled by the controller/view so no need to catch them
+    /// </summary>
     [TestClass]
     public class ControllerTester
     {
@@ -41,9 +45,7 @@ namespace SpreadsheetGUIStub
             stub.FireChangeContentEvent("=b2 + 10", 1, 2);
 
             stub.FireSaveFileEvent("../../test.ss", false);
-
-
-
+            
             stub.FireCloseWindowEvent();
             stub.FireCloseWindowEvent();
 
@@ -102,6 +104,45 @@ namespace SpreadsheetGUIStub
         {
             SpreadsheetStub stub = new SpreadsheetStub();
             Controller controller = new Controller(stub, "../../test.ss");
+
+            Spreadsheet test;
+
+            using (TextReader inFile = File.OpenText("../../test.ss"))
+            {
+                test = new Spreadsheet(inFile);
+            }
+
+            Assert.AreEqual((double)test.GetCellValue("b3"), 20);
+        }
+        /// <summary>
+        /// Testing loading the overriden constructor for loading in files. Loads
+        /// in a file, asserts that it loaded in correctly. Modifies a cell/dependency
+        /// within the spreadsheet, saves it. Loads it, and asserts the change was saved correctly
+        /// </summary>
+        [TestMethod]
+        public void GUITestMethod7()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub, "../../test.ss");
+
+            Spreadsheet test,test2;
+
+            using (TextReader inFile = File.OpenText("../../test.ss"))
+            {
+                test = new Spreadsheet(inFile);
+            }
+            Assert.AreEqual((double)test.GetCellValue("b3"), 20);
+
+            stub.FireChangeSelectionEvent(1, 2);
+            stub.FireChangeContentEvent("=b2 + 20", 1, 2);
+            stub.FireSaveFileEvent("../../test2.ss",false);
+
+            using (TextReader inFile = File.OpenText("../../test2.ss"))
+            {
+                test2 = new Spreadsheet(inFile);
+            }
+
+            Assert.AreEqual((double)test2.GetCellValue("b3"), 30);
         }
     }
 }
