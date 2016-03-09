@@ -94,5 +94,14 @@ namespace SpreadsheetGUIStub
 
             stub.FireFileChosenEvent("../../../../test.ss");
         }
+        /// <summary>
+        /// Testing loading the overriden constructor for loading in files
+        /// </summary>
+        [TestMethod]
+        public void GUITestMethod6()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub, "../../test.ss");
+        }
     }
 }
