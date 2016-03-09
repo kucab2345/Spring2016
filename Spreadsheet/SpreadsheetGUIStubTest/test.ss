@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><spreadsheet IsValid="^[A-Z]+[1-9]{1}[0-9]{0,1}$"><cell name="B2" contents="10" /><cell name="B3" contents="=B2+10" /></spreadsheet>

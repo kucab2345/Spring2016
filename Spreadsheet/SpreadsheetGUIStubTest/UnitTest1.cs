@@ -19,6 +19,19 @@ namespace SpreadsheetGUIStub
         /// Creates a blank spreadsheet, then closes
         /// </summary>
         [TestMethod]
+        public void GUITestMethod0()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub);
+            stub.FireNewWindowEvent();
+            stub.FireCloseWindowEvent();
+            stub.FireCloseWindowEvent();
+            Assert.IsTrue(stub.CalledCloseCurrentWindowHandler);
+        }
+        /// <summary>
+        /// Creates a blank spreadsheet, then closes
+        /// </summary>
+        [TestMethod]
         public void GUITestMethod1()
         {
             SpreadsheetStub stub = new SpreadsheetStub();
@@ -143,6 +156,28 @@ namespace SpreadsheetGUIStub
             }
 
             Assert.AreEqual((double)test2.GetCellValue("b3"), 30);
+        }
+        /// <summary>
+        /// Loads in a file through overloaded constructor, makes some changes,
+        /// then attempts to close without saving
+        /// </summary>
+        [TestMethod]
+        public void GUITestMethod8()
+        {
+            SpreadsheetStub stub = new SpreadsheetStub();
+            Controller controller = new Controller(stub, "../../test.ss");
+
+            Spreadsheet test;
+
+            using (TextReader inFile = File.OpenText("../../test.ss"))
+            {
+                test = new Spreadsheet(inFile);
+            }
+            Assert.AreEqual((double)test.GetCellValue("b3"), 20);
+
+            stub.FireChangeSelectionEvent(1, 2);
+            stub.FireChangeContentEvent("=b2 + 20", 1, 2);
+            stub.FireCloseWindowEvent();
         }
     }
 }

@@ -145,6 +145,7 @@ namespace SpreadsheetGUI
                 SaveFileHandler(filename);
             }
         }
+        
         /// <summary>
         /// Valls the correct CreateNewWindowHandler based on the CreateNewEvent that was fired. Calls to the view
         /// </summary>
